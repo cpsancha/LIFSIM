@@ -1,1 +1,0 @@
-Carpeta dedicada a subir papers y otra documentacion
