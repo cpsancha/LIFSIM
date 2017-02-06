@@ -1,0 +1,16 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                      %
+%    Diseño de Aplicaciones basadas en Drones 2016.    %
+%               Organiza Vision4UAV-UPM                % 
+%      http://www.vision4uav.com/SummerSchool16        %
+%                                                      %
+%  Autor:                                              %
+%  Ramon A. Suarez Fernandez (suarez.ramon@gmail.com)  %
+%                                                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Practica de Control de UAV con Matlab %%
+
+1. Abrir el archivo "simuladorControlCuatrirrotor_summerschool_students.mdl" dentro de este editar el modelo del controlador utilizando PID en cascada para controlar la trayectoria del UAV.
+
+2. Ejecutar el archivo simulaControl.m para obtener los resultados y las graficas del controlador propuesto. Dentro del archivo de simulaControl.m se encuentra la ruta [x1 y1; x2 y2; x3 y3;...; xn yn] que debe alcanzar el UAV. Esta ruta se puede cambiar a gusto para probar distintos moviemientos del UAV.

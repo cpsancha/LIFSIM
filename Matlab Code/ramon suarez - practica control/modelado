@@ -1,0 +1,31 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                      %
+%    Diseño de Aplicaciones basadas en Drones 2016.    %
+%               Organiza Vision4UAV-UPM                % 
+%      http://www.vision4uav.com/SummerSchool16        %
+%                                                      %
+%  Autor:                                              %
+%  Ramon A. Suarez Fernandez (suarez.ramon@gmail.com)  %
+%                                                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Practica de Modelado de UAV con Matlab %%
+
+1. Ejecutar el archivo Quadrotor_Modelling.m
+
+  - Este archivo importa los datos de vuelo del UAV que vamos a utilizar para modelar el sistema. Estos datos se encuentran en el fichero datos_UAV.txt. Este fichero contiene los datos de posicion en X e Y, las velocidades vx y vy y los valores de entrada pitch y roll [-1,1].
+
+  - Despues de ejecutar el fichero de Quadrotor_Modelling.m se abrira el Curve Fitting Toolbox. Este toolbox es utilizado para mapear los valores de comandos de pitch y roll a valores de velocidades. utiliza el metodo mas adecuado para aproximar los puntos de la curva y exporta el modelo en:
+
+        - Fit -> save to workspace
+
+  - LLamarle al modelo NLF_(aprox)_(rot)
+      - donde (aprox) es el metodo de aproximacion de los datos ej. MEDIAN (por defecto usar este) y (rot) es la rotacion que se esta mapeando ej. PITCH. (NLF_MEDIAN_PITCH).
+
+  - finalmente utilizar el toolbox de "ident" para identificar el modelo del sistema en funciones de transferencia. En "import data" seleccionar la opcion "Time Domain Data" (ya que tenemos valores que varian en el tiempo). En la siguiente ventana poner el nombre de las variables de entrada y sus salidas. En el caso de esta practica en nombre de las entradas sera "pitch_fitted_median" para la entrada de pitch y "roll_fitted_median" para la entrada de roll. La salida sera vx y vy respectivamente. Ademas de esto en "starting Time" se le pone el inicio en 0 y en sample time el tiempo de muestreo de nuestros datos de 0.06.
+
+  - Seleccionar "Estimate" para estimar el modelo del sistema. En este caso se estimara una funcion de transferencia ("Transfer Function Model") de dos polos y un cero. A continuacion exportar el modelo al "Workspace".
+
+  - despues de finalizar la ejecucion de Quadrotor_Modelling.m Ejecutar Validacion_Modelo.m para comparar el resultado del modelo identificado con los valores de vuelo originales lo cual les dara un valor del error adquirido.
+
+    
