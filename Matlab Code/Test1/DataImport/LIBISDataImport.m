@@ -2,3 +2,4 @@
 %DATCOM structure style
 
 a=1;
+b=3;
