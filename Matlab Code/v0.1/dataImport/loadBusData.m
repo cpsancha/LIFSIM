@@ -1,0 +1,1 @@
+bus = Simulink.Bus.createObject('plant2','plant2/plantDataBus');

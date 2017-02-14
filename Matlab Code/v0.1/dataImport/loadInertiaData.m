@@ -6,10 +6,13 @@
 % Mass input
 LD.inertia.mass = 1;   %kg
 
+% Gravity center vector position
+LD.inertia.CG = [LD.xcg_CMA , 0 , 0]'; 
+
 % Inertia tensor matrix
 LD.inertia.Ixx = 1;      %kg*m^2
 LD.inertia.Iyy = 1;      %kg*m^2
-LD.inertia.Iyy = 1;      %kg*m^2
+LD.inertia.Izz = 1;      %kg*m^2
 LD.inertia.Ixy = 0;      %kg*m^2
 LD.inertia.Ixz = 0;      %kg*m^2
 LD.inertia.Iyz = 0;      %kg*m^2
@@ -17,10 +20,17 @@ LD.inertia.Iyz = 0;      %kg*m^2
 % Mass flow: Contains one or more rates of change of mass (positive if accreted, negative if ablated).
 LD.inertia.dmass = 0;    %kg/s
 
+% CG position law function of mass. Defining the parameter LD.inertia.mass,
+% CG position is interpolated between these values:
+LD.inertia.fullMass    = LD.inertia.mass;
+LD.inertia.emptyMass   = LD.inertia.mass;
+LD.inertia.fullCG      = LD.inertia.CG;
+LD.inertia.emptyCG     = LD.inertia.CG;
+
 % Contains the rate of change of inertia tensor matrix.
 LD.inertia.dIxx = 0;     %kg*m^2/s
 LD.inertia.dIyy = 0;     %kg*m^2/s
-LD.inertia.dIyy = 0;     %kg*m^2/s
+LD.inertia.dIzz = 0;     %kg*m^2/s
 LD.inertia.dIxy = 0;     %kg*m^2/s
 LD.inertia.dIxz = 0;     %kg*m^2/s
 LD.inertia.dIyz = 0;     %kg*m^2/s

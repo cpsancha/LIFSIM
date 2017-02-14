@@ -3,8 +3,20 @@
 % can be edited individually to define different parameters.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%Input of inertia properties
-run('loadInertia.m')
+%Remove residual information
+clear all %TO be removed..
+clear LD
 
 %Input of aerodynamic data
 run('loadStabilityData.m')
+
+%Input of inertia properties
+run('loadInertiaData.m')
+
+
+
+
+
+%% CHECK DIMENSIONS
+run('dataValidations.m')
+
