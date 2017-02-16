@@ -1,0 +1,3 @@
+Delete from motors where name='Hacker A60-6XS V2 28pol'Delete from drivesets where name='Hacker A60-6XS V2 28pol'
+Delete from motors where name='Cobra 180/1200'Delete from drivesets where name='Cobra 180/1200'
+Delete from motors where name='DT-750'Delete from drivesets where name='DT-750'

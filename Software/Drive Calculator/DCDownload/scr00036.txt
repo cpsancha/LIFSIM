@@ -1,0 +1,1 @@
+Delete from batteries where name='SLS-APL 3000/45C'Delete from batteries where name='HXT D9 G2 2200 20C'

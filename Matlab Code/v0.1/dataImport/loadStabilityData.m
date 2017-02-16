@@ -29,10 +29,10 @@
 %% SET THE CASES OF ANALYSIS
 %Stability derivatives vary with the following parameters. Parse parameters
 %with values for which stability derivatives information is avaliable.
-%Leave empty array if no variation is considered for the parameter.
+%NEVER --> Leave empty array if no variation is considered for the parameter.
     %Array of angles of attack.
 %         LD.alpha  = [3.03*pi/180,9];
-LD.alpha  = [1,2];
+        LD.alpha  = [1,2];
     %Array of altitudes.
         LD.alt    = [91.44,100];
     %Array of positions of the center of gravity defined as fraction of the CMA (0<xcg<1). 

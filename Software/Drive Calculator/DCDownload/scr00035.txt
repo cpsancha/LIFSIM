@@ -1,0 +1,1 @@
+Delete from props where name='APC E' and Dia=7.0 and Pitch =4Delete from props where name='APC E' and Dia=7.0 and Pitch =6Delete from props where name='APC SF' and Dia=7.0 and Pitch =5Delete from motors where name='KEDA TR2826/22'Delete from drivesets where name='KEDA TR2826/22'

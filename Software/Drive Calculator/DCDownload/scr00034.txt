@@ -1,0 +1,1 @@
+Delete from props where name='Graupner SF' and Dia=8.0 and Pitch =4.5
