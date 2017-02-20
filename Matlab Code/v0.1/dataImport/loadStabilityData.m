@@ -30,95 +30,87 @@
 %Stability derivatives vary with the following parameters. Parse parameters
 %with values for which stability derivatives information is avaliable.
 %NEVER --> Leave empty array if no variation is considered for the parameter.
-    %Array of angles of attack.
-%         LD.alpha  = [3.03*pi/180,9];
-        LD.alpha  = [1,2];
+    %Array of angles of attack in radians.
+        LD.alpha  = 3.03*pi/180;
     %Array of altitudes.
-        LD.alt    = [91.44,100];
+        LD.alt    = 91.44;
     %Array of positions of the center of gravity defined as fraction of the CMA (0<xcg<1). 
-        LD.xcg  = [0.955,1];
-    %Array of left and right lifting surface streamwise control deflection 
-    %angles, which are defined positive for trailing-edge down.
-        LD.deltae  = [0,1];
-        LD.deltar  = [0,1];
-        LD.deltafr = [0,1];
-        LD.deltafl = [0,1];
-    %Array of Mach numbers
-        LD.mach   = [0.12];
-    %Array of Rynolds numbers
-        LD.rnnub  = [];
-    %Array of control-surface streamwise deflection angles
-        LD.delta  = [];
+        LD.xcg    = 0.955;
+    %Array of elevator, rudder, and right and left flaperons streamwise control 
+    %deflection angles, which are defined positive for trailing-edge down.
+        LD.deltae  = 10*pi/180;
+        LD.deltar  = 10*pi/180;
+        LD.deltafr = 10*pi/180;
+        LD.deltafl = 10*pi/180;
+
+
 
         
         
   %% READ THE LENGTH OF THE VECTORS
   %Store the length of the cases of analysis
-        LD.nmach  = length(LD.mach);
-        LD.nalt   = length(LD.alt);
         LD.nalpha = length(LD.alpha);
+        LD.nalt   = length(LD.alt);
         LD.nxcg   = length(LD.xcg);
-        %LD.ndelta=length(LD.delta); Está mal, sería de 0 a 3 en función de
-        %si existen delta, deltal y  deltar
-        
-        
-%% 
-%Stability derivatives matrix initialization:
-%Static
-% LD.cd=zeros(length(LD.alpha),length(LD.mach),length(LD.alt),...
-%     length(LD.build),length(LD.grndht),length(LD.delta));%
-% LD.cl=zeros(length(LD.alpha),length(LD.mach),length(LD.alt),...
-%     length(LD.build),length(LD.grndht),length(LD.delta));%
-% LD.cm=zeros(length(LD.alpha),length(LD.mach),length(LD.alt),...
-%     length(LD.build),length(LD.grndht),length(LD.delta));%
-% LD.cn=zeros(length(LD.alpha),length(LD.mach),length(LD.alt),...
-%     length(LD.build),length(LD.grndht),length(LD.delta));
-% LD.ca=zeros(length(LD.alpha),length(LD.mach),length(LD.alt),...
-%     length(LD.build),length(LD.grndht),length(LD.delta));
-% LD.xcp=zeros(length(LD.alpha),length(LD.mach),length(LD.alt),...
-%     length(LD.build),length(LD.grndht),length(LD.delta));
-% LD.cla=zeros(length(LD.alpha),length(LD.mach),length(LD.alt),...
-%     length(LD.build),length(LD.grndht),length(LD.delta));
-% LD.cma=zeros(length(LD.alpha),length(LD.mach),length(LD.alt),...
-%     length(LD.build),length(LD.grndht),length(LD.delta));
-% LD.cyb=zeros(length(LD.alpha),length(LD.mach),length(LD.alt),...
-%     length(LD.build),length(LD.grndht),length(LD.delta));%
-% LD.cnb=zeros(length(LD.alpha),length(LD.mach),length(LD.alt),...
-%     length(LD.build),length(LD.grndht),length(LD.delta));%
-% LD.clb=zeros(length(LD.alpha),length(LD.mach),length(LD.alt),...
-%     length(LD.build),length(LD.grndht),length(LD.delta));%
-% %Dynamic
-% LD.clq=zeros(length(LD.alpha),length(LD.mach),length(LD.alt),...
-%     length(LD.build));%
-% LD.cmq=zeros(length(LD.alpha),length(LD.mach),length(LD.alt),...
-%     length(LD.build));%
-% LD.clad=zeros(length(LD.alpha),length(LD.mach),length(LD.alt),...
-%     length(LD.build));%
-% LD.cmad=zeros(length(LD.alpha),length(LD.mach),length(LD.alt),...
-%     length(LD.build));%
-% LD.clp=zeros(length(LD.alpha),length(LD.mach),length(LD.alt),...
-%     length(LD.build));%
-% LD.cyp=zeros(length(LD.alpha),length(LD.mach),length(LD.alt),...
-%     length(LD.build));%
-% LD.cnp=zeros(length(LD.alpha),length(LD.mach),length(LD.alt),...
-%     length(LD.build));%
-% LD.cnr=zeros(length(LD.alpha),length(LD.mach),length(LD.alt),...
-%     length(LD.build));%
-% LD.clr=zeros(length(LD.alpha),length(LD.mach),length(LD.alt),...
-%     length(LD.build));%
-% %High Lift (Not applicable but initialized)
-% LD.dcl_sym=zeros(length(LD.alpha),length(LD.mach),length(LD.alt));
-% LD.dcm_sym=zeros(length(LD.alpha),length(LD.mach),length(LD.alt));
-% LD.dclmax_sym=zeros(length(LD.alpha),length(LD.mach),length(LD.alt));
-% LD.dcdmin_sym=zeros(length(LD.alpha),length(LD.mach),length(LD.alt));
-% LD.clad_sym=zeros(length(LD.alpha),length(LD.mach),length(LD.alt));
-% LD.cha_sym=zeros(length(LD.alpha),length(LD.mach),length(LD.alt));
-% LD.chd_sym=zeros(length(LD.alpha),length(LD.mach),length(LD.alt));
-% LD.dcid_sym=zeros(length(LD.alpha),length(LD.mach),length(LD.alt));
-%         
 
         
         
+%% LONGITUDINAL STABILITY DERIVATIVES
+%Parasite coeffs
+    LD.Stability.CD0 =  0.024;
+    LD.Stability.CL0 =  0.181;
+    LD.Stability.Cm0 = -0.003;
+%Alpha
+    LD.Stability.CDalpha =  0.239;
+    LD.Stability.CLalpha =  4.138;
+    LD.Stability.Cmalpha = -0.707;
+%Alpha_dot
+    LD.Stability.CDalpha_dot =  0.000;
+    LD.Stability.CLalpha_dot =  7.411;
+    LD.Stability.Cmalpha_dot = -4.063;
+%q
+    LD.Stability.CDq =   0.000;
+    LD.Stability.CLq =   6.248;
+    LD.Stability.Cmq = -18.410;
+%deltae --> elevator
+    LD.Stability.CDdeltae =  0.005; 
+    LD.Stability.CLdeltae =  1.391;
+    LD.Stability.Cmdeltae = -2.930;
+%deltafr --> rigth flaperon
+    LD.Stability.CDdeltafr = LD.Stability.CDdeltae/2;   %TO BE CALCULATED
+    LD.Stability.CLdeltafr = LD.Stability.CLdeltae/2;   %TO BE CALCULATED
+    LD.Stability.Cmdeltafr = 0.000;           %TO BE CALCULATED
+%deltafl --> left flaperon
+    LD.Stability.CDdeltafl = LD.Stability.CDdeltae/2;   %TO BE CALCULATED
+    LD.Stability.CLdeltafl = LD.Stability.CLdeltae/2;   %TO BE CALCULATED
+    LD.Stability.Cmdeltafl = 0.000;           %TO BE CALCULATED
+    
+
+%% LATERAL-DIRECTIONAL DERIVATIVES
+%beta
+    LD.Stability.CYbeta = -0.4250;
+    LD.Stability.Clbeta = -0.0286;
+    LD.Stability.Cnbeta =  0.0170;
+%p
+    LD.Stability.CYp = -0.004;
+    LD.Stability.Clp = -0.472;
+    LD.Stability.Cnp = -0.019;
+%r
+    LD.Stability.CYr =  0.120;
+    LD.Stability.Clr =  0.049;
+    LD.Stability.Cnr = -0.040;
+%deltar --> rudder
+    LD.Stability.CYdeltar = -0.212;
+    LD.Stability.Cldeltar = -0.002;
+    LD.Stability.Cndeltar =  0.051;
+%deltafr --> rigth flaperon
+    LD.Stability.CYdeltafr =  0.000;
+    LD.Stability.Cldeltafr = -0.125;  %-deltaa/2
+    LD.Stability.Cndeltafr =  0.001;  %-deltaa/2
+%deltafl --> left flaperon
+    LD.Stability.CYdeltafl =  0.000;
+    LD.Stability.Cldeltafl =  0.125;  %deltaa/2
+    LD.Stability.Cndeltafl = -0.001;  %deltaa/2
         
         
         

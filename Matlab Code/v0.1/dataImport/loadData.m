@@ -4,7 +4,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Remove residual information
-clear all %TO be removed..
 clear LD
 
 %Input of aerodynamic data
