@@ -12,7 +12,8 @@ run('loadStabilityData.m')
 %Input of inertia properties
 run('loadInertiaData.m')
 
-
+%Input of propulsion properties
+run('loadPropulsionData.m')
 
 
 

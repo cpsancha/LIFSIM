@@ -20,7 +20,7 @@
     LD.sref  = 1.251;  %Scalar denoting the reference area (2 wings)
     LD.cbar  = 0.284;  %Scalar denoting the longitudinal reference length (1 wing)
     LD.blref = 2.237;  %Scalar denoting the lateral reference length (1 wing)
-    LD.xcg   = 1.015;  %Distance from the nose of the plane to center of gravity (meters)
+    LD.xcg   = 1.013;  %Distance from the nose of the plane to center of gravity (meters)
     LD.xba   = 0.744;  %Distance from the nose of the plane to the wing's leading edge (meters)
     LD.xcg_CMA = (LD.xcg - LD.xba)/LD.cbar; %Position of the xcg in the aerodynamic mean chord
 
