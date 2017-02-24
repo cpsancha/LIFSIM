@@ -4,10 +4,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Mass input
-LD.Inertia.mass = 1;   %kg
+LD.Inertia.mass = 24.99;   %kg
 
 % Gravity center vector position
-LD.Inertia.CG = [LD.xcg_CMA , 0 , 0]'; 
+LD.Inertia.CG = [LD.xcg , 0 , 0]'; 
 
 % Inertia tensor matrix
 LD.Inertia.Ixx = 1;      %kg*m^2

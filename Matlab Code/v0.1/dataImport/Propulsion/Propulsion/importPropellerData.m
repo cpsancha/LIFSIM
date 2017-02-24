@@ -143,15 +143,16 @@ maxV     = Mph2Ms*max(V2);
 %     
 %% Create vector interpolation for each RPM
 
-% figure()
     for i=1:nlength
+%         
         rpmvec(i,:)=linspace(1000*i,1000*i,30); 
         
         x=propellerDataTemp.V(:,i);
         xq=linspace(0,maxV,1000);
         v=propellerDataTemp.eta(:,i);
         propellerData.eta(i,:)=interp1(x,v,xq,'pchip',0);
-%             plot(xq,propellerData.eta(i,:)); hold on
+        figure(1)
+            plot(xq,propellerData.eta(i,:)); hold on
 %         
         v=propellerDataTemp.PWR(:,i);
         propellerData.PWR(i,:)=interp1(x,v,xq,'pchip',0);

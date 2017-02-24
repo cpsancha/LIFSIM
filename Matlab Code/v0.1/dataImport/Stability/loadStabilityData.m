@@ -20,9 +20,9 @@
     LD.sref  = 1.251;  %Scalar denoting the reference area (2 wings)
     LD.cbar  = 0.284;  %Scalar denoting the longitudinal reference length (1 wing)
     LD.blref = 2.237;  %Scalar denoting the lateral reference length (1 wing)
-    LD.xcg   = 1.013;  %Distance from the nose of the plane to center of gravity (meters)
-    LD.xba   = 0.744;  %Distance from the nose of the plane to the wing's leading edge (meters)
-    LD.xcg_CMA = (LD.xcg - LD.xba)/LD.cbar; %Position of the xcg in the aerodynamic mean chord
+    LD.xba   = -0.744;  %Distance from the nose of the plane to the wing's leading edge (meters),
+    %in body axis with origin at the nose.
+%   LD.xcg_CMA = (LD.xcg - LD.xba)/LD.cbar; %Position of the xcg in the aerodynamic mean chord
 
     
     
@@ -34,8 +34,10 @@
         LD.alpha  = 3.03*pi/180;
     %Array of altitudes.
         LD.alt    = 91.44;
-    %Array of positions of the center of gravity defined as fraction of the CMA (0<xcg<1). 
-        LD.xcg    = 0.955;
+    %Array of positions of the center of gravity. Distance from the nose of
+    %the plane to center of gravity (meters) in body axis with origin at the
+    %nose
+        LD.xcg    = -1.013;
     %Array of elevator, rudder, and right and left flaperons streamwise control 
     %deflection angles, which are defined positive for trailing-edge down.
         LD.deltae  = 10*pi/180;

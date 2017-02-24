@@ -156,9 +156,20 @@ for i=1:length(checks.coeffs)
     
     %Check if length==1
     for j=1:length(checks.analysisCases)
-        if isequal(size(LD.Stability.(checks.coeffs{i}),1),1)
+        if isequal(size(LD.Stability.(checks.coeffs{i}),j),1)
+            bracket1 = '(';
+            bracket2 = ')';
+            prefix   = '';
+            sufix    = '';
+            for k=1:j-1
+                prefix=strcat(prefix,'1,');
+            end
+            for k=1:length(checks.analysisCases)-j
+                sufix=strcat(sufix,',1');
+            end
+            pattern = strcat(bracket1,prefix,'end+1',sufix,bracket2);
             LD.flags.(checks.coeffs{i}).length.(checks.analysisCases{j})=checks.inconsistentLength;
-            LD.Stability.(checks.coeffs{i})(end+1) = checks.nonExist;
+            eval(sprintf('LD.Stability.(checks.coeffs{i})%s = checks.nonExist;',pattern))
         else
             LD.flags.(checks.coeffs{i}).length.(checks.analysisCases{j})=checks.consistentLength;
         end
@@ -207,7 +218,7 @@ if ~isequal(checks.existenceErrorSum+checks.emptyErrorSum+checks.dimensionErrorS
 end
 
 %% CLEAR USED VARIABLES
-clear i j strCases strCoeffs        
+clear i j k strCases strCoeffs bracket1 bracket2 prefix sufix pattern   
         
         
 
