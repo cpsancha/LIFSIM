@@ -98,6 +98,14 @@ end
 
 
 
+%% DEFINE INITIAL THROTTLE
+LD.Propulsion.Throttle1 = 0.5;
+LD.Propulsion.Throttle2 = 0.5;
+LD.Propulsion.Throttle3 = 0.5;
+LD.Propulsion.Throttle4 = 0.5;
+LD.Propulsion.Throttle5 = 0.5;
+
+
 %% CLEAR USED VARIABLES
 clear motorData motorNames motorModels index wrn i propellerData motorPosition
 clear propellerData propellerFiles propellerNames propellerModels
