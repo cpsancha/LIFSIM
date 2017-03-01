@@ -19,10 +19,10 @@ run('loadData.m')
 %Initial position in inertial axes [Xe,Ye,Ze]:
     initialValues.Xe0 = 0;
     initialValues.Ye0 = 0;
-    initialValues.Ze0 = -10;
+    initialValues.Ze0 = 0;
     
 %Initial velocity in body axes [u,v,w]:
-    initialValues.u0 = 20;
+    initialValues.u0 = 0;
     initialValues.v0 = 0;
     initialValues.w0 = 0;
 %Initial Euler orientation [roll, pitch, yaw]:

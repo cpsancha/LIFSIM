@@ -135,6 +135,7 @@ maxV     = Mph2Ms*max(V2);
   
    propellerDataTemp.eta=reshape(Pe,[30,nlength]);    
    propellerDataTemp.Cp=reshape(Cp,[30,nlength]); 
+   propellerDataTemp.Ct=reshape(Ct,[30,nlength]); 
    propellerDataTemp.V=Mph2Ms.*reshape(V2,[30,nlength]);
 %    maxV     = max(propellerDataTemp.V);
 %     propeller.V=0.44704.*propeller.V; %to m/s
@@ -161,6 +162,8 @@ maxV     = Mph2Ms*max(V2);
         propellerData.Cp(i,:)=interp1(x,v,xq,'pchip',0);
 %         figure(3)
 %             plot(xq,propellerData.Cp(i,:)); hold on
+        v=propellerDataTemp.Ct(:,i);
+        propellerData.Ct(i,:)=interp1(x,v,xq,'pchip',0);
     end
 %     
 %     

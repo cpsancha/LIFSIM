@@ -98,12 +98,21 @@ end
 
 
 
+%% DEFINE ESC
+LD.Propulsion.ESC1.eta = 0.99;
+LD.Propulsion.ESC2.eta = 0.99;
+LD.Propulsion.ESC3.eta = 0.99;
+LD.Propulsion.ESC4.eta = 0.99;
+LD.Propulsion.ESC5.eta = 0.99;
+
+
+
 %% DEFINE INITIAL THROTTLE
-LD.Propulsion.Throttle1 = 0.5;
-LD.Propulsion.Throttle2 = 0.5;
-LD.Propulsion.Throttle3 = 0.5;
-LD.Propulsion.Throttle4 = 0.5;
-LD.Propulsion.Throttle5 = 0.5;
+LD.Propulsion.Throttle1 = 1;
+LD.Propulsion.Throttle2 = 1;
+LD.Propulsion.Throttle3 = 1;
+LD.Propulsion.Throttle4 = 1;
+LD.Propulsion.Throttle5 = 1;
 
 
 %% CLEAR USED VARIABLES
