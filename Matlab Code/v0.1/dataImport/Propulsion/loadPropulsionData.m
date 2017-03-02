@@ -7,7 +7,7 @@
 %          PWR        (Hp)   
 %          Torque     (In-Lbf)     
 %          Thrust     (Lbf) 
-clear all
+
 
 %% DEFINE MOTORS
 
@@ -53,7 +53,7 @@ for i=1:length(motorNames)
 end
 
 
-%% DEFINE PROPELLERS 
+%% DEFINE PROPELLERS
 
 %Define the propellers' files from APC to be imported into the database
 % More files can be found in the following web page:
@@ -97,10 +97,16 @@ end
 
 
 %% MAP THRUST, POWER, CURRENT AND RPM IN FUNCTION OF VOLTAGE, HEIGHT AND VELOCITY
+% Mapping folder in which are stored the generated files
+filename = mfilename('fullpath');
+[pathstr,~,~] = fileparts(filename);
+mappingFolder = 'motorPropMapping';
+mappingPath = strcat(pathstr,filesep,mappingFolder);
+
 % Ranges:
-voltageLength = 5;
-heightLength  = 5;
-vflightLength = 5;
+voltageLength = 20;
+heightLength  = 20;
+vflightLength = 20;
     
 % Limits:
 voltageLim = [0,  30];
@@ -109,13 +115,32 @@ vflightLim = [0,  50];
     
 % Mapping:    
 if isequal(length(motorNames),length(propellerNames))
-    for i=1:length(motorNames)
-        [LD.Propulsion.(motorNames{i}).Thrust,LD.Propulsion.(motorNames{i})...
-            .Power,LD.Propulsion.(motorNames{i}).Current,LD.Propulsion...
-            .(motorNames{i}).RPM] = propulsionDataMapping(LD.Propulsion...
-            .(motorNames{i}),LD.Propulsion.(propellerNames{i}),...
-            voltageLim,heightLim,vflightLim,voltageLength,heightLength,...
-            vflightLength);
+    fileList = dir(mappingPath);
+    for i=1:1%length(motorNames)
+        expectedFile = strcat(LD.Propulsion.(motorNames{i}).Model,...
+                              LD.Propulsion.(propellerNames{i}).Model);
+        expectedFile = regexprep(expectedFile,'[\\\*:/><|?~!@#$%^&()_\-{}\s]','');
+        expectedSufix = '.mat';
+        index = zeros(1,size(fileList,1));
+        for j=1:size(fileList,1)
+            index(j) = isequal(char(fileList(j).name),strcat(expectedFile,expectedSufix));
+        end
+        if sum(index)
+            load(strcat(expectedFile,expectedSufix));   
+            %
+            % To create import file
+            %
+        else
+%             [LD.Propulsion.(motorNames{i}).Thrust,LD.Propulsion.(motorNames{i})...
+%                .Power,LD.Propulsion.(motorNames{i}).Current,LD.Propulsion...
+%                .(motorNames{i}).RPM,LD.Propulsion.(motorNames{i}).exitFlag] = ...
+%                propulsionDataMapping(LD.Propulsion.(motorNames{i}),LD.Propulsion...
+%                .(propellerNames{i}),voltageLim,heightLim,vflightLim,voltageLength,...
+%                heightLength,vflightLength);
+           %
+           % To create save to file...
+           %
+        end
     end
 else
     wrn = msgbox('The number of motors is not consistent with the number of propellers.','Warning','warn');
@@ -145,7 +170,8 @@ LD.Propulsion.Throttle5 = 1;
 
 
 %% CLEAR USED VARIABLES
-clear motorData motorNames motorModels index wrn i propellerData motorPosition
+clear motorData motorNames motorModels index wrn i j propellerData motorPosition
 clear propellerData propellerFiles propellerNames propellerModels
+clear filename pathstr mappingFolder mappingPath expectedFile expectedSufix
 clear voltageLim voltageLength heightLim heightLength vflightLim vflightLength
     

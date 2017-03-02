@@ -24,17 +24,26 @@ function [ Error ] = motorPropellerCoupling(x,Vesc,h,Vflight,motorData,propeller
     RPS = RPM/60;
     [~,~,~,rho] = atmosisa(h);
     [VFLIGHT,RPMmesh] = meshgrid(propellerData.V,propellerData.RPM);
-    Ct = interp2(VFLIGHT,RPMmesh,propellerData.Ct,Vflight,RPM);
-    Cp = interp2(VFLIGHT,RPMmesh,propellerData.Cp,Vflight,RPM);
+    Ct = interp2(VFLIGHT,RPMmesh,propellerData.Ct,Vflight,RPM,'linear',0);
+    Cp = interp2(VFLIGHT,RPMmesh,propellerData.Cp,Vflight,RPM,'linear',0);
+
     
-%% Motor Eq:
-    Error(1) = Im - motorData.I0 - (P/(RPM/motorData.Kv));
-    Error(2) = Vesc - (RPM/motorData.Kv) - (Im*motorData.Rm);
-
-%% Propeller Eq:
-    Error(3) = P - rho*RPS^3*propellerData.Diameter^5*Cp;
-    Error(4) = T - rho*RPS^2*propellerData.Diameter^4*Ct;
-
+%% Solve Nonlinear System
+    if Vesc >= motorData.I0*motorData.Rm
+        %Motor Eq:
+            Error(1) = Im - motorData.I0 - (P/(RPM/motorData.Kv));
+            Error(2) = Vesc - (RPM/motorData.Kv) - (Im*motorData.Rm);
+        %Propeller Eq:
+            Error(3) = P - rho*RPS^3*propellerData.Diameter^5*Cp;
+            Error(4) = T - rho*RPS^2*propellerData.Diameter^4*Ct;
+    else
+        %Motor Eq:
+            Error(1) = Im;
+            Error(2) = RPM;
+        %Propeller Eq:
+            Error(3) = P;
+            Error(4) = T;  
+    end
     
 end
 

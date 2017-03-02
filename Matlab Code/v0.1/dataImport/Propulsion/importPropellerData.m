@@ -90,24 +90,24 @@ end
 
 %% Split data into numeric and cell columns.
 rawNumericColumns = raw(:, [1,2,3,4,5,6,7,8]);
-rawCellColumns = raw(:, 9);
+% rawCellColumns = raw(:, 9);
 
 
 %% Exclude rows with non-numeric cells
 I = ~all(cellfun(@(x) (isnumeric(x) || islogical(x)) && ~isnan(x),rawNumericColumns),2); % Find rows with non-numeric cells
 rawNumericColumns(I,:) = [];
-rawCellColumns(I,:) = [];
+% rawCellColumns(I,:) = [];
 
 %% Allocate imported array to column variable names
 V2 = cell2mat(rawNumericColumns(:, 1));
-J = cell2mat(rawNumericColumns(:, 2));
+% J = cell2mat(rawNumericColumns(:, 2));
 Pe = cell2mat(rawNumericColumns(:, 3));
 Ct = cell2mat(rawNumericColumns(:, 4));
 Cp = cell2mat(rawNumericColumns(:, 5));
 PWR = cell2mat(rawNumericColumns(:, 6));
-Torqu = cell2mat(rawNumericColumns(:, 7));
-eThrus = cell2mat(rawNumericColumns(:, 8));
-t = rawCellColumns(:, 1);
+% Torqu = cell2mat(rawNumericColumns(:, 7));
+% eThrus = cell2mat(rawNumericColumns(:, 8));
+% t = rawCellColumns(:, 1);
 
 
 %% FORMAT OUTPUT
@@ -173,6 +173,9 @@ maxV     = Mph2Ms*max(V2);
      
 
      
+%% If Ct or Cp are negative --> Ct=0 or Cp=0
+    propellerData.Ct(sign(propellerData.Ct)==-1)=0;
+    propellerData.Cp(sign(propellerData.Cp)==-1)=0; 
      
      
 %     LD.propeller1.PWR = VqPWR;
