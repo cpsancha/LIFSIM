@@ -10,7 +10,7 @@ Cm0=LD.Stability.Cm0(1,1,1,1,1,1,1);
 
 alpha_wb=(Cl-Cl0+Cl_delta_e*Cm0/Cm_delta_e)./(Cl_alpha-Cl_delta_e*Cm_alpha/Cm_delta_e);
 delta_e=-(Cm0+Cm_alpha*alpha_wb)/Cm_delta_e;
-delta_e=1.2*delta_e;
+
 % alphacruise=(CL-CL0)/CLalpha*180/pi;
 
 

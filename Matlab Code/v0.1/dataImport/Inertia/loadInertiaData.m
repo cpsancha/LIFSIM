@@ -10,9 +10,9 @@ LD.Inertia.mass = 24.99;   %kg
 LD.Inertia.CG = [LD.xcg , 0 , 0]'; 
 
 % Inertia tensor matrix
-LD.Inertia.Ixx = 1;      %kg*m^2
-LD.Inertia.Iyy = 1;      %kg*m^2
-LD.Inertia.Izz = 1;      %kg*m^2
+LD.Inertia.Ixx = 6.39;      %kg*m^2
+LD.Inertia.Iyy = 5.39;      %kg*m^2
+LD.Inertia.Izz = 11.39;      %kg*m^2
 LD.Inertia.Ixy = 0;      %kg*m^2
 LD.Inertia.Ixz = 0;      %kg*m^2
 LD.Inertia.Iyz = 0;      %kg*m^2

@@ -7,7 +7,7 @@
 %          PWR        (Hp)   
 %          Torque     (In-Lbf)     
 %          Thrust     (Lbf) 
-
+clear all
 
 %% DEFINE MOTORS
 
@@ -96,6 +96,35 @@ for i=1:length(propellerNames)
 end                  
 
 
+%% MAP THRUST, POWER, CURRENT AND RPM IN FUNCTION OF VOLTAGE, HEIGHT AND VELOCITY
+% Ranges:
+voltageLength = 5;
+heightLength  = 5;
+vflightLength = 5;
+    
+% Limits:
+voltageLim = [0,  30];
+heightLim  = [0, 200];
+vflightLim = [0,  50];
+    
+% Mapping:    
+if isequal(length(motorNames),length(propellerNames))
+    for i=1:length(motorNames)
+        [LD.Propulsion.(motorNames{i}).Thrust,LD.Propulsion.(motorNames{i})...
+            .Power,LD.Propulsion.(motorNames{i}).Current,LD.Propulsion...
+            .(motorNames{i}).RPM] = propulsionDataMapping(LD.Propulsion...
+            .(motorNames{i}),LD.Propulsion.(propellerNames{i}),...
+            voltageLim,heightLim,vflightLim,voltageLength,heightLength,...
+            vflightLength);
+    end
+else
+    wrn = msgbox('The number of motors is not consistent with the number of propellers.','Warning','warn');
+        uiwait(wrn);
+        disp('Inconsistent motor-propeller dimensions, please fix me...')
+        pause
+end
+
+
 
 
 %% DEFINE ESC
@@ -118,4 +147,5 @@ LD.Propulsion.Throttle5 = 1;
 %% CLEAR USED VARIABLES
 clear motorData motorNames motorModels index wrn i propellerData motorPosition
 clear propellerData propellerFiles propellerNames propellerModels
+clear voltageLim voltageLength heightLim heightLength vflightLim vflightLength
     
