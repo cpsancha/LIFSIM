@@ -1,13 +1,9 @@
 VEAS=23.11;
 rho=1.28;
 Cl=2*LD.Inertia.mass*9.8/(rho*LD.sref*VEAS^2);
-
-%% Control variables initialization
 deltae_degrees=0;
 
-deltat_25=0;  % motores delanteros
-deltat_34=0;  % motores traseros
-deltat_1=0;   % ala fija
+deltat_
 
 Cl0=LD.Stability.CL0(1,1,1,1,1,1,1);
 Cl_alpha=LD.Stability.CLalpha(1,1,1,1,1,1,1);
