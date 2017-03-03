@@ -51,9 +51,9 @@
         
   %% READ THE LENGTH OF THE VECTORS
   %Store the length of the cases of analysis
-        LD.nalpha = length(LD.alpha);
-        LD.nalt   = length(LD.alt);
-        LD.nxcg   = length(LD.xcg);
+%         LD.nalpha = length(LD.alpha);
+%         LD.nalt   = length(LD.alt);
+%         LD.nxcg   = length(LD.xcg);
 
         
         

@@ -110,9 +110,9 @@ heightLength  =  3;
 vflightLength = 40;
     
 % Limits:
-voltageLim = [0,   30];
-heightLim  = [0, 1000];
-vflightLim = [0,   50];
+voltageLim = [0,   30]; %V
+heightLim  = [0, 1000]; %m
+vflightLim = [0,   50]; %m/s
     
 % Mapping:    
 if isequal(length(motorNames),length(propellerNames))
@@ -136,11 +136,16 @@ if isequal(length(motorNames),length(propellerNames))
         
         if sum(index)
             %Read mapped data from file
-            [validData,Thrust,Power,Current,RPM,exitFlag] = loadMappedData(strcat(expectedFile,expectedSufix),...
-                motorModel,propellerModel,voltageLim,heightLim,vflightLim,voltageLength,heightLength,vflightLength);
+            [validData,Voltage,Height,Vflight,Thrust,Power,Current,RPM,exitFlag] = ...
+                loadMappedData(strcat(expectedFile,expectedSufix),motorModel,...
+                propellerModel,voltageLim,heightLim,vflightLim,voltageLength,...
+                heightLength,vflightLength);
             
             if validData
                 %Store mapped data in motorData struct
+                LD.Propulsion.(motorNames{i}).Voltage  = Voltage;
+                LD.Propulsion.(motorNames{i}).Height   = Height;
+                LD.Propulsion.(motorNames{i}).Vflight  = Vflight;
                 LD.Propulsion.(motorNames{i}).Thrust   = Thrust;
                 LD.Propulsion.(motorNames{i}).Power    = Power;
                 LD.Propulsion.(motorNames{i}).Current  = Current;
@@ -148,10 +153,10 @@ if isequal(length(motorNames),length(propellerNames))
                 LD.Propulsion.(motorNames{i}).exitFlag = exitFlag;
             else
                 %Calculate mapped data
-                    [Thrust,Power,Current,RPM,exitFlag] = propulsionDataMapping(LD...
-                    .Propulsion.(motorNames{i}),LD.Propulsion.(propellerNames{i}),...
-                    voltageLim,heightLim,vflightLim,voltageLength,heightLength,...
-                    vflightLength);
+                    [Voltage,Height,Vflight,Thrust,Power,Current,RPM,exitFlag] = ...
+                     propulsionDataMapping(LD.Propulsion.(motorNames{i}),LD...
+                     .Propulsion.(propellerNames{i}),voltageLim,heightLim,...
+                     vflightLim,voltageLength,heightLength,vflightLength);
             
                 %Save mapped data in mat file
                 save(strcat(mappingPath,filesep,expectedFile,expectedSufix),...
@@ -161,6 +166,9 @@ if isequal(length(motorNames),length(propellerNames))
                      'Thrust','Power','Current','RPM','exitFlag')
                 
                 %Store mapped data in motorData struct
+                LD.Propulsion.(motorNames{i}).Voltage  = Voltage;
+                LD.Propulsion.(motorNames{i}).Height   = Height;
+                LD.Propulsion.(motorNames{i}).Vflight  = Vflight;
                 LD.Propulsion.(motorNames{i}).Thrust   = Thrust;
                 LD.Propulsion.(motorNames{i}).Power    = Power;
                 LD.Propulsion.(motorNames{i}).Current  = Current;
@@ -170,10 +178,10 @@ if isequal(length(motorNames),length(propellerNames))
             
         else
             %Calculate mapped data
-            [Thrust,Power,Current,RPM,exitFlag] = propulsionDataMapping(LD...
-                .Propulsion.(motorNames{i}),LD.Propulsion.(propellerNames{i}),...
-                voltageLim,heightLim,vflightLim,voltageLength,heightLength,...
-                vflightLength);
+            [Voltage,Height,Vflight,Thrust,Power,Current,RPM,exitFlag] = ...
+                 propulsionDataMapping(LD.Propulsion.(motorNames{i}),LD...
+                 .Propulsion.(propellerNames{i}),voltageLim,heightLim,...
+                 vflightLim,voltageLength,heightLength,vflightLength);
             
             %Save mapped data in mat file
             save(strcat(mappingPath,filesep,expectedFile,expectedSufix),...
@@ -183,6 +191,9 @@ if isequal(length(motorNames),length(propellerNames))
                  'Thrust','Power','Current','RPM','exitFlag')
             
             %Store mapped data in motorData struct
+            LD.Propulsion.(motorNames{i}).Voltage  = Voltage;
+            LD.Propulsion.(motorNames{i}).Height   = Height;
+            LD.Propulsion.(motorNames{i}).Vflight  = Vflight;
             LD.Propulsion.(motorNames{i}).Thrust   = Thrust;
             LD.Propulsion.(motorNames{i}).Power    = Power;
             LD.Propulsion.(motorNames{i}).Current  = Current;
@@ -224,5 +235,5 @@ LD.Propulsion.Throttle5 = 1;
 clear motorData motorNames motorModels index wrn i j propellerData motorPosition
 clear propellerData propellerFiles propellerNames propellerModels
 clear fileList filename pathstr mappingFolder mappingPath expectedFile expectedSufix
-clear voltageLim voltageLength heightLim heightLength vflightLim vflightLength
+clear Voltage Height Vflight voltageLim voltageLength heightLim heightLength vflightLim vflightLength
 clear motorModel propellerModel validData Thrust Power Current RPM exitFlag    

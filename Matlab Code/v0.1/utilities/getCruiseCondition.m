@@ -5,8 +5,10 @@ Cl=2*LD.Inertia.mass*9.8/(rho*LD.sref*VEAS^2);
 %% Control variables initialization
 deltae_degrees=0;
 
-deltat_25=0;  % motores delanteros
-deltat_34=0;  % motores traseros
+deltat_2=0;  % motores delanteros
+deltat_3=0;  % motores traseros
+deltat_4=0;  % motores delanteros
+deltat_5=0;  % motores traseros
 deltat_1=0;   % ala fija
 
 Cl0=LD.Stability.CL0(1,1,1,1,1,1,1);
@@ -29,7 +31,7 @@ delta_e=-(Cm0+Cm_alpha*alpha_wb)/Cm_delta_e;
 % initialValues.w0=sin(alpha_wb)*VEAS;
 
 
-initialValues.Ze0 = -91.44; %Cruise height
+initialValues.Ze0 = 0;   %-91.44; %Cruise height
 
 initialValues.pitch0 = alpha_wb;
 
