@@ -9,6 +9,7 @@
 %          Thrust     (Lbf) 
 
 
+
 %% DEFINE MOTORS
 
 %Import motor data library
@@ -104,42 +105,90 @@ mappingFolder = 'motorPropMapping';
 mappingPath = strcat(pathstr,filesep,mappingFolder);
 
 % Ranges:
-voltageLength = 20;
-heightLength  = 20;
-vflightLength = 20;
+voltageLength = 30;
+heightLength  =  3;
+vflightLength = 40;
     
 % Limits:
-voltageLim = [0,  30];
-heightLim  = [0, 200];
-vflightLim = [0,  50];
+voltageLim = [0,   30];
+heightLim  = [0, 1000];
+vflightLim = [0,   50];
     
 % Mapping:    
 if isequal(length(motorNames),length(propellerNames))
+    
+    %Store files in the mapping directory as list
     fileList = dir(mappingPath);
-    for i=1:1%length(motorNames)
-        expectedFile = strcat(LD.Propulsion.(motorNames{i}).Model,...
-                              LD.Propulsion.(propellerNames{i}).Model);
+    
+    for i=1:length(motorNames)
+        %Create expected file filename
+        motorModel     = LD.Propulsion.(motorNames{i}).Model;
+        propellerModel = LD.Propulsion.(propellerNames{i}).Model;
+        expectedFile   = strcat(motorModel,propellerModel);
         expectedFile = regexprep(expectedFile,'[\\\*:/><|?~!@#$%^&()_\-{}\s]','');
         expectedSufix = '.mat';
         index = zeros(1,size(fileList,1));
+        
+        %Check if expected file exists
         for j=1:size(fileList,1)
             index(j) = isequal(char(fileList(j).name),strcat(expectedFile,expectedSufix));
         end
+        
         if sum(index)
-            load(strcat(expectedFile,expectedSufix));   
-            %
-            % To create import file
-            %
+            %Read mapped data from file
+            [validData,Thrust,Power,Current,RPM,exitFlag] = loadMappedData(strcat(expectedFile,expectedSufix),...
+                motorModel,propellerModel,voltageLim,heightLim,vflightLim,voltageLength,heightLength,vflightLength);
+            
+            if validData
+                %Store mapped data in motorData struct
+                LD.Propulsion.(motorNames{i}).Thrust   = Thrust;
+                LD.Propulsion.(motorNames{i}).Power    = Power;
+                LD.Propulsion.(motorNames{i}).Current  = Current;
+                LD.Propulsion.(motorNames{i}).RPM      = RPM;
+                LD.Propulsion.(motorNames{i}).exitFlag = exitFlag;
+            else
+                %Calculate mapped data
+                    [Thrust,Power,Current,RPM,exitFlag] = propulsionDataMapping(LD...
+                    .Propulsion.(motorNames{i}),LD.Propulsion.(propellerNames{i}),...
+                    voltageLim,heightLim,vflightLim,voltageLength,heightLength,...
+                    vflightLength);
+            
+                %Save mapped data in mat file
+                save(strcat(mappingPath,filesep,expectedFile,expectedSufix),...
+                     'motorModel','propellerModel',...
+                     'voltageLim','heightLim','vflightLim',...
+                     'voltageLength','heightLength','vflightLength',...
+                     'Thrust','Power','Current','RPM','exitFlag')
+                
+                %Store mapped data in motorData struct
+                LD.Propulsion.(motorNames{i}).Thrust   = Thrust;
+                LD.Propulsion.(motorNames{i}).Power    = Power;
+                LD.Propulsion.(motorNames{i}).Current  = Current;
+                LD.Propulsion.(motorNames{i}).RPM      = RPM;
+                LD.Propulsion.(motorNames{i}).exitFlag = exitFlag;
+            end
+            
         else
-%             [LD.Propulsion.(motorNames{i}).Thrust,LD.Propulsion.(motorNames{i})...
-%                .Power,LD.Propulsion.(motorNames{i}).Current,LD.Propulsion...
-%                .(motorNames{i}).RPM,LD.Propulsion.(motorNames{i}).exitFlag] = ...
-%                propulsionDataMapping(LD.Propulsion.(motorNames{i}),LD.Propulsion...
-%                .(propellerNames{i}),voltageLim,heightLim,vflightLim,voltageLength,...
-%                heightLength,vflightLength);
-           %
-           % To create save to file...
-           %
+            %Calculate mapped data
+            [Thrust,Power,Current,RPM,exitFlag] = propulsionDataMapping(LD...
+                .Propulsion.(motorNames{i}),LD.Propulsion.(propellerNames{i}),...
+                voltageLim,heightLim,vflightLim,voltageLength,heightLength,...
+                vflightLength);
+            
+            %Save mapped data in mat file
+            save(strcat(mappingPath,filesep,expectedFile,expectedSufix),...
+                 'motorModel','propellerModel',...
+                 'voltageLim','heightLim','vflightLim',...
+                 'voltageLength','heightLength','vflightLength',...
+                 'Thrust','Power','Current','RPM','exitFlag')
+            
+            %Store mapped data in motorData struct
+            LD.Propulsion.(motorNames{i}).Thrust   = Thrust;
+            LD.Propulsion.(motorNames{i}).Power    = Power;
+            LD.Propulsion.(motorNames{i}).Current  = Current;
+            LD.Propulsion.(motorNames{i}).RPM      = RPM;
+            LD.Propulsion.(motorNames{i}).exitFlag = exitFlag;
+            
         end
     end
 else
@@ -169,9 +218,11 @@ LD.Propulsion.Throttle4 = 1;
 LD.Propulsion.Throttle5 = 1;
 
 
+
+
 %% CLEAR USED VARIABLES
 clear motorData motorNames motorModels index wrn i j propellerData motorPosition
 clear propellerData propellerFiles propellerNames propellerModels
-clear filename pathstr mappingFolder mappingPath expectedFile expectedSufix
+clear fileList filename pathstr mappingFolder mappingPath expectedFile expectedSufix
 clear voltageLim voltageLength heightLim heightLength vflightLim vflightLength
-    
+clear motorModel propellerModel validData Thrust Power Current RPM exitFlag    

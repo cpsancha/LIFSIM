@@ -6,6 +6,8 @@
 %Remove residual information
 clear all %TO BE REMOVED
 clear LD
+tic
+
 
 %Input of aerodynamic data
 run('loadStabilityData.m')
@@ -25,6 +27,6 @@ run('loadEnvDataBus.m')
 %% CHECK DIMENSIONS
 run('dataValidations.m')
 
-
+toc
 % busInfo = Simulink.Bus.createObject('untitled1', 'untitled1/analysisCasesBus','object')
 
