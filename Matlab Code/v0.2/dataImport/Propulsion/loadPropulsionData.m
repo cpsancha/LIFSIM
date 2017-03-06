@@ -105,14 +105,14 @@ mappingFolder = 'motorPropMapping';
 mappingPath = strcat(pathstr,filesep,mappingFolder);
 
 % Ranges:
-voltageLength = 30;
-heightLength  =  3;
-vflightLength = 40;
+voltageLength =  60;
+heightLength  =  10;
+vflightLength =  90;
     
 % Limits:
 voltageLim = [0,   30]; %V
 heightLim  = [0, 1000]; %m
-vflightLim = [0,   50]; %m/s
+vflightLim = [0,   85]; %m/s
     
 % Mapping:    
 if isequal(length(motorNames),length(propellerNames))

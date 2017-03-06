@@ -22,7 +22,15 @@ function [validData,Voltage,Height,Vflight,Thrust,Power,Current,RPM,exitFlag] = 
         Vflight = linspace(vflightLim(1),vflightLim(2),vflightLength);
         
     else
-        validData = 0; 
+        validData = 0;
+        Voltage = [];
+        Height  = [];
+        Vflight = [];
+        Thrust  = [];
+        Power   = [];
+        Current = [];
+        RPM     = [];
+        exitFlag= [];
     end
 
 end
