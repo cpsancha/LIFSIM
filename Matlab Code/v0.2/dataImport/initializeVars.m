@@ -19,7 +19,7 @@ run('loadData.m')
 %Initial position in inertial axes [Xe,Ye,Ze]:
     initialValues.Xe0 = 0;
     initialValues.Ye0 = 0;
-    initialValues.Ze0 = 0;
+    initialValues.Ze0 = -0.00391527660175;
     
 %Initial velocity in body axes [u,v,w]:
     initialValues.u0 = 0;
@@ -33,3 +33,22 @@ run('loadData.m')
     initialValues.p0 = 0;
     initialValues.q0 = 0;
     initialValues.r0 = 0;
+    
+%% Ground reaction constants
+    groundReaction.K = 1e6;
+    groundReaction.D = 2000;
+    groundReaction.Mu = 0;%0.1;
+    
+%% Control variables initialization
+
+    deltae_degrees  = 0;
+    deltar_degrees  = 0;
+    deltafr_degrees = 0;
+    deltafl_degrees = 0;
+    delta_e=0;
+
+    deltat_2=0;  % motores delanteros
+    deltat_3=0;  % motores traseros
+    deltat_4=0;  % motores delanteros
+    deltat_5=0;  % motores traseros
+    deltat_1=1;   % ala fija

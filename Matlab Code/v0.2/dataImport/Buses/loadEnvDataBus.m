@@ -16,8 +16,8 @@ elems(1).DocUnits = '';
 elems(1).Description = '';
 
 elems(2) = Simulink.BusElement;
-elems(2).Name = 'windVelocity';
-elems(2).Dimensions = [1 3];
+elems(2).Name = 'Fground';
+elems(2).Dimensions = 3;
 elems(2).DimensionsMode = 'Fixed';
 elems(2).DataType = 'double';
 elems(2).SampleTime = -1;
@@ -28,8 +28,8 @@ elems(2).DocUnits = '';
 elems(2).Description = '';
 
 elems(3) = Simulink.BusElement;
-elems(3).Name = 'windOmega';
-elems(3).Dimensions = [1 3];
+elems(3).Name = 'windVelocity';
+elems(3).Dimensions = 3;
 elems(3).DimensionsMode = 'Fixed';
 elems(3).DataType = 'double';
 elems(3).SampleTime = -1;
@@ -40,8 +40,8 @@ elems(3).DocUnits = '';
 elems(3).Description = '';
 
 elems(4) = Simulink.BusElement;
-elems(4).Name = 'T';
-elems(4).Dimensions = 1;
+elems(4).Name = 'windOmega';
+elems(4).Dimensions = 3;
 elems(4).DimensionsMode = 'Fixed';
 elems(4).DataType = 'double';
 elems(4).SampleTime = -1;
@@ -52,7 +52,7 @@ elems(4).DocUnits = '';
 elems(4).Description = '';
 
 elems(5) = Simulink.BusElement;
-elems(5).Name = 'a';
+elems(5).Name = 'T';
 elems(5).Dimensions = 1;
 elems(5).DimensionsMode = 'Fixed';
 elems(5).DataType = 'double';
@@ -64,7 +64,7 @@ elems(5).DocUnits = '';
 elems(5).Description = '';
 
 elems(6) = Simulink.BusElement;
-elems(6).Name = 'P';
+elems(6).Name = 'a';
 elems(6).Dimensions = 1;
 elems(6).DimensionsMode = 'Fixed';
 elems(6).DataType = 'double';
@@ -76,7 +76,7 @@ elems(6).DocUnits = '';
 elems(6).Description = '';
 
 elems(7) = Simulink.BusElement;
-elems(7).Name = 'AirDensity';
+elems(7).Name = 'P';
 elems(7).Dimensions = 1;
 elems(7).DimensionsMode = 'Fixed';
 elems(7).DataType = 'double';
@@ -88,8 +88,8 @@ elems(7).DocUnits = '';
 elems(7).Description = '';
 
 elems(8) = Simulink.BusElement;
-elems(8).Name = 'Fg';
-elems(8).Dimensions = [3 1];
+elems(8).Name = 'AirDensity';
+elems(8).Dimensions = 1;
 elems(8).DimensionsMode = 'Fixed';
 elems(8).DataType = 'double';
 elems(8).SampleTime = -1;
@@ -98,6 +98,18 @@ elems(8).Min = [];
 elems(8).Max = [];
 elems(8).DocUnits = '';
 elems(8).Description = '';
+
+elems(9) = Simulink.BusElement;
+elems(9).Name = 'Fgravity';
+elems(9).Dimensions = 3;
+elems(9).DimensionsMode = 'Fixed';
+elems(9).DataType = 'double';
+elems(9).SampleTime = -1;
+elems(9).Complexity = 'real';
+elems(9).Min = [];
+elems(9).Max = [];
+elems(9).DocUnits = '';
+elems(9).Description = '';
 
 envDataBus = Simulink.Bus;
 envDataBus.HeaderFile = '';
