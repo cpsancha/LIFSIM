@@ -1,11 +1,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Script to initialize all the necessary variables.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+clear all
+tic
 
-run('loadData.m')
-
-% run('loadBusData')
-
+%% Load LIBIS data
+    run('loadData.m')
+ 
+%% Load initial values    
 %Direction of flat Earth x-axis (degrees clockwise from north):
     initialValues.heading0 = 0;
     
@@ -19,7 +21,7 @@ run('loadData.m')
 %Initial position in inertial axes [Xe,Ye,Ze]:
     initialValues.Xe0 = 0;
     initialValues.Ye0 = 0;
-    initialValues.Ze0 = -0.00391527660175;
+    initialValues.Ze0 = -LD.LandingGear.hcg;
     
 %Initial velocity in body axes [u,v,w]:
     initialValues.u0 = 0;
@@ -33,6 +35,7 @@ run('loadData.m')
     initialValues.p0 = 0;
     initialValues.q0 = 0;
     initialValues.r0 = 0;
+    
     
 %% Ground reaction constants
     groundReaction.K = 1e6;
@@ -51,4 +54,11 @@ run('loadData.m')
     deltat_3=0;  % motores traseros
     deltat_4=0;  % motores delanteros
     deltat_5=0;  % motores traseros
-    deltat_1=1;   % ala fija
+    deltat_1=0;   % ala fija
+    
+    
+
+
+    
+    
+toc    

@@ -4,10 +4,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Remove residual information
-clear all %TO BE REMOVED
 clear LD
-tic
-
 
 %Input of aerodynamic data
 run('loadStabilityData.m')
@@ -18,6 +15,9 @@ run('loadInertiaData.m')
 %Input of propulsion properties
 run('loadPropulsionData.m')
 
+%Input of landing gear properties
+run('loadLandingGearData.m')
+
 %Define Buses
 run('loadAnalysisCasesBus.m')
 run('loadPlantDataBus.m')
@@ -27,6 +27,5 @@ run('loadEnvDataBus.m')
 %% CHECK DIMENSIONS
 run('dataValidations.m')
 
-toc
 % busInfo = Simulink.Bus.createObject('untitled1', 'untitled1/analysisCasesBus','object')
 

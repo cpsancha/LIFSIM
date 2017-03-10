@@ -112,8 +112,8 @@ elems(9).DocUnits = '';
 elems(9).Description = '';
 
 elems(10) = Simulink.BusElement;
-elems(10).Name = 'alpha';
-elems(10).Dimensions = 1;
+elems(10).Name = 'Vaerodynamic';
+elems(10).Dimensions = 3;
 elems(10).DimensionsMode = 'Fixed';
 elems(10).DataType = 'double';
 elems(10).SampleTime = -1;
@@ -124,7 +124,7 @@ elems(10).DocUnits = '';
 elems(10).Description = '';
 
 elems(11) = Simulink.BusElement;
-elems(11).Name = 'beta';
+elems(11).Name = 'alpha';
 elems(11).Dimensions = 1;
 elems(11).DimensionsMode = 'Fixed';
 elems(11).DataType = 'double';
@@ -136,7 +136,7 @@ elems(11).DocUnits = '';
 elems(11).Description = '';
 
 elems(12) = Simulink.BusElement;
-elems(12).Name = 'alpha_dot';
+elems(12).Name = 'beta';
 elems(12).Dimensions = 1;
 elems(12).DimensionsMode = 'Fixed';
 elems(12).DataType = 'double';
@@ -148,7 +148,7 @@ elems(12).DocUnits = '';
 elems(12).Description = '';
 
 elems(13) = Simulink.BusElement;
-elems(13).Name = 'beta_dot';
+elems(13).Name = 'alpha_dot';
 elems(13).Dimensions = 1;
 elems(13).DimensionsMode = 'Fixed';
 elems(13).DataType = 'double';
@@ -160,8 +160,8 @@ elems(13).DocUnits = '';
 elems(13).Description = '';
 
 elems(14) = Simulink.BusElement;
-elems(14).Name = 'CG';
-elems(14).Dimensions = 3;
+elems(14).Name = 'beta_dot';
+elems(14).Dimensions = 1;
 elems(14).DimensionsMode = 'Fixed';
 elems(14).DataType = 'double';
 elems(14).SampleTime = -1;
@@ -172,8 +172,8 @@ elems(14).DocUnits = '';
 elems(14).Description = '';
 
 elems(15) = Simulink.BusElement;
-elems(15).Name = 'remainingCapacity';
-elems(15).Dimensions = 1;
+elems(15).Name = 'CG';
+elems(15).Dimensions = 3;
 elems(15).DimensionsMode = 'Fixed';
 elems(15).DataType = 'double';
 elems(15).SampleTime = -1;
@@ -184,8 +184,8 @@ elems(15).DocUnits = '';
 elems(15).Description = '';
 
 elems(16) = Simulink.BusElement;
-elems(16).Name = 'Fxyz';
-elems(16).Dimensions = 3;
+elems(16).Name = 'remainingCapacity';
+elems(16).Dimensions = 1;
 elems(16).DimensionsMode = 'Fixed';
 elems(16).DataType = 'double';
 elems(16).SampleTime = -1;
@@ -194,30 +194,6 @@ elems(16).Min = [];
 elems(16).Max = [];
 elems(16).DocUnits = '';
 elems(16).Description = '';
-
-elems(17) = Simulink.BusElement;
-elems(17).Name = 'Mxyz';
-elems(17).Dimensions = 3;
-elems(17).DimensionsMode = 'Fixed';
-elems(17).DataType = 'double';
-elems(17).SampleTime = -1;
-elems(17).Complexity = 'real';
-elems(17).Min = [];
-elems(17).Max = [];
-elems(17).DocUnits = '';
-elems(17).Description = '';
-
-elems(18) = Simulink.BusElement;
-elems(18).Name = 'Vaerodynamic';
-elems(18).Dimensions = 3;
-elems(18).DimensionsMode = 'Fixed';
-elems(18).DataType = 'double';
-elems(18).SampleTime = -1;
-elems(18).Complexity = 'real';
-elems(18).Min = [];
-elems(18).Max = [];
-elems(18).DocUnits = '';
-elems(18).Description = '';
 
 plantDataBus = Simulink.Bus;
 plantDataBus.HeaderFile = '';

@@ -9,7 +9,15 @@
 %          Thrust     (Lbf) 
 
 
+%% Flag to switch between solving motor-propeller equations or use pre-computed
+%  results of these equations. Second option is faster at run-time but
+%  requires previous data to be calculated.
+%  mappedMotors = 0;   % Solves algebraic constraint at run-time
+%  mappedMotors = 1;   % Uses pre-computed results
 
+    mappedMotors = 0;
+    
+    
 %% DEFINE MOTORS
 
 %Import motor data library
@@ -24,8 +32,9 @@ motorNames = string({'motor1',...
                      'motor4',...
                      'motor5'});
 
-%Define a matrix of motors' propeller position in the same order as above
-% Each row is the position of the motor's propeller [x y z] from the nose in meters
+% Define a matrix of motors' propeller position in the same order as above
+% Each row is the position of the motor's propeller [x y z] in body axis directions
+% but with origin at the nose. Dimensions in meters
 motorPosition = [[-2.012  0.000 0.000];...
                  [-0.643  1.151 0.000];...
                  [-1.440  1.151 0.000];...
@@ -59,8 +68,11 @@ end
 %Define the propellers' files from APC to be imported into the database
 % More files can be found in the following web page:
 % https://www.apcprop.com/v/PERFILES_WEB/listDatafiles.asp
+% and must be in the following format PER3_XXXXXXXXXX.txt
 propellerFiles = string({'PER3_17x8E.txt',...
-                         'PER3_15x10E.txt'});
+                         'PER3_17x10E.txt',...
+                         'PER3_15x10E.txt',...
+                         'PER3_20x10PN.txt'});
 
 %Import propeller data library
 for i=1:length(propellerFiles)
@@ -77,11 +89,11 @@ propellerNames = string({'propeller1',...
                          'propeller5'});
                      
 %Define propellers' models in the same order as above    
-propellerModels = string({'15x10E',...
-                          '17x8E',...
-                          '17x8E',...
-                          '17x8E',...
-                          '17x8E'});
+propellerModels = string({'17x10E',...
+                          '20x10PN',...
+                          '20x10PN',...
+                          '20x10PN',...
+                          '20x10PN'});
                   
 %Define propellers in LD structure
 for i=1:length(propellerNames)
@@ -98,6 +110,7 @@ end
 
 
 %% MAP THRUST, POWER, CURRENT AND RPM IN FUNCTION OF VOLTAGE, HEIGHT AND VELOCITY
+if mappedMotors == 1
 % Mapping folder in which are stored the generated files
 filename = mfilename('fullpath');
 [pathstr,~,~] = fileparts(filename);
@@ -208,11 +221,24 @@ else
         disp('Inconsistent motor-propeller dimensions, please fix me...')
         pause
 end
-
+end
 
 
 
 %% DEFINE ESC
+% JETI SPIN PRO 75 OPTO
+% Weight [g]	55
+% Dimensions [mm]	52 x 25 x 15
+% Sustained current [A]	75
+% Telemetry	Yes
+% Operational temperature [°C]	-10 ... 85
+% Supply Voltage [V]	12 ... 42
+% Batteries NiXX	14 ... 30
+% Batteries LiXX	4 ... 10
+% Number of power transistors	72
+% Cable crossection (input/output) [mm²]	4,0 / 2,5
+% Input capacitance [µF]	2 x 470
+
 LD.Propulsion.ESC1.eta = 0.99;
 LD.Propulsion.ESC2.eta = 0.99;
 LD.Propulsion.ESC3.eta = 0.99;
@@ -222,11 +248,11 @@ LD.Propulsion.ESC5.eta = 0.99;
 
 
 %% DEFINE INITIAL THROTTLE
-LD.Propulsion.Throttle1 = 1;
-LD.Propulsion.Throttle2 = 1;
-LD.Propulsion.Throttle3 = 1;
-LD.Propulsion.Throttle4 = 1;
-LD.Propulsion.Throttle5 = 1;
+LD.Propulsion.Throttle1 = 0;
+LD.Propulsion.Throttle2 = 0;
+LD.Propulsion.Throttle3 = 0;
+LD.Propulsion.Throttle4 = 0;
+LD.Propulsion.Throttle5 = 0;
 
 
 
