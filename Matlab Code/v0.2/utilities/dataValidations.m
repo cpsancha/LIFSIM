@@ -24,13 +24,8 @@ checks.closeMessage = 'Some terms are not defined, the program must close.';
 
 
 %% CASES OF ANALYSIS AND COEFFICIENTS DEFINITION
-checks.analysisCases = string({'alpha','alt','xcg','deltae','deltar','deltafr','deltafl'});
-checks.coeffs = string({'CD0','CDalpha','CDalpha_dot','CDq','CDdeltae','CDdeltafr','CDdeltafl',...
-                        'CL0','CLalpha','CLalpha_dot','CLq','CLdeltae','CLdeltafr','CLdeltafl',...
-                        'Cm0','Cmalpha','Cmalpha_dot','Cmq','Cmdeltae','Cmdeltafr','Cmdeltafl',...
-                        'CYbeta','CYp','CYr','CYdeltar','CYdeltafr','CYdeltafl',...
-                        'Clbeta','Clp','Clr','Cldeltar','Cldeltafr','Cldeltafl',...
-                        'Cnbeta','Cnp','Cnr','Cndeltar','Cndeltafr','Cndeltafl'});
+checks.analysisCases = LD.Stability.analysisCases;
+checks.coeffs = LD.Stability.coeffs;
 
 
 %% CHECK CASES OF ANALYSIS
@@ -77,11 +72,6 @@ for i=1:length(checks.analysisCases)
     end
 end
 
-% %Check how many trailing inconsistent length flags exist
-% checks.trailingUnidimensional = 0;
-% for i=1:length(check.analysisCases)
-%     checks.trailingUnidimensional = 
-% end
 
 
 
@@ -113,18 +103,6 @@ for i=1:length(checks.coeffs)
     else
         LD.flags.(checks.coeffs{i}).empty=checks.nonEmptyFlag;
     end
-    
-    %Check if dimensions are consistent with the number of analysis cases
-%     if isequal(length(size(eval(sprintf('LD.%s',strCoeffs)))),length(checks.analysisCases))...
-%         LD.flags.(checks.coeffs{i}).dimension.numElements=checks.consistentDimension;
-%             
-%     else
-%         LD.flags.(checks.coeffs{i}).dimension.numElements=checks.inconsistentDimension;
-%         eval(sprintf('wrn = msgbox(''LD.%s has more dimensions than cases of analysis'',''Warning'',''warn'');',strCoeffs));
-%         uiwait(wrn);
-%         disp(checks.errorMessage)
-%         pause
-%     end
     
     %Check if each dimension is consistent with each analysis case
     for j=1:length(checks.analysisCases)

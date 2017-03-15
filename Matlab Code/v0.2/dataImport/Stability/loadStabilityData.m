@@ -25,13 +25,26 @@
 %   LD.xcg_CMA = (LD.xcg - LD.xba)/LD.cbar; %Position of the xcg in the aerodynamic mean chord
 
     
-    
+%% CASES OF ANALYSIS AND COEFFICIENTS DEFINITION
+LD.Stability.analysisCases = string({'alpha','beta','alt','xcg','deltae','deltar','deltafr','deltafl'});
+LD.Stability.coeffs = string({'CD0','CDalpha','CDalpha_dot','CDq','CDdeltae','CDdeltafr','CDdeltafl',...
+                        'CL0','CLalpha','CLalpha_dot','CLq','CLdeltae','CLdeltafr','CLdeltafl',...
+                        'Cm0','Cmalpha','Cmalpha_dot','Cmq','Cmdeltae','Cmdeltafr','Cmdeltafl',...
+                        'CYbeta','CYp','CYr','CYdeltar','CYdeltafr','CYdeltafl',...
+                        'Clbeta','Clp','Clr','Cldeltar','Cldeltafr','Cldeltafl',...
+                        'Cnbeta','Cnp','Cnr','Cndeltar','Cndeltafr','Cndeltafl'});
+                    
+                    
 %% SET THE CASES OF ANALYSIS
 %Stability derivatives vary with the following parameters. Parse parameters
 %with values for which stability derivatives information is avaliable.
 %NEVER --> Leave empty array if no variation is considered for the parameter.
     %Array of angles of attack in radians.
-        LD.alpha  = 3.03*pi/180;
+        LD.alpha = [-180, -90, -12.74, -12, 0, 12, 12.74, 90, 180]; %In degrees for convenience
+        LD.alpha = LD.alpha.*pi/180; %In radians
+    %Array of sideslip angles
+        LD.beta = 0; %In degrees for convenience
+        LD.beta = LD.beta.*pi/180; %In radians
     %Array of altitudes.
         LD.alt    = 91.44;
     %Array of positions of the center of gravity. Distance from the nose of
@@ -59,62 +72,157 @@
         
 %% LONGITUDINAL STABILITY DERIVATIVES
 %Parasite coeffs
-    LD.Stability.CD0 =  0.024;
-    LD.Stability.CL0 =  0.181;
-    LD.Stability.Cm0 = -0.003;
+    %CD0
+    CD0 = [0, 0, 0, 0.024, 0.024, 0.024, 0, 0, 0];
+    LD.Stability.CD0 = fillStabilityCoeffs(LD, string({'alpha'}), CD0);
+    %CL0
+    CL0 = [0, 0, 0, 0.181, 0.181, 0.181, 0, 0, 0];
+    LD.Stability.CL0 = fillStabilityCoeffs(LD, string({'alpha'}), CL0);
+    %Cm0
+    Cm0 = [0, 0, 0, -0.003, -0.003, -0.003, 0, 0, 0];
+    LD.Stability.Cm0 = fillStabilityCoeffs(LD, string({'alpha'}), Cm0);
+    
 %Alpha
-    LD.Stability.CDalpha =  0.239;
-    LD.Stability.CLalpha =  4.138;
-    LD.Stability.Cmalpha = -0.707;
+    %CDalpha
+    CDalpha = [0, 0, 0, 0.239, 0.239, 0.239, 0, 0, 0];
+    LD.Stability.CDalpha = fillStabilityCoeffs(LD, string({'alpha'}), CDalpha);
+    %CLalpha
+    CLalpha = [0, 0, 0, 4.138, 4.138, 4.138, 0, 0, 0];
+    LD.Stability.CLalpha = fillStabilityCoeffs(LD, string({'alpha'}), CLalpha);
+    %Cmalpha
+    Cmalpha = [0, 0, 0, -0.7074, -0.707, -0.707, 0, 0, 0];
+    LD.Stability.Cmalpha = fillStabilityCoeffs(LD, string({'alpha'}), Cmalpha);
+    
 %Alpha_dot
-    LD.Stability.CDalpha_dot =  0.000;
-    LD.Stability.CLalpha_dot =  7.411;
-    LD.Stability.Cmalpha_dot = -4.063;
+    %CDalpha_dot
+    CDalpha_dot = [0, 0, 0, 0.000, 0.000, 0.000, 0, 0, 0];
+    LD.Stability.CDalpha_dot = fillStabilityCoeffs(LD, string({'alpha'}), CDalpha_dot);
+    %CLalpha_dot
+    CLalpha_dot = [0, 0, 0, 7.411, 7.411, 7.411, 0, 0, 0];
+    LD.Stability.CLalpha_dot = fillStabilityCoeffs(LD, string({'alpha'}), CLalpha_dot);
+    %Cmalpha_dot
+    Cmalpha_dot = [0, 0, 0, -4.063, -4.063, -4.063, 0, 0, 0];
+    LD.Stability.Cmalpha_dot = fillStabilityCoeffs(LD, string({'alpha'}), Cmalpha_dot);
+    
 %q
-    LD.Stability.CDq =   0.000;
-    LD.Stability.CLq =   6.248;
-    LD.Stability.Cmq = -18.410;
+    %CDq
+    CDq = [0, 0, 0, 0.000, 0.000, 0.000, 0, 0, 0];
+    LD.Stability.CDq = fillStabilityCoeffs(LD, string({'alpha'}), CDq);
+    %CLq
+    CLq = [0, 0, 0, 6.248, 6.248, 6.248, 0, 0, 0];
+    LD.Stability.CLq = fillStabilityCoeffs(LD, string({'alpha'}), CLq);
+    %Cmq
+    Cmq = [0, 0, 0, -18.410, -18.410, -18.410, 0, 0, 0];
+    LD.Stability.Cmq = fillStabilityCoeffs(LD, string({'alpha'}), Cmq);
+    
 %deltae --> elevator
-    LD.Stability.CDdeltae =  0.005; 
-    LD.Stability.CLdeltae =  1.391;
-    LD.Stability.Cmdeltae = -2.930;
+    %CDdeltae
+    CDdeltae = [0, 0, 0, 0.005, 0.005, 0.005, 0, 0, 0];
+    LD.Stability.CDdeltae = fillStabilityCoeffs(LD, string({'alpha'}), CDdeltae);
+    %CLdeltae
+    CLdeltae = [0, 0, 0, 1.391, 1.391, 1.391, 0, 0, 0];
+    LD.Stability.CLdeltae = fillStabilityCoeffs(LD, string({'alpha'}), CLdeltae);
+    %Cmdeltae
+    Cmdeltae = [0, 0, 0, -2.930, -2.930, -2.930, 0, 0, 0];
+    LD.Stability.Cmdeltae = fillStabilityCoeffs(LD, string({'alpha'}), Cmdeltae);
+    
 %deltafr --> rigth flaperon
-    LD.Stability.CDdeltafr = LD.Stability.CDdeltae/2;   %TO BE CALCULATED
-    LD.Stability.CLdeltafr = LD.Stability.CLdeltae/2;   %TO BE CALCULATED
-    LD.Stability.Cmdeltafr = 0.000;           %TO BE CALCULATED
+    %CDdeltafr
+    CDdeltafr = LD.Stability.CDdeltae/2; %TO BE CALCULATED
+    LD.Stability.CDdeltafr = fillStabilityCoeffs(LD, string({'alpha'}), CDdeltafr);
+    %CLdeltafr
+    CLdeltafr = LD.Stability.CLdeltae/2; %TO BE CALCULATED
+    LD.Stability.CLdeltafr = fillStabilityCoeffs(LD, string({'alpha'}), CLdeltafr);
+    %Cmdeltafr
+    Cmdeltafr = [0, 0, 0, 0.000, 0.000, 0.000, 0, 0, 0]; %TO BE CALCULATED
+    LD.Stability.Cmdeltafr = fillStabilityCoeffs(LD, string({'alpha'}), Cmdeltafr);
+    
 %deltafl --> left flaperon
-    LD.Stability.CDdeltafl = LD.Stability.CDdeltae/2;   %TO BE CALCULATED
-    LD.Stability.CLdeltafl = LD.Stability.CLdeltae/2;   %TO BE CALCULATED
-    LD.Stability.Cmdeltafl = 0.000;           %TO BE CALCULATED
+    %CDdeltafl
+    CDdeltafl = LD.Stability.CDdeltae/2; %TO BE CALCULATED
+    LD.Stability.CDdeltafl = fillStabilityCoeffs(LD, string({'alpha'}), CDdeltafl);
+    %CLdeltafl
+    CLdeltafl = LD.Stability.CLdeltae/2; %TO BE CALCULATED
+    LD.Stability.CLdeltafl = fillStabilityCoeffs(LD, string({'alpha'}), CLdeltafl);  
+    %Cmdeltafl
+    Cmdeltafl = [0, 0, 0, 0.000, 0.000, 0.000, 0, 0, 0]; %TO BE CALCULATED
+    LD.Stability.Cmdeltafl = fillStabilityCoeffs(LD, string({'alpha'}), Cmdeltafl);
     
 
 %% LATERAL-DIRECTIONAL DERIVATIVES
 %beta
-    LD.Stability.CYbeta = -0.4250;
-    LD.Stability.Clbeta = -0.0286;
-    LD.Stability.Cnbeta =  0.0170;
+    %CYbeta
+    CYbeta = [0, 0, 0, -0.4250, -0.4250, -0.4250, 0, 0, 0];
+    LD.Stability.CYbeta = fillStabilityCoeffs(LD, string({'alpha'}), CYbeta);
+    %Clbeta
+    Clbeta = [0, 0, 0, -0.0286, -0.0286, -0.0286, 0, 0, 0];
+    LD.Stability.Clbeta = fillStabilityCoeffs(LD, string({'alpha'}), Clbeta);
+    %Cnbeta
+    Cnbeta = [0, 0, 0, 0.0170, 0.0170, 0.0170, 0, 0, 0];
+    LD.Stability.Cnbeta = fillStabilityCoeffs(LD, string({'alpha'}), Cnbeta);
+    
 %p
-    LD.Stability.CYp = -0.004;
-    LD.Stability.Clp = -0.472;
-    LD.Stability.Cnp = -0.019;
+    %CYp
+    CYp = [0, 0, 0, -0.004, -0.004, -0.004, 0, 0, 0];
+    LD.Stability.CYp = fillStabilityCoeffs(LD, string({'alpha'}), CYp);
+    %Clp
+    Clp = [0, 0, 0, -0.472, -0.472, -0.472, 0, 0, 0];
+    LD.Stability.Clp = fillStabilityCoeffs(LD, string({'alpha'}), Clp);
+    %Cnp
+    Cnp = [0, 0, 0, -0.019, -0.019, -0.019, 0, 0, 0];
+    LD.Stability.Cnp = fillStabilityCoeffs(LD, string({'alpha'}), Cnp);
+    
 %r
-    LD.Stability.CYr =  0.120;
-    LD.Stability.Clr =  0.049;
-    LD.Stability.Cnr = -0.040;
+    %CYr
+    CYr = [0, 0, 0, 0.120, 0.120, 0.120, 0, 0, 0];
+    LD.Stability.CYr = fillStabilityCoeffs(LD, string({'alpha'}), CYr);
+    %Clr
+    Clr = [0, 0, 0, 0.049, 0.049, 0.049, 0, 0, 0];
+    LD.Stability.Clr = fillStabilityCoeffs(LD, string({'alpha'}), Clr);
+    %Cnr
+    Cnr = [0, 0, 0, -0.040, -0.040, -0.040, 0, 0, 0];
+    LD.Stability.Cnr = fillStabilityCoeffs(LD, string({'alpha'}), Cnr);
+    
 %deltar --> rudder
-    LD.Stability.CYdeltar = -0.212;
-    LD.Stability.Cldeltar = -0.002;
-    LD.Stability.Cndeltar =  0.051;
+    %CYdeltar
+    CYdeltar = [0, 0, 0, -0.212, -0.212, -0.212, 0, 0, 0];
+    LD.Stability.CYdeltar = fillStabilityCoeffs(LD, string({'alpha'}), CYdeltar);
+    %Cldeltar
+    Cldeltar = [0, 0, 0, -0.002, -0.002, -0.002, 0, 0, 0];
+    LD.Stability.Cldeltar = fillStabilityCoeffs(LD, string({'alpha'}), Cldeltar);
+    %Cndeltar
+    Cndeltar = [0, 0, 0, 0.051, 0.051, 0.051, 0, 0, 0];
+    LD.Stability.Cndeltar = fillStabilityCoeffs(LD, string({'alpha'}), Cndeltar);
+    
 %deltafr --> rigth flaperon
-    LD.Stability.CYdeltafr =  0.000;
-    LD.Stability.Cldeltafr = -0.125;  %-deltaa/2
-    LD.Stability.Cndeltafr =  0.001;  %-deltaa/2
+    %CYdeltafr
+    CYdeltafr = [0, 0, 0, 0.000, 0.000, 0.000, 0, 0, 0];
+    LD.Stability.CYdeltafr = fillStabilityCoeffs(LD, string({'alpha'}), CYdeltafr);
+    %Cldeltafr
+    Cldeltafr = [0, 0, 0, -0.125, -0.125, -0.125, 0, 0, 0]; %-deltaa/2
+    LD.Stability.Cldeltafr = fillStabilityCoeffs(LD, string({'alpha'}), Cldeltafr);
+    %Cndeltafr
+    Cndeltafr = [0, 0, 0, 0.001, 0.001, 0.001, 0, 0, 0]; %-deltaa/2
+    LD.Stability.Cndeltafr = fillStabilityCoeffs(LD, string({'alpha'}), Cndeltafr); 
+    
 %deltafl --> left flaperon
-    LD.Stability.CYdeltafl =  0.000;
-    LD.Stability.Cldeltafl =  0.125;  %deltaa/2
-    LD.Stability.Cndeltafl = -0.001;  %deltaa/2
+    %CYdeltafl
+    CYdeltafl = [0, 0, 0, 0.000, 0.000, 0.000, 0, 0, 0];
+    LD.Stability.CYdeltafl = fillStabilityCoeffs(LD, string({'alpha'}), CYdeltafl);
+    %Cldeltafl
+    Cldeltafl = [0, 0, 0, 0.125, 0.125, 0.125, 0, 0, 0]; %deltaa/2
+    LD.Stability.Cldeltafl = fillStabilityCoeffs(LD, string({'alpha'}), Cldeltafl); 
+    %Cndeltafl
+    Cndeltafl = [0, 0, 0, -0.001, -0.001, -0.001, 0, 0, 0]; %deltaa/2
+    LD.Stability.Cndeltafl = fillStabilityCoeffs(LD, string({'alpha'}), Cndeltafl); 
         
         
         
-
+%% CLEAR USED VARIABLES
+clear CD0 CDalpha CDalpha_dot CDq CDdeltae CDdeltafr CDdeltafl
+clear CL0 CLalpha CLalpha_dot CLq CLdeltae CLdeltafr CLdeltafl
+clear Cm0 Cmalpha Cmalpha_dot Cmq Cmdeltae Cmdeltafr Cmdeltafl
+clear CYbeta CYp CYr CYdeltar CYdeltafr CYdeltafl
+clear Clbeta Clp Clr Cldeltar Cldeltafr Cldeltafl
+clear Cnbeta Cnp Cnr Cndeltar Cndeltafr Cndeltafl                  
 

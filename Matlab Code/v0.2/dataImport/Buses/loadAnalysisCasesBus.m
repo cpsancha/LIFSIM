@@ -16,10 +16,10 @@ elems(1).DocUnits = '';
 elems(1).Description = '';
 
 elems(2) = Simulink.BusElement;
-elems(2).Name = 'alt';
+elems(2).Name = 'beta';
 elems(2).Dimensions = 1;
 elems(2).DimensionsMode = 'Fixed';
-elems(2).DataType = 'Bus: altBus';
+elems(2).DataType = 'Bus: betaBus';
 elems(2).SampleTime = -1;
 elems(2).Complexity = 'real';
 elems(2).Min = [];
@@ -28,10 +28,10 @@ elems(2).DocUnits = '';
 elems(2).Description = '';
 
 elems(3) = Simulink.BusElement;
-elems(3).Name = 'xcg';
+elems(3).Name = 'alt';
 elems(3).Dimensions = 1;
 elems(3).DimensionsMode = 'Fixed';
-elems(3).DataType = 'Bus: xcgBus';
+elems(3).DataType = 'Bus: altBus';
 elems(3).SampleTime = -1;
 elems(3).Complexity = 'real';
 elems(3).Min = [];
@@ -40,10 +40,10 @@ elems(3).DocUnits = '';
 elems(3).Description = '';
 
 elems(4) = Simulink.BusElement;
-elems(4).Name = 'deltae';
+elems(4).Name = 'xcg';
 elems(4).Dimensions = 1;
 elems(4).DimensionsMode = 'Fixed';
-elems(4).DataType = 'Bus: deltaeBus';
+elems(4).DataType = 'Bus: xcgBus';
 elems(4).SampleTime = -1;
 elems(4).Complexity = 'real';
 elems(4).Min = [];
@@ -52,10 +52,10 @@ elems(4).DocUnits = '';
 elems(4).Description = '';
 
 elems(5) = Simulink.BusElement;
-elems(5).Name = 'deltar';
+elems(5).Name = 'deltae';
 elems(5).Dimensions = 1;
 elems(5).DimensionsMode = 'Fixed';
-elems(5).DataType = 'Bus: deltarBus';
+elems(5).DataType = 'Bus: deltaeBus';
 elems(5).SampleTime = -1;
 elems(5).Complexity = 'real';
 elems(5).Min = [];
@@ -64,10 +64,10 @@ elems(5).DocUnits = '';
 elems(5).Description = '';
 
 elems(6) = Simulink.BusElement;
-elems(6).Name = 'deltafr';
+elems(6).Name = 'deltar';
 elems(6).Dimensions = 1;
 elems(6).DimensionsMode = 'Fixed';
-elems(6).DataType = 'Bus: deltafrBus';
+elems(6).DataType = 'Bus: deltarBus';
 elems(6).SampleTime = -1;
 elems(6).Complexity = 'real';
 elems(6).Min = [];
@@ -76,16 +76,28 @@ elems(6).DocUnits = '';
 elems(6).Description = '';
 
 elems(7) = Simulink.BusElement;
-elems(7).Name = 'deltafl';
+elems(7).Name = 'deltafr';
 elems(7).Dimensions = 1;
 elems(7).DimensionsMode = 'Fixed';
-elems(7).DataType = 'Bus: deltaflBus';
+elems(7).DataType = 'Bus: deltafrBus';
 elems(7).SampleTime = -1;
 elems(7).Complexity = 'real';
 elems(7).Min = [];
 elems(7).Max = [];
 elems(7).DocUnits = '';
 elems(7).Description = '';
+
+elems(8) = Simulink.BusElement;
+elems(8).Name = 'deltafl';
+elems(8).Dimensions = 1;
+elems(8).DimensionsMode = 'Fixed';
+elems(8).DataType = 'Bus: deltaflBus';
+elems(8).SampleTime = -1;
+elems(8).Complexity = 'real';
+elems(8).Min = [];
+elems(8).Max = [];
+elems(8).DocUnits = '';
+elems(8).Description = '';
 
 analysisCasesBus = Simulink.Bus;
 analysisCasesBus.HeaderFile = '';
@@ -130,6 +142,41 @@ alphaBus.Alignment = -1;
 alphaBus.Elements = elems;
 clear elems;
 assignin('base','alphaBus', alphaBus);
+
+% Bus object: betaBus 
+clear elems;
+elems(1) = Simulink.BusElement;
+elems(1).Name = 'idxbeta';
+elems(1).Dimensions = 1;
+elems(1).DimensionsMode = 'Fixed';
+elems(1).DataType = 'int32';
+elems(1).SampleTime = -1;
+elems(1).Complexity = 'real';
+elems(1).Min = [];
+elems(1).Max = [];
+elems(1).DocUnits = '';
+elems(1).Description = '';
+
+elems(2) = Simulink.BusElement;
+elems(2).Name = 'fbeta';
+elems(2).Dimensions = 1;
+elems(2).DimensionsMode = 'Fixed';
+elems(2).DataType = 'double';
+elems(2).SampleTime = -1;
+elems(2).Complexity = 'real';
+elems(2).Min = [];
+elems(2).Max = [];
+elems(2).DocUnits = '';
+elems(2).Description = '';
+
+betaBus = Simulink.Bus;
+betaBus.HeaderFile = '';
+betaBus.Description = '';
+betaBus.DataScope = 'Auto';
+betaBus.Alignment = -1;
+betaBus.Elements = elems;
+clear elems;
+assignin('base','betaBus', betaBus);
 
 % Bus object: altBus 
 clear elems;

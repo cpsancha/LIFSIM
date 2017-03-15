@@ -15,7 +15,7 @@
 %  mappedMotors = 0;   % Solves algebraic constraint at run-time
 %  mappedMotors = 1;   % Uses pre-computed results
 
-    mappedMotors = 0;
+    mappedMotors = 1;
     
     
 %% DEFINE MOTORS
@@ -118,12 +118,12 @@ mappingFolder = 'motorPropMapping';
 mappingPath = strcat(pathstr,filesep,mappingFolder);
 
 % Ranges:
-voltageLength =  60;
-heightLength  =  10;
-vflightLength =  90;
+voltageLength =  30;
+heightLength  =   3;
+vflightLength =  60;
     
 % Limits:
-voltageLim = [0,   30]; %V
+voltageLim = [0,   40]; %V
 heightLim  = [0, 1000]; %m
 vflightLim = [0,   85]; %m/s
     
