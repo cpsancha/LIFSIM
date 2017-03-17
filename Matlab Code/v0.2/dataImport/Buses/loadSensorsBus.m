@@ -81,8 +81,8 @@ elems(6).DocUnits = '';
 elems(6).Description = '';
 
 elems(7) = Simulink.BusElement;
-elems(7).Name = 'alphaMeas';
-elems(7).Dimensions = 1;
+elems(7).Name = 'VaeroMeas_body';
+elems(7).Dimensions = 3;
 elems(7).DimensionsMode = 'Fixed';
 elems(7).DataType = 'double';
 elems(7).SampleTime = -1;
@@ -94,7 +94,7 @@ elems(7).DocUnits = '';
 elems(7).Description = '';
 
 elems(8) = Simulink.BusElement;
-elems(8).Name = 'betaMeas';
+elems(8).Name = 'alphaMeas';
 elems(8).Dimensions = 1;
 elems(8).DimensionsMode = 'Fixed';
 elems(8).DataType = 'double';
@@ -107,8 +107,8 @@ elems(8).DocUnits = '';
 elems(8).Description = '';
 
 elems(9) = Simulink.BusElement;
-elems(9).Name = 'VaeroMeas_body';
-elems(9).Dimensions = 3;
+elems(9).Name = 'betaMeas';
+elems(9).Dimensions = 1;
 elems(9).DimensionsMode = 'Fixed';
 elems(9).DataType = 'double';
 elems(9).SampleTime = -1;
@@ -118,6 +118,32 @@ elems(9).Min = [];
 elems(9).Max = [];
 elems(9).DocUnits = '';
 elems(9).Description = '';
+
+elems(10) = Simulink.BusElement;
+elems(10).Name = 'CGMeas';
+elems(10).Dimensions = 3;
+elems(10).DimensionsMode = 'Fixed';
+elems(10).DataType = 'double';
+elems(10).SampleTime = -1;
+elems(10).Complexity = 'real';
+elems(10).SamplingMode = 'Sample based';
+elems(10).Min = [];
+elems(10).Max = [];
+elems(10).DocUnits = '';
+elems(10).Description = '';
+
+elems(11) = Simulink.BusElement;
+elems(11).Name = 'remainingCapacityMeas';
+elems(11).Dimensions = 1;
+elems(11).DimensionsMode = 'Fixed';
+elems(11).DataType = 'double';
+elems(11).SampleTime = -1;
+elems(11).Complexity = 'real';
+elems(11).SamplingMode = 'Sample based';
+elems(11).Min = [];
+elems(11).Max = [];
+elems(11).DocUnits = '';
+elems(11).Description = '';
 
 SensorsBus = Simulink.Bus;
 SensorsBus.HeaderFile = '';
