@@ -18,10 +18,15 @@ run('loadPropulsionData.m')
 %Input of landing gear properties
 run('loadLandingGearData.m')
 
+%Input of FCS Data
+run('loadFCSData.m')
+
 %Define Buses
 run('loadAnalysisCasesBus.m')
 run('loadPlantDataBus.m')
 run('loadEnvDataBus.m')
+run('loadSensorsBus.m')
+run('loadCommandBus.m')
 
 
 %% CHECK DIMENSIONS

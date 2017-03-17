@@ -1,0 +1,3 @@
+#ifndef CF_flightControllerAltitude_H__
+#define CF_flightControllerAltitude_H__
+#endif
