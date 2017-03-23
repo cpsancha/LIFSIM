@@ -110,7 +110,9 @@ end
 
 
 %% MAP THRUST, POWER, CURRENT AND RPM IN FUNCTION OF VOLTAGE, HEIGHT AND VELOCITY
+
 if mappedMotors == 1
+    
 % Mapping folder in which are stored the generated files
 filename = mfilename('fullpath');
 [pathstr,~,~] = fileparts(filename);
@@ -120,11 +122,11 @@ mappingPath = strcat(pathstr,filesep,mappingFolder);
 % Ranges:
 voltageLength =  300;
 heightLength  =    5;
-vflightLength =  100;
+vflightLength =  250;
     
 % Limits:
 voltageLim = [0,   30]; %V
-heightLim  = [0, 1000]; %m
+heightLim  = [0, 1000]; %mrt
 vflightLim = [0,   85]; %m/s
     
 % Mapping:    
@@ -133,7 +135,7 @@ if isequal(length(motorNames),length(propellerNames))
     %Store files in the mapping directory as list
     fileList = dir(mappingPath);
     
-    for i=1:length(motorNames)
+    for i=2:2%length(motorNames)
         %Create expected file filename
         motorModel     = LD.Propulsion.(motorNames{i}).Model;
         propellerModel = LD.Propulsion.(propellerNames{i}).Model;
@@ -214,6 +216,63 @@ if isequal(length(motorNames),length(propellerNames))
             LD.Propulsion.(motorNames{i}).exitFlag = exitFlag;
             
         end
+        
+        %Recalculate the not-converged cases with different initial conditions
+        indexes=find(LD.Propulsion.(motorNames{i}).exitFlag~=1 & ...
+                     LD.Propulsion.(motorNames{i}).exitFlag~=3); 
+        
+        if ~isempty(indexes)
+            for j=1:length(indexes)
+                %Obtain subscripts from linear index
+                [iVoltage,iHeight,iVflight] = ind2sub(size(LD.Propulsion...
+                                        .(motorNames{i}).exitFlag),indexes(j));
+                
+                %Obtain input values
+                newVoltageLim = [LD.Propulsion.(motorNames{i}).Voltage(iVoltage),...
+                                 LD.Propulsion.(motorNames{i}).Voltage(iVoltage)];
+                newHeightLim  = [LD.Propulsion.(motorNames{i}).Height(iHeight),...
+                                 LD.Propulsion.(motorNames{i}).Height(iHeight)];
+                newVflightLim = [LD.Propulsion.(motorNames{i}).Vflight(iVflight),...
+                                 LD.Propulsion.(motorNames{i}).Vflight(iVflight)];
+                
+                %Obtain initial conditions
+                x0=[LD.Propulsion.(motorNames{i}).Current(iVoltage+10,iHeight,iVflight),...
+                    LD.Propulsion.(motorNames{i}).RPM(iVoltage+10,iHeight,iVflight),...
+                    LD.Propulsion.(motorNames{i}).Power(iVoltage+10,iHeight,iVflight),...
+                    LD.Propulsion.(motorNames{i}).Thrust(iVoltage+10,iHeight,iVflight)];
+                
+                %Calculate mapped data
+                [~,~,~,newThrust,newPower,newCurrent,newRPM,newExitFlag] = ...
+                 propulsionDataMapping(LD.Propulsion.(motorNames{i}),LD...
+                 .Propulsion.(propellerNames{i}),newVoltageLim,newHeightLim,...
+                 newVflightLim,1,1,1,x0);
+             
+                %Store new mapped data in the struct
+                Thrust(iVoltage,iHeight,iVflight)   = newThrust;
+                Power(iVoltage,iHeight,iVflight)    = newPower;
+                Current(iVoltage,iHeight,iVflight)  = newCurrent;
+                RPM(iVoltage,iHeight,iVflight)      = newRPM;
+                exitFlag(iVoltage,iHeight,iVflight) = newExitFlag;
+                
+            end
+                
+            %Store new mapped data in motorData struct
+            LD.Propulsion.(motorNames{i}).Thrust   = Thrust;
+            LD.Propulsion.(motorNames{i}).Power    = Power;
+            LD.Propulsion.(motorNames{i}).Current  = Current;
+            LD.Propulsion.(motorNames{i}).RPM      = RPM;
+            LD.Propulsion.(motorNames{i}).exitFlag = exitFlag;
+
+
+            %Save new mapped data in mat file
+            save(strcat(mappingPath,filesep,expectedFile,expectedSufix),...
+                 'motorModel','propellerModel',...
+                 'voltageLim','heightLim','vflightLim',...
+                 'voltageLength','heightLength','vflightLength',...
+                 'Thrust','Power','Current','RPM','exitFlag')
+                
+        end
+        
     end
 else
     wrn = msgbox('The number of motors is not consistent with the number of propellers.','Warning','warn');
@@ -258,8 +317,8 @@ LD.Propulsion.Throttle5 = 0;
 
 
 %% CLEAR USED VARIABLES
-clear motorData motorNames motorModels index wrn i j propellerData motorPosition
-clear propellerData propellerFiles propellerNames propellerModels
+clear motorData motorNames motorModels index indexes wrn i j propellerData motorPosition
+clear propellerData propellerFiles propellerNames propellerModels iVoltage iHeight iVflight
 clear fileList filename pathstr mappingFolder mappingPath expectedFile expectedSufix
 clear Voltage Height Vflight voltageLim voltageLength heightLim heightLength vflightLim vflightLength
 clear motorModel propellerModel validData Thrust Power Current RPM exitFlag    

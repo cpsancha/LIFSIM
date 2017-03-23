@@ -73,7 +73,7 @@ LD.Stability.coeffs = string({'CD0','CDalpha','CDalpha_dot','CDq','CDdeltae','CD
 %% LONGITUDINAL STABILITY DERIVATIVES
 %Parasite coeffs
     %CD0
-    CD0 = [0, 0, 0, 0.024, 0.024, 0.024, 0, 0, 0];
+    CD0 = [1, 1, 1, 0.024, 0.024, 0.024, 1, 1, 1];
     LD.Stability.CD0 = fillStabilityCoeffs(LD, string({'alpha'}), CD0);
     %CL0
     CL0 = [0, 0, 0, 0.181, 0.181, 0.181, 0, 0, 0];

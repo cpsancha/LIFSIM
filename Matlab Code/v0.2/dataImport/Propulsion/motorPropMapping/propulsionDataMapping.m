@@ -1,6 +1,6 @@
 function [Voltage,Height,Vflight,Thrust,Power,Current,RPM,exitFlag] = propulsionDataMapping(motorData,...
           propellerData,voltageLim,heightLim,vflightLim,voltageLength,...
-          heightLength,vflightLength)
+          heightLength,vflightLength,x0)
       
 %PROPULSIONDATAMAPPING Summary of this function goes here
 %% MAP THRUST, POWER, CURRENT AND RPM IN FUNCTION OF VOLTAGE, HEIGHT AND VELOCITY
@@ -17,12 +17,17 @@ function [Voltage,Height,Vflight,Thrust,Power,Current,RPM,exitFlag] = propulsion
     exitFlag= zeros(voltageLength,heightLength,vflightLength);
 
 %Define initial conditions
-    x0 = [motorData.I0,7500,0,0];
-    
+    if ~exist('x0','var')
+        % x0 parameter does not exist, so default it to something
+        x0 = [motorData.I0,7500,0,0];
+    end
+
+
 %Define @fsolve options
     options = optimoptions('fsolve',...
-                           'Display','none',...
-                           'MaxIterations',500);
+                           'Display','final-detailed',...
+                           'TolFun',1e-6,...
+                           'MaxIterations',1e3);
     
 %Fill output variables
     parfor i=1:voltageLength

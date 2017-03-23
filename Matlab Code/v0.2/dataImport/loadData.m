@@ -27,6 +27,7 @@ run('loadPlantDataBus.m')
 run('loadEnvDataBus.m')
 run('loadSensorsBus.m')
 run('loadCommandBus.m')
+run('loadThrottleBus.m')
 
 
 %% CHECK DIMENSIONS

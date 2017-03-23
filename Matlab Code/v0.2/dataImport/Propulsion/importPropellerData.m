@@ -105,8 +105,8 @@ Pe = cell2mat(rawNumericColumns(:, 3));
 Ct = cell2mat(rawNumericColumns(:, 4));
 Cp = cell2mat(rawNumericColumns(:, 5));
 PWR = cell2mat(rawNumericColumns(:, 6));
-% Torqu = cell2mat(rawNumericColumns(:, 7));
-% eThrus = cell2mat(rawNumericColumns(:, 8));
+Torque = cell2mat(rawNumericColumns(:, 7));
+% Thrus = cell2mat(rawNumericColumns(:, 8));
 % t = rawCellColumns(:, 1);
 
 
@@ -124,51 +124,39 @@ propellerData.Diameter=Diameter;
 
 %Conversion Factors
 Hp2Watts = 745.7;
-Mph2Ms   = 0.44704;
+inLbf2Nm = 0.112985;
+Mph2ms   = 0.44704;
 nlength  = length(V2)/30;
-maxV     = Mph2Ms*max(V2);
+maxV     = Mph2ms*max(V2);
 
 %% Reshaping of data to be formatted
 
-   propellerDataTemp.PWR=Hp2Watts.*reshape(PWR,[30,nlength]);
-%     propellerData.PWR=745.7*propellerData.PWR;
-  
-   propellerDataTemp.eta=reshape(Pe,[30,nlength]);    
-   propellerDataTemp.Cp=reshape(Cp,[30,nlength]); 
-   propellerDataTemp.Ct=reshape(Ct,[30,nlength]); 
-   propellerDataTemp.V=Mph2Ms.*reshape(V2,[30,nlength]);
-%    maxV     = max(propellerDataTemp.V);
-%     propeller.V=0.44704.*propeller.V; %to m/s
+   propellerDataTemp.PWR    = Hp2Watts .* reshape(PWR,[30,nlength]);
+   propellerDataTemp.Torque = inLbf2Nm .* reshape(Torque,[30,nlength]);
+   propellerDataTemp.V      = Mph2ms   .* reshape(V2,[30,nlength]);
+   propellerDataTemp.eta    =             reshape(Pe,[30,nlength]);    
+   propellerDataTemp.Cp     =             reshape(Cp,[30,nlength]); 
+   propellerDataTemp.Ct     =             reshape(Ct,[30,nlength]); 
+   
 
-%     propeller.RPM=rpmmat;
-%     
 %% Create vector interpolation for each RPM
-
-% figure()
     for i=1:nlength
-        rpmvec(i,:)=linspace(1000*i,1000*i,30); 
-        
+        RPMvect(i,:) = linspace(1000*i,1000*i,30);
         x=propellerDataTemp.V(:,i);
         xq=linspace(0,maxV,1000);
         v=propellerDataTemp.eta(:,i);
-        propellerData.eta(i,:)=interp1(x,v,xq,'pchip',0);
-%             plot(xq,propellerData.eta(i,:)); hold on
-%         
+        propellerData.eta(i,:)=interp1(x,v,xq,'pchip',0);      
         v=propellerDataTemp.PWR(:,i);
         propellerData.PWR(i,:)=interp1(x,v,xq,'pchip',0);
-%         figure(2)
-%             plot(xq,propellerData.PWR(i,:)); hold on
         v=propellerDataTemp.Cp(:,i);
         propellerData.Cp(i,:)=interp1(x,v,xq,'pchip',0);
-%         figure(3)
-%             plot(xq,propellerData.Cp(i,:)); hold on
         v=propellerDataTemp.Ct(:,i);
         propellerData.Ct(i,:)=interp1(x,v,xq,'pchip',0);
+        v=propellerDataTemp.Torque(:,i);
+        propellerData.Torque(i,:)=interp1(x,v,xq,'pchip',0);
     end
-%     
-%     
-%     LD.propeller1.eta = Vq;
-     propellerData.RPM = rpmvec(:,1);
+
+     propellerData.RPM = RPMvect(:,1);
      propellerData.V   = xq;
      
 
@@ -177,8 +165,5 @@ maxV     = Mph2Ms*max(V2);
     propellerData.Ct(sign(propellerData.Ct)==-1)=0;
     propellerData.Cp(sign(propellerData.Cp)==-1)=0; 
      
-     
-%     LD.propeller1.PWR = VqPWR;
-    
-%     
+  
 

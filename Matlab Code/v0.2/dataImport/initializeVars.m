@@ -4,6 +4,9 @@
 clear all
 tic
 
+%% Set sampling rate
+    Ts= 0.02;
+    
 %% Load LIBIS data
     run('loadData.m')
  
@@ -12,7 +15,8 @@ tic
     initialValues.heading0 = 0;
     
 %Initial geodetic latitude and longitude [deg]:
-    initialValues.LatLong0 = [45 120];
+%     initialValues.LatLong0 = [45 120];
+    initialValues.LatLong0 = [0 0];
     
 %Reference height from surface of Earth to flat Earth frame with regard to 
 %Earth frame, in same units as flat Earth position (meters):
