@@ -123,6 +123,30 @@ elems(10).Max = [];
 elems(10).DocUnits = '';
 elems(10).Description = '';
 
+elems(11) = Simulink.BusElement;
+elems(11).Name = 'Gravity_ned';
+elems(11).Dimensions = 3;
+elems(11).DimensionsMode = 'Fixed';
+elems(11).DataType = 'double';
+elems(11).SampleTime = -1;
+elems(11).Complexity = 'real';
+elems(11).Min = [];
+elems(11).Max = [];
+elems(11).DocUnits = '';
+elems(11).Description = '';
+
+elems(12) = Simulink.BusElement;
+elems(12).Name = 'MagneticField_ned';
+elems(12).Dimensions = 3;
+elems(12).DimensionsMode = 'Fixed';
+elems(12).DataType = 'double';
+elems(12).SampleTime = -1;
+elems(12).Complexity = 'real';
+elems(12).Min = [];
+elems(12).Max = [];
+elems(12).DocUnits = '';
+elems(12).Description = '';
+
 envDataBus = Simulink.Bus;
 envDataBus.HeaderFile = '';
 envDataBus.Description = '';

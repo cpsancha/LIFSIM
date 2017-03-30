@@ -21,6 +21,9 @@ run('loadLandingGearData.m')
 %Input of FCS Data
 run('loadFCSData.m')
 
+%Input of Sensors and Actuators properties
+run('loadSensorsActuators.m')
+
 %Define Buses
 run('loadAnalysisCasesBus.m')
 run('loadPlantDataBus.m')
@@ -28,10 +31,10 @@ run('loadEnvDataBus.m')
 run('loadSensorsBus.m')
 run('loadCommandBus.m')
 run('loadThrottleBus.m')
+run('loadActuatorsBus.m')
 
 
 %% CHECK DIMENSIONS
 run('dataValidations.m')
 
-% busInfo = Simulink.Bus.createObject('untitled1', 'untitled1/analysisCasesBus','object')
 

@@ -123,27 +123,30 @@ Diameter = convlength(str2double(model(1:index-1)),'in','m');
 propellerData.Diameter=Diameter;
 
 %Conversion Factors
+velocityCases = 30;
 Hp2Watts = 745.7;
 inLbf2Nm = 0.112985;
 Mph2ms   = 0.44704;
-nlength  = length(V2)/30;
+nlength  = length(V2)/velocityCases;
 maxV     = Mph2ms*max(V2);
 
 %% Reshaping of data to be formatted
 
-   propellerDataTemp.PWR    = Hp2Watts .* reshape(PWR,[30,nlength]);
-   propellerDataTemp.Torque = inLbf2Nm .* reshape(Torque,[30,nlength]);
-   propellerDataTemp.V      = Mph2ms   .* reshape(V2,[30,nlength]);
-   propellerDataTemp.eta    =             reshape(Pe,[30,nlength]);    
-   propellerDataTemp.Cp     =             reshape(Cp,[30,nlength]); 
-   propellerDataTemp.Ct     =             reshape(Ct,[30,nlength]); 
+   propellerDataTemp.PWR    = Hp2Watts .* reshape(PWR,[velocityCases,nlength]);
+   propellerDataTemp.Torque = inLbf2Nm .* reshape(Torque,[velocityCases,nlength]);
+   propellerDataTemp.V      = Mph2ms   .* reshape(V2,[velocityCases,nlength]);
+   propellerDataTemp.eta    =             reshape(Pe,[velocityCases,nlength]);    
+   propellerDataTemp.Cp     =             reshape(Cp,[velocityCases,nlength]); 
+   propellerDataTemp.Ct     =             reshape(Ct,[velocityCases,nlength]); 
    
-
+%% Initialize vector for 0 RPM
+    emptyVect(1,:) = linspace(0,0,1000);
+    
 %% Create vector interpolation for each RPM
     for i=1:nlength
-        RPMvect(i,:) = linspace(1000*i,1000*i,30);
+        RPMvect(i,:) = linspace(1000*i,1000*i,velocityCases); %#ok<AGROW>
         x=propellerDataTemp.V(:,i);
-        xq=linspace(0,maxV,1000);
+        xq=linspace(0,maxV,1000);      %Querry points for V
         v=propellerDataTemp.eta(:,i);
         propellerData.eta(i,:)=interp1(x,v,xq,'pchip',0);      
         v=propellerDataTemp.PWR(:,i);
@@ -155,12 +158,16 @@ maxV     = Mph2ms*max(V2);
         v=propellerDataTemp.Torque(:,i);
         propellerData.Torque(i,:)=interp1(x,v,xq,'pchip',0);
     end
-
-     propellerData.RPM = RPMvect(:,1);
+    
+     propellerData.RPM = cat(1,0,RPMvect(:,1));
      propellerData.V   = xq;
-     
+     propellerData.eta = cat(1,emptyVect,propellerData.eta);
+     propellerData.PWR = cat(1,emptyVect,propellerData.PWR);
+     propellerData.Cp = cat(1,emptyVect,propellerData.Cp);
+     propellerData.Ct = cat(1,emptyVect,propellerData.Ct);
+     propellerData.Torque = cat(1,emptyVect,propellerData.Torque);
 
-     
+          
 %% If Ct or Cp are negative --> Ct=0 or Cp=0
     propellerData.Ct(sign(propellerData.Ct)==-1)=0;
     propellerData.Cp(sign(propellerData.Cp)==-1)=0; 

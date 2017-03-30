@@ -19,15 +19,15 @@ function [Voltage,Height,Vflight,Thrust,Power,Current,RPM,exitFlag] = propulsion
 %Define initial conditions
     if ~exist('x0','var')
         % x0 parameter does not exist, so default it to something
-        x0 = [motorData.I0,7500,0,0];
+        x0 = [motorData.I0.*1e-1,7500.*1e-4,0.*1e-2,0.*1e-1];
     end
 
 
 %Define @fsolve options
     options = optimoptions('fsolve',...
-                           'Display','final-detailed',...
+                           'Display','none',...%'final-detailed',...
                            'TolFun',1e-6,...
-                           'MaxIterations',1e3);
+                           'MaxIterations',1e5);
     
 %Fill output variables
     parfor i=1:voltageLength
@@ -36,10 +36,10 @@ function [Voltage,Height,Vflight,Thrust,Power,Current,RPM,exitFlag] = propulsion
                 [X,~,exitflag,~] = fsolve(@(x)motorPropellerCoupling(x,Voltage(i),...
                     Height(j),Vflight(k),motorData,propellerData),x0,options); %#ok<PFBNS>
                 exitFlag(i,j,k) = exitflag;
-                Current(i,j,k) = X(1);
-                RPM    (i,j,k) = X(2);
-                Power  (i,j,k) = X(3);
-                Thrust (i,j,k) = X(4);
+                Current(i,j,k) = X(1).*1e1;
+                RPM    (i,j,k) = X(2).*1e4;
+                Power  (i,j,k) = X(3).*1e2;
+                Thrust (i,j,k) = X(4).*1e1;
                 switch exitflag
                     case 2
                         disp(' ')

@@ -10,12 +10,14 @@ tic
 %% Load LIBIS data
     run('loadData.m')
  
-%% Load initial values    
+%% Load initial values   
+%Initial date
+    initialValues.Date = '29-Mar-2017';
+    
 %Direction of flat Earth x-axis (degrees clockwise from north):
     initialValues.heading0 = 0;
     
 %Initial geodetic latitude and longitude [deg]:
-%     initialValues.LatLong0 = [45 120];
     initialValues.LatLong0 = [0 0];
     
 %Reference height from surface of Earth to flat Earth frame with regard to 

@@ -14,8 +14,12 @@
 %  requires previous data to be calculated.
 %  mappedMotors = 0;   % Solves algebraic constraint at run-time
 %  mappedMotors = 1;   % Uses pre-computed results
-
-    mappedMotors = 1;
+    mappedMotors   = 1;
+    
+    
+%% Flag to switch between improving the precalculated data solving again the
+%  not converged cases or not, by default should be 1
+    improveMapping = 1;
     
     
 %% DEFINE MOTORS
@@ -120,14 +124,14 @@ mappingFolder = 'motorPropMapping';
 mappingPath = strcat(pathstr,filesep,mappingFolder);
 
 % Ranges:
-voltageLength =  300;
-heightLength  =    5;
-vflightLength =  250;
+voltageLength =   150;
+heightLength  =     5;
+vflightLength =   250;
     
 % Limits:
 voltageLim = [0,   30]; %V
 heightLim  = [0, 1000]; %mrt
-vflightLim = [0,   85]; %m/s
+vflightLim = [0,   85]; %m/s cambiar a 70 m/s
     
 % Mapping:    
 if isequal(length(motorNames),length(propellerNames))
@@ -135,7 +139,7 @@ if isequal(length(motorNames),length(propellerNames))
     %Store files in the mapping directory as list
     fileList = dir(mappingPath);
     
-    for i=2:2%length(motorNames)
+    for i=1:length(motorNames)
         %Create expected file filename
         motorModel     = LD.Propulsion.(motorNames{i}).Model;
         propellerModel = LD.Propulsion.(propellerNames{i}).Model;
@@ -218,11 +222,13 @@ if isequal(length(motorNames),length(propellerNames))
         end
         
         %Recalculate the not-converged cases with different initial conditions
-        indexes=find(LD.Propulsion.(motorNames{i}).exitFlag~=1 & ...
-                     LD.Propulsion.(motorNames{i}).exitFlag~=3); 
+        indexes=find(LD.Propulsion.(motorNames{i}).exitFlag~=1); 
+%         indexes=find(LD.Propulsion.(motorNames{i}).exitFlag~=1 & ...
+%                      LD.Propulsion.(motorNames{i}).exitFlag~=3); 
         
-        if ~isempty(indexes)
+        while ~isempty(indexes) && improveMapping == 1
             for j=1:length(indexes)
+                disp(['Solving error ',num2str(j),' of ',num2str(length(indexes))])
                 %Obtain subscripts from linear index
                 [iVoltage,iHeight,iVflight] = ind2sub(size(LD.Propulsion...
                                         .(motorNames{i}).exitFlag),indexes(j));
@@ -236,10 +242,12 @@ if isequal(length(motorNames),length(propellerNames))
                                  LD.Propulsion.(motorNames{i}).Vflight(iVflight)];
                 
                 %Obtain initial conditions
-                x0=[LD.Propulsion.(motorNames{i}).Current(iVoltage+10,iHeight,iVflight),...
-                    LD.Propulsion.(motorNames{i}).RPM(iVoltage+10,iHeight,iVflight),...
-                    LD.Propulsion.(motorNames{i}).Power(iVoltage+10,iHeight,iVflight),...
-                    LD.Propulsion.(motorNames{i}).Thrust(iVoltage+10,iHeight,iVflight)];
+                x0=rand(1,4);
+%                 x0=[1e0  .* LD.Propulsion.(motorNames{i}).Current(iVoltage+10,iHeight,iVflight),...
+%                     1e-3 .* LD.Propulsion.(motorNames{i}).RPM(iVoltage+10,iHeight,iVflight),...
+%                     1e-2 .* LD.Propulsion.(motorNames{i}).Power(iVoltage+10,iHeight,iVflight),...
+%                     1e0  .* LD.Propulsion.(motorNames{i}).Thrust(iVoltage+10,iHeight,iVflight)];
+                
                 
                 %Calculate mapped data
                 [~,~,~,newThrust,newPower,newCurrent,newRPM,newExitFlag] = ...
@@ -271,6 +279,11 @@ if isequal(length(motorNames),length(propellerNames))
                  'voltageLength','heightLength','vflightLength',...
                  'Thrust','Power','Current','RPM','exitFlag')
                 
+            %Recalculate the not-converged cases with different initial conditions
+                indexes=find(LD.Propulsion.(motorNames{i}).exitFlag~=1); 
+%                 indexes=find(LD.Propulsion.(motorNames{i}).exitFlag~=1 & ...
+%                              LD.Propulsion.(motorNames{i}).exitFlag~=3);  
+             
         end
         
     end
@@ -321,4 +334,5 @@ clear motorData motorNames motorModels index indexes wrn i j propellerData motor
 clear propellerData propellerFiles propellerNames propellerModels iVoltage iHeight iVflight
 clear fileList filename pathstr mappingFolder mappingPath expectedFile expectedSufix
 clear Voltage Height Vflight voltageLim voltageLength heightLim heightLength vflightLim vflightLength
-clear motorModel propellerModel validData Thrust Power Current RPM exitFlag    
+clear newCurrent newRPM newPower newThrust newExitFlag newVoltageLim newHeightLim newVflightLim
+clear motorModel propellerModel validData Thrust Power Current RPM exitFlag x0 improveMapping
