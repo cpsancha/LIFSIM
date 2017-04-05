@@ -12,7 +12,7 @@ tic
  
 %% Load initial values   
 %Initial date
-    initialValues.Date = '29-Mar-2017';
+    initialValues.Date = '29-Mar-2017 12:00:00';
     
 %Direction of flat Earth x-axis (degrees clockwise from north):
     initialValues.heading0 = 0;
@@ -36,7 +36,7 @@ tic
 %Initial Euler orientation [roll, pitch, yaw]:
     initialValues.roll0  = 0;
     initialValues.pitch0 = 0;
-    initialValues.yaw0   = 0;
+    initialValues.yaw0   = 45*pi/180;
 %Initial body rotation rates [p,q,r]:
     initialValues.p0 = 0;
     initialValues.q0 = 0;

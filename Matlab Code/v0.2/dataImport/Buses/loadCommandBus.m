@@ -121,6 +121,19 @@ elems(9).Max = [];
 elems(9).DocUnits = '';
 elems(9).Description = '';
 
+elems(10) = Simulink.BusElement;
+elems(10).Name = 'flightCondition';
+elems(10).Dimensions = 1;
+elems(10).DimensionsMode = 'Fixed';
+elems(10).DataType = 'double';
+elems(10).SampleTime = -1;
+elems(10).Complexity = 'real';
+elems(10).SamplingMode = 'Sample based';
+elems(10).Min = [];
+elems(10).Max = [];
+elems(10).DocUnits = '';
+elems(10).Description = '';
+
 CommandBus = Simulink.Bus;
 CommandBus.HeaderFile = '';
 CommandBus.Description = '';

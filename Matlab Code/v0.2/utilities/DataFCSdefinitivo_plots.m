@@ -3,13 +3,12 @@ clc
 close all
 clear all
 %% CONVERSIÓN DE UNIDADES A S.I.
-% Definicion de los parametros de la practica:Cessna 310 Approach configuration
+% Definicion de los parametros de la practica: LIBIS Cruise configuration
+
 % Flight Condition FC
-FC.hs  =   0;           % Altura en [pies]
-FC.Ms  =   0.124;       % Número de Mach
-FC.us  =   137.9;       % Velocidad condicion de referencia [pies/segundos]
-FC.qs  =   22.6 ;       % presion dinámica condicion de referencia [libra/pies^2] 
+
 FC.alfa_xbxs = 6.6;     % ángulo entre la xB y xs en [º]
+
 %Cambiamos las unidades
 ft2m   =   1/3.28084;      %Factor de conversion pies a metros 
 lb2kg  =   0.453592;       %Factor de conversion libra a kg
@@ -18,9 +17,12 @@ slgft2kgm = 1.355817962;   %Factor de conversion slug*pie^2 a kg*m^2
 deg2rad   = pi/180;        %Factor de conversion grados a radianes
 
 % Flight Condition FC
-FC.hs  =   FC.hs*ft2m;                    % Altura en [m]
-FC.us  =   FC.us*ft2m;                    % Velocidad condicion de referencia [m/segundos]
-FC.qs  =   FC.qs*lbft2Pa ;                % presion dinámica condicion de referencia [libra/pies^2] 
+FC.hs  =   91.44;                    	  % Altura en [m]
+FC.a0  =    340;                          % Velocidad del sonido [m/s]
+FC.us  =   42.22;                         % Velocidad condicion de referencia [m/s]
+FC.Ms  =   FS.us/FS.a0;      			  % Número de Mach
+FC.rho =   1.21;					      % Densidad del aire en [kg/m^3]
+FC.qs  =   0.5*FC.rho*(FC.us^2);          % Presion dinámica condicion de referencia [Pa] 
 FC.alfa_xbxs = FC.alfa_xbxs*deg2rad ;     % ángulo entre la xB y xs en [º]
  
 % Datos Geometricos GEO
