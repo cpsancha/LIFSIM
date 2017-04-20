@@ -36,7 +36,7 @@ tic
 %Initial Euler orientation [roll, pitch, yaw]:
     initialValues.roll0  = 0;
     initialValues.pitch0 = 0;
-    initialValues.yaw0   = 45*pi/180;
+    initialValues.yaw0   = 0;
 %Initial body rotation rates [p,q,r]:
     initialValues.p0 = 0;
     initialValues.q0 = 0;
