@@ -1,0 +1,246 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.4' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      8217,        236]
+NotebookOptionsPosition[      7513,        207]
+NotebookOutlinePosition[      7861,        222]
+CellTagsIndexPosition[      7818,        219]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData["\[IndentingNewLine]"], "Input",
+ CellChangeTimes->{{3.702106124022195*^9, 3.7021063066819243`*^9}, {
+   3.702106348701662*^9, 3.702106378900971*^9}, {3.7021066841331453`*^9, 
+   3.702106737858514*^9}, {3.702106790577206*^9, 3.702106797616926*^9}, 
+   3.7021081759013395`*^9}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"q", "=", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"ds", "*", "Kdl"}], "+", "deSAS"}], ")"}], "*", "Ga", "*", 
+      RowBox[{"Nqde", "/", "Den"}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"alfa", "=", " ", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"ds", "*", "Kdl"}], "+", "deSAS"}], ")"}], "*", "Ga", "*", 
+      RowBox[{"Nade", "/", "Den"}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"deSAS", "=", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"-", "kdea"}], "*", "Gsa", "*", "alfa"}], "-", 
+      RowBox[{"q", "*", "Gsq", "*", "kdeq"}]}]}], ";"}], 
+   "\[IndentingNewLine]"}]}]], "Input",
+ CellChangeTimes->{{3.7021074171739516`*^9, 3.702107417193503*^9}, {
+  3.7021076387561817`*^9, 3.702107639234454*^9}, {3.7021076803598137`*^9, 
+  3.702107680690192*^9}, {3.702108169095241*^9, 3.702108177427899*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"$RecursionLimit", "::", "reclim2"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Recursion depth of \
+\[NoBreak]\\!\\(\\*RowBox[{\\\"1024\\\"}]\\)\[NoBreak] exceeded during \
+evaluation of \[NoBreak]\\!\\(\\*RowBox[{\\\"-\\\", \
+FractionBox[RowBox[{\\\"Ga\\\", \\\" \\\", \\\"Gsa\\\", \\\" \\\", \\\"kdea\\\
+\", \\\" \\\", RowBox[{\\\"(\\\", RowBox[{\\\"deSAS\\\", \\\"+\\\", \
+RowBox[{\\\"ds\\\", \\\" \\\", \\\"Kdl\\\"}]}], \\\")\\\"}], \\\" \\\", \
+\\\"Nade\\\"}], \\\"Den\\\"]}]\\)\[NoBreak]. \\!\\(\\*ButtonBox[\\\"\
+\[RightSkeleton]\\\", ButtonStyle->\\\"Link\\\", ButtonFrame->None, \
+ButtonData:>\\\"paclet:ref/$RecursionLimit\\\", ButtonNote -> \
+\\\"$RecursionLimit::reclim2\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{3.702108229412134*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ClearAll", "[", "\"\<Global`*\>\"", "]"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Solve", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"ds", "*", "Kdl"}], "+", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"-", "kdea"}], "*", "Gsa", "*", "alfa"}], "-", 
+           RowBox[{"q", "*", "Gsq", "*", "kdeq"}]}], ")"}]}], ")"}], "*", 
+       "Ga", "*", 
+       RowBox[{"Nade", "/", "Den"}]}], "-", "alfa"}], "\[Equal]", "0"}], ",", 
+    "alfa"}], "]"}], "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.7021069845319667`*^9, 3.7021070462801695`*^9}, {
+   3.702107079182167*^9, 3.702107169032094*^9}, 3.7021072085782547`*^9, {
+   3.7021072728476586`*^9, 3.7021073133368263`*^9}, {3.7021073817111497`*^9, 
+   3.7021074298987894`*^9}, {3.7021074859974656`*^9, 3.702107491403341*^9}, {
+   3.702107521451745*^9, 3.702107637462241*^9}, {3.70210767182211*^9, 
+   3.7021076781569567`*^9}, {3.7021077364168797`*^9, 3.70210778277643*^9}, {
+   3.7021081885088654`*^9, 3.70210819127472*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"{", 
+   RowBox[{"alfa", "\[Rule]", 
+    FractionBox[
+     RowBox[{
+      RowBox[{"ds", " ", "Ga", " ", "Kdl", " ", "Nade"}], "-", 
+      RowBox[{"Ga", " ", "Gsq", " ", "kdeq", " ", "Nade", " ", "q"}]}], 
+     RowBox[{"Den", "+", 
+      RowBox[{"Ga", " ", "Gsa", " ", "kdea", " ", "Nade"}]}]]}], "}"}], 
+  "}"}]], "Output",
+ CellChangeTimes->{{3.7021072950196176`*^9, 3.702107318783313*^9}, {
+   3.7021073856466146`*^9, 3.7021074098615065`*^9}, {3.702107601586337*^9, 
+   3.702107627248582*^9}, {3.702107658076558*^9, 3.702107682439845*^9}, 
+   3.702107785255021*^9, 3.7021082698261023`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"q", "=", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"ds", "*", "Kdl"}], "+", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"-", "kdea"}], "*", "Gsa", "*", 
+         FractionBox[
+          RowBox[{
+           RowBox[{"ds", " ", "Ga", " ", "Kdl", " ", "Nade"}], "-", 
+           RowBox[{"Ga", " ", "Gsq", " ", "kdeq", " ", "Nade", " ", "q"}]}], 
+          RowBox[{"Den", "+", 
+           RowBox[{"Ga", " ", "Gsa", " ", "kdea", " ", "Nade"}]}]]}], "-", 
+        RowBox[{"q", "*", "Gsq", "*", "kdeq"}]}], ")"}]}], ")"}], "*", "Ga", 
+    "*", 
+    RowBox[{"Nqde", "/", "Den"}]}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.702107853360125*^9, 3.702107855376487*^9}, {
+   3.7021078916379128`*^9, 3.702107912172518*^9}, 3.702108290739214*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"$RecursionLimit", "::", "reclim2"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Recursion depth of \
+\[NoBreak]\\!\\(\\*RowBox[{\\\"1024\\\"}]\\)\[NoBreak] exceeded during \
+evaluation of \[NoBreak]\\!\\(\\*FractionBox[\\\"1\\\", \\\"Den\\\"]\\)\
+\[NoBreak]. \\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", \
+ButtonStyle->\\\"Link\\\", ButtonFrame->None, \
+ButtonData:>\\\"paclet:ref/$RecursionLimit\\\", ButtonNote -> \
+\\\"$RecursionLimit::reclim2\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{3.702108305525032*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"ClearAll", "[", "\"\<Global`*\>\"", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Solve", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"ds", "*", "Kdl"}], "+", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"-", "kdea"}], "*", "Gsa", "*", 
+           FractionBox[
+            RowBox[{
+             RowBox[{"ds", " ", "Ga", " ", "Kdl", " ", "Nade"}], "-", 
+             RowBox[{"Ga", " ", "Gsq", " ", "kdeq", " ", "Nade", " ", "q"}]}], 
+            RowBox[{"Den", "+", 
+             RowBox[{"Ga", " ", "Gsa", " ", "kdea", " ", "Nade"}]}]]}], "-", 
+          RowBox[{"q", "*", "Gsq", "*", "kdeq"}]}], ")"}]}], ")"}], "*", "Ga",
+       "*", 
+      RowBox[{"Nqde", "/", "Den"}]}], "-", "q"}], "\[Equal]", "0"}], ",", 
+   "q"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.702107933475667*^9, 3.702107990811637*^9}, 
+   3.7021082994769497`*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"{", 
+   RowBox[{"q", "\[Rule]", 
+    FractionBox[
+     RowBox[{"ds", " ", "Ga", " ", "Kdl", " ", "Nqde"}], 
+     RowBox[{"Den", "+", 
+      RowBox[{"Ga", " ", "Gsa", " ", "kdea", " ", "Nade"}], "+", 
+      RowBox[{"Ga", " ", "Gsq", " ", "kdeq", " ", "Nqde"}]}]]}], "}"}], 
+  "}"}]], "Output",
+ CellChangeTimes->{{3.702107967964382*^9, 3.7021079919872637`*^9}, {
+  3.702108301211562*^9, 3.702108308012146*^9}}]
+}, Open  ]]
+},
+WindowSize->{1366, 685},
+WindowMargins->{{Automatic, -1374}, {Automatic, -8}},
+FrontEndVersion->"10.4 para Microsoft Windows (64-bit) (April 11, 2016)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 289, 4, 52, "Input"],
+Cell[CellGroupData[{
+Cell[872, 28, 974, 26, 112, InheritFromParent],
+Cell[1849, 56, 812, 15, 48, "Message"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2698, 76, 1303, 29, 248, "Input"],
+Cell[4004, 107, 630, 14, 55, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4671, 126, 809, 21, 54, "Input"],
+Cell[5483, 149, 575, 12, 47, "Message"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[6095, 166, 950, 25, 110, "Input"],
+Cell[7048, 193, 449, 11, 113, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+

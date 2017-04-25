@@ -4,89 +4,93 @@ close all
 clearvars -except LD
 
 
+
 %% FLIGHT CONDITION (FC)
-FC.hs  =   12192;                    	  % Altura en [m]
-FC.a0  =    295;                          % Velocidad del sonido [m/s]
-FC.us  =   206.35;                       % Velocidad condicion de referencia [m/s]
+FC.hs  =   91.44;                    	  % Altura en [m]
+FC.a0  =    340;                          % Velocidad del sonido [m/s]
+FC.us  =   42.22;                         % Velocidad condicion de referencia [m/s]
 FC.Ms  =   FC.us/FC.a0;      			  % Número de Mach
-FC.rho =   0.3016;					      % Densidad del aire en [kg/m^3]
+FC.rho =   1.21;					      % Densidad del aire en [kg/m^3]
 FC.qs  =   0.5*FC.rho*(FC.us^2);          % Presion dinámica condicion de referencia [Pa]
-FC.gravity = 9.81;                        % Gravedad en [m/s^2]
+FC.gravity   = 9.81;                      % Gravedad en [m/s^2]
  
 
+
 %% GEOMETRIC DATA (GEO)
-Geo.Sw  =  21.3677;         % Superficie alar [m^2]
-Geo.c   =  2.1336;          % Cuerda [m]
-Geo.b   =  10.3632;         % envergadura [m]
+Geo.Sw  =  LD.sref;          % Superficie alar [m^2]
+Geo.c   =  LD.cbar;          % Cuerda [m]
+Geo.b   =  LD.blref;         % envergadura [m]
 Geo.alphaT  = deg2rad(0.0); % alpha de los motores (tambien llamado Epsilon)
-Geo.alphasb = deg2rad(2.7); % alpha entre ejes estabilidad y cuerpo
+Geo.alphasb = deg2rad(0.0); % alpha entre ejes estabilidad y cuerpo
 Geo.xT = 0; %Distancia de los motores al CdG proyectada en el eje Xs [m] (En este caso no es 0, pero no afecta por ser alphaT=0)
 Geo.zT = 0; %Distancia de los motores al CdG proyectada en el eje Zs [m]
 Geo.dT = cos(Geo.alphaT)*(Geo.zT/Geo.c) - sin(Geo.alphaT)*(Geo.xT/Geo.c); %Brazo de momentos adimensional de los motores [-]
 
 
+
 %% WEIGHT AND BALANCE (WB)
-WB.m     = 5896.7008;          % masa en [kg]
-WB.Ixx_b = 37962.9026;         % Ixx en ejes cuerpo [kg*m^2]
-WB.Iyy_b = 25489.37746;        % Ixx en ejes cuerpo [kg*m^2]
-WB.Izz_b = 63723.44365;        % Ixx en ejes cuerpo [kg*m^2]
-WB.Jxz_b = 1762.563335;        % Ixx en ejes cuerpo [kg*m^2]
+WB.m     = LD.Inertia.mass;       % masa en [kg]
+WB.Ixx_b = LD.Inertia.Ixx;        % Ixx en ejes cuerpo [kg*m^2]
+WB.Iyy_b = LD.Inertia.Iyy;        % Ixx en ejes cuerpo [kg*m^2]
+WB.Izz_b = LD.Inertia.Izz;        % Ixx en ejes cuerpo [kg*m^2]
+WB.Jxz_b = LD.Inertia.Ixz;        % Ixx en ejes cuerpo [kg*m^2]
 
 %Transform Inertia moments from body axis to stability axis
 Ixxs_Izzs_Jxzs = [     cos(Geo.alphasb)^2,      sin(Geo.alphasb)^2, -sin(2*Geo.alphasb);...
                        sin(Geo.alphasb)^2,      cos(Geo.alphasb)^2,  sin(2*Geo.alphasb);...
                    0.5*sin(2*Geo.alphasb), -0.5*sin(2*Geo.alphasb),  cos(2*Geo.alphasb)] * [WB.Ixx_b; WB.Izz_b; WB.Jxz_b];
-               
+
 WB.Ixx_s = Ixxs_Izzs_Jxzs(1);
 WB.Izz_s = Ixxs_Izzs_Jxzs(2);
-WB.Jxz_s = Ixxs_Izzs_Jxzs(3);              
-clear Ixxs_Izzs_Jxzs
+WB.Jxz_s = Ixxs_Izzs_Jxzs(3);
+clear Ixxs_Izzs_Jxzs  
+
 
 
 %% REFERENCE CONDITION (RC)
-RC.Thetas =  0;      %Theta en la condición de referencia
-RC.CLs    =  0.410; %Coeficiente de sustentacion referencia
-RC.CDs    =  0.0335;  %Coeficiente de resistencia referencia obtenido de la polar
-RC.CTs    =  0.0335;  %Coeficiente de traccion referencia
-RC.Cmas   =  0.000;  %Coeficiente de momento aerodinamico de referencia
-RC.CmTs   =  0.000;  %Coeficiente de momentos debido a los motores de referencia
+RC.Thetas = 0.000;  %Theta en la condición de referencia
+RC.CLs    = WB.m*FC.gravity*cos(RC.Thetas)/(FC.qs*Geo.Sw);   %Coeficiente de sustentacion referencia
+RC.CDs    = 0.0276; %Coeficiente de resistencia referencia obtenido de la polar de Raymer
+RC.CTs    = 0.0276; %Coeficiente de traccion referencia
+RC.Cmas   = 0.000;  %Coeficiente de momento aerodinamico de referencia
+RC.CmTs   = 0.000;  %Coeficiente de momentos debido a los motores de referencia
 
 
 
 %% ADIMENSIONAL STABILITY DERIVATIVES (ASD) --> LONGITUDINAL
-% 0
-%     ASD.long.CD_0       =   0.0216;
-%     ASD.long.CL_0       =   0.130;
-%     ASD.long.Cma_0      =   0.050;
+% 0 --> No se usan
+    ASD.long.CD_0       =   0.024;
+    ASD.long.CL_0       =   0.181;
+    ASD.long.Cma_0      =  -0.003;
 % u(Solo se tienen en cuenta si volamos en compresible)
-    ASD.long.CD_u       =   0.104;
-    ASD.long.CL_u       =   0.400;
-    ASD.long.Cma_u      =   0.050;
+    ASD.long.CD_u       =   0.000;
+    ASD.long.CL_u       =   0.000;
+    ASD.long.Cma_u      =   0.000;
 % alpha
-    ASD.long.CD_alpha   =   0.300;
-    ASD.long.CL_alpha   =   5.840;
-    ASD.long.Cma_alpha  =  -0.640;
+    ASD.long.CD_alpha   =   0.239;
+    ASD.long.CL_alpha   =   4.138;
+    ASD.long.Cma_alpha  =  -0.707;
 % alphaDot
     ASD.long.CD_alphaDot  =  0.000;
-    ASD.long.CL_alphaDot  =  2.200;  % CL respecto a alpha punto adimensional
-    ASD.long.Cma_alphaDot = -6.700;
+    ASD.long.CL_alphaDot  =  7.411;  % CL respecto a alpha punto adimensional
+    ASD.long.Cma_alphaDot = -4.063;
 % q
     ASD.long.CD_q       =   0.000;
-    ASD.long.CL_q       =   4.700;
-    ASD.long.Cma_q      = -15.500;
+    ASD.long.CL_q       =   6.248;
+    ASD.long.Cma_q      = -18.410;
 % deltae
-    ASD.long.CD_deltae  =  0.000;
-    ASD.long.CL_deltae  =  0.460;
-    ASD.long.Cma_deltae = -1.240;
+    ASD.long.CD_deltae  =  0.005;
+    ASD.long.CL_deltae  =  1.391;
+    ASD.long.Cma_deltae = -2.930;
 % deltae_dot   
     ASD.long.CD_deltaeDot  = 0.000;
     ASD.long.CL_deltaeDot  = 0.000;
     ASD.long.Cma_deltaeDot = 0.000;   
 % Motores
-    ASD.long.CT_u       =  -0.07; %To be calculated in detail...
-    ASD.long.CT_alpha   =   0; %To be calculated in detail...
-    ASD.long.CT_deltae  =   0; %To be calculated in detail...
-    ASD.long.CmT_u      =  -0.003;
+    ASD.long.CT_u       =   0.000; %To be calculated in detail...
+    ASD.long.CT_alpha   =   0.000; %To be calculated in detail...
+    ASD.long.CT_deltae  =   0.000; %To be calculated in detail...
+    ASD.long.CmT_u      =   0.000;
     ASD.long.CmT_alpha  =   0.000;
 
     
@@ -125,25 +129,25 @@ RC.CmTs   =  0.000;  %Coeficiente de momentos debido a los motores de referencia
 
 %% ADIMENSIONAL STABILITY DERIVATIVES (ASD) --> LATERAL-DIRECTIONAL
 %beta
-    ASD.lat.CY_beta   =  -0.730;
-    ASD.lat.Cl_beta   =  -0.110;
-    ASD.lat.Cn_beta   =   0.127;
+    ASD.lat.CY_beta   =  -0.425;
+    ASD.lat.Cl_beta   =  -0.029;
+    ASD.lat.Cn_beta   =   0.017;
 %p
-    ASD.lat.CY_p      =   0.000;
-    ASD.lat.Cl_p      =  -0.450;
-    ASD.lat.Cn_p      =   0.008;
+    ASD.lat.CY_p      =  -0.004;
+    ASD.lat.Cl_p      =  -0.472;
+    ASD.lat.Cn_p      =  -0.019;
 %r
-    ASD.lat.CY_r      =   0.400;
-    ASD.lat.Cl_r      =   0.160;
-    ASD.lat.Cn_r      =  -0.200;
+    ASD.lat.CY_r      =   0.120;
+    ASD.lat.Cl_r      =   0.049;
+    ASD.lat.Cn_r      =  -0.040;
 %deltar
-    ASD.lat.CY_deltar =  -0.140;
-    ASD.lat.Cl_deltar =  -0.019;
-    ASD.lat.Cn_deltar =   0.074;
+    ASD.lat.CY_deltar =  -0.212;
+    ASD.lat.Cl_deltar =  -0.002;
+    ASD.lat.Cn_deltar =   0.051;
 %deltaa
     ASD.lat.CY_deltaa =   0.000;
-    ASD.lat.Cl_deltaa =   0.178;
-    ASD.lat.Cn_deltaa =  -0.020;
+    ASD.lat.Cl_deltaa =   0.250;
+    ASD.lat.Cn_deltaa =  -0.002;
 %deltarDot
     ASD.lat.CY_deltarDot = 0.000;
     ASD.lat.Cl_deltarDot = 0.000;
@@ -153,7 +157,7 @@ RC.CmTs   =  0.000;  %Coeficiente de momentos debido a los motores de referencia
     ASD.lat.Cl_deltaaDot = 0.000;
     ASD.lat.Cn_deltaaDot = 0.000;   
 %Motores
-    ASD.lat.CT_beta =   0;
+    ASD.lat.CT_beta      = 0.000;
 
     
 %% ADIMENSIONAL STABILITY DERIVATIVES (ASD) --> PARAMETERS

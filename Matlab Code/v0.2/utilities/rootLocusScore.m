@@ -1,8 +1,13 @@
-function [ gainsEstable, gainValues, TF ] = rootLocus( kdealfa,kdeq, TF )
+function [ score ] = rootLocusScore( x)
     marker = ['+','o','*','s','^','p','v','<'];
     color  = ['k','m','c','r','g','b','y','m'];
 gainValues = [0,0];
 gainsEstable = [0,0];
+
+global TF
+kdealfa=x(1)/100;
+kdeq=x(2)/100;
+
    for i = 1:length(kdealfa)
      for j = 1:length(kdeq)
          
@@ -10,27 +15,30 @@ gainsEstable = [0,0];
      Kdealfa =  kdealfa(i);
      Kdeq    =  kdeq(j);
      
-    TFCL.u    = (TF.actuador*TF.DirectLink*TF.Nude)/(TF.Den-TF.actuador*(TF.sensor*Kdealfa*TF.Nalfade+TF.sensor*Kdeq*TF.Nqde));
-    TFCL.alfa  = (TF.actuador*TF.DirectLink*TF.Nalfade)/(TF.Den-TF.actuador*(TF.sensor*Kdealfa*TF.Nalfade+TF.sensor*Kdeq*TF.Nqde));
+ 
     TFCL.theta = (TF.actuador*TF.DirectLink*TF.Nthetade)/(TF.Den-TF.actuador*(TF.sensor*Kdealfa*TF.Nalfade+TF.sensor*Kdeq*TF.Nqde));
-    TFCL.q     = (TF.actuador*TF.DirectLink*TF.Nqde)/(TF.Den-TF.actuador*(TF.sensor*Kdealfa*TF.Nalfade+TF.sensor*Kdeq*TF.Nqde));
     TFCL.TFOL  = -TF.actuador*(TF.sensor*Kdealfa*TF.Nalfade+TF.sensor*Kdeq*TF.Nqde)/TF.Den;
 
-
+%    [Gm.TFOL,Pm.TFOL,Wgm.TFOL,Wpm.TFOL] = margin(TFCL.TFOL) ;
+%    Gm_dB.TFOL = 20*log10(Gm.TFOL);
    % getEigenData(pole(TFCL.theta))
-aux = pole(TFCL.theta); 
-auxReal = real(aux);
+     aux = pole(TFCL.theta); 
+     auxReal = real(aux);
+     sorted=esort(aux);
+     score=real(sorted(1));
 
-ispositive = auxReal >0;
-
-if sum(ispositive)==0
-    disp('Estable')
-    disp(sum(ispositive))
-    gainsEstable(end+1,:)= [Kdealfa, Kdeq];
-elseif sum(ispositive)==1
-    disp(sum(ispositive))
-    gainValues(end+1,:)= [Kdealfa, Kdeq];
-    
+% ispositive = auxReal >0;
+% 
+% if sum(ispositive)==0
+%     disp('Estable')
+%     disp(sum(ispositive))
+%     gainsEstable(end+1,:)= [Kdealfa, Kdeq];
+% 
+% elseif sum(ispositive)==1
+%     disp(sum(ispositive))
+%     gainValues(end+1,:)= [Kdealfa, Kdeq];
+%     score=0;
+%     
 %     disp(gainValues)
 
        
@@ -40,12 +48,9 @@ elseif sum(ispositive)==1
 
 
 
-end
+% end
 
-        for k=1:length(pole(TFCL.theta))
-           aux = pole(TFCL.theta); 
-           p1(i,j,k)=plot(real(aux(k)),imag(aux(k)),strcat(color(i),marker(j)));hold on 
-        end
+     
         
         
 %         for k=1:length(pole(TFCL.theta))
@@ -64,6 +69,5 @@ end
         
       end
    end
-   plot(gainsEstable(:,1),gainsEstable(:,2),'+')
 end
 

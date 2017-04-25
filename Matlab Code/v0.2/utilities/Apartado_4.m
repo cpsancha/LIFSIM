@@ -9,8 +9,9 @@
 % cerrado. 
 
 clc
-close all
-clear all
+% close all
+% clear all
+global TF
 %% Datos del problema
 
 % Definicion de los parametros de la practica:Cessna 310 Approach configuration
@@ -257,15 +258,19 @@ wn_act=44;
 z_act=   0.707106781186547;
 TF.actuador = tf([1],[1/wn_act^2 2*z_act/wn_act 1]);
 
+%TF.actuador = tf (1,1);
+
 %% Funcion de transferencia del sensor Tlag = 0.1
 %Primer orden
 Tlag = 0.1;
 TF.sensor = tf([1],[Tlag 1]);
+%TF.sensor = tf(1,1);
 
 
 %% Funciones de transferencia del trabajo 1
 
 TF_T1=load('TF_OL.mat');
+
 
 % Guardamos los valores en TF
 
@@ -274,6 +279,17 @@ TF.Nude =     tf(TF_T1.TF.long.Nums(1,:),[1]);
 TF.Nalfade =  tf(TF_T1.TF.long.Nums(2,:),[1]);
 TF.Nthetade = tf(TF_T1.TF.long.Nums(3,:),[1]);
 TF.Nqde     = tf(TF_T1.TF.long.Nums(4,:),[1]);
+
+
+%% LIBIS Transfer functions
+% 
+% TF_T1 = load('LibisTransferFunctions.mat')
+% 
+% TF.Den =      tf(TF_T1.LibisTF.long.Denominator,[1]);
+% TF.Nude =     tf(TF_T1.LibisTF.long.Numerators(1),[1]);
+% TF.Nalfade =  tf(TF_T1.LibisTF.long.Numerators(2),[1]);
+% TF.Nthetade = tf(TF_T1.LibisTF.long.Numerators(3),[1]);
+% TF.Nqde     = tf(TF_T1.LibisTF.long.Numerators(4),[1]);
 
 
 
@@ -302,15 +318,31 @@ F_alfa = F_alfa+1;
 
 C_mq_dim=C_mq*Geo.c/(2*FC.us);
 % 
+
 % kdealfa=-(F_alfa-1)*C_malfa/C_mdeltae;
+kdealfa=[0.001];
+% kdealfa = linspace(-15*0.001,15*0.001,4);
 
-kdealfa=[ 0.01, 0.02, 0.1,0.5,1,20,3000];
+
 % kdeq=-(F_q-1)*C_mq_dim/C_mdeltae;
-
-kdeq=-[0.01,0.1,2,10];
+kdeq=[0.001, -60*0.001];
+% kdeq = linspace(-30*0.001,30*0.001,4);
+% kdeq = linspace(-30*0.001,30*0.001,4);
+kdeq = [0];
 
 % kdealfa= 0.0;
 % kdeq =linspace(-0.05,0.05,8);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Barrido de ganancias estables:
+% kdealfa =    [-0.0050*0.8,-0.0050*0.9, -0.0050, 1.1*-0.0050, 1.14*-0.0050];
+% kdeq = [-0.02,-0.018,-0.015,-0.01, 0.01, 0.03, 0.04];
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% GA Results:
+kdealfa =    [-0.567/100];
+kdeq = [-1.602/100];
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % obtenemos las raíces para cada combinacion de ks
 
@@ -337,10 +369,10 @@ end
 
 %Los puntos T1, T2, T3, T4 corresponden a los límites de los ejes a representar
 
-    T1 = tf([1],[1 35]); 
-    T2 = tf([1],[1 -20]);
-    T3 = tf([1],[1 -35i]);
-    T4 = tf([1],[1 35i]);
+    T1 = tf([1],[1 50]); 
+    T2 = tf([1],[1 -50]);
+    T3 = tf([1],[1 -50i]);
+    T4 = tf([1],[1 50i]);
     T  = T1*T2*T3*T4;
     pzmap(T,'w');
     grid on
@@ -366,27 +398,27 @@ end
       end
  end
  
- plot(real(pole(TFCL.theta(:,j))),imag(pole(TFCL.theta(:,j))))
- %%
- 
- x01 = esort(real(pole(TFCL.theta(1,1))));
-  x02 = esort(imag(pole(TFCL.theta(1,1))));
-  X0 = [x01,x02]
-  
- x1 = real(pole(TFCL.theta(1,1)));
- x2 = imag(pole(TFCL.theta(1,1)));
- X= [x1,x2]
- 
-  y1 = real(pole(TFCL.theta(1,2)));
- y2 = imag(pole(TFCL.theta(1,2)));
- Y=[y1,y2]
- 
-  [n,d] = knnsearch(Y,X0)
- 
- 
- Y=[1,2;1,1;0,0;0,1;100,3]
- Y=[1,1.01]
- [n,d] = knnsearch(X,Y)
+%  plot(real(pole(TFCL.theta(:,j))),imag(pole(TFCL.theta(:,j))))
+%  %%
+%  
+%  x01 = esort(real(pole(TFCL.theta(1,1))));
+%   x02 = esort(imag(pole(TFCL.theta(1,1))));
+%   X0 = [x01,x02]
+%   
+%  x1 = real(pole(TFCL.theta(1,1)));
+%  x2 = imag(pole(TFCL.theta(1,1)));
+%  X= [x1,x2]
+%  
+%   y1 = real(pole(TFCL.theta(1,2)));
+%  y2 = imag(pole(TFCL.theta(1,2)));
+%  Y=[y1,y2]
+%  
+%   [n,d] = knnsearch(Y,X0)
+%  
+%  
+%  Y=[1,2;1,1;0,0;0,1;100,3]
+% %  Y=[1,1.01]
+%  [n,d] = knnsearch(X,Y)
  
  %%
  % Polos del sistema en Open Loop SIN AUMENTAR. (sin actuadores, etc)
@@ -400,7 +432,7 @@ end
  % Construcción de la leyenda:
           for j = 1:length(kdealfa)
              legendAlfa{j}= strcat('k_\delta_e_\alpha =  ',num2str(kdealfa(j)));
-          end
+          end    
          
          for j = 1:length(kdeq)
              legendQ{j}= strcat('k_\delta_e_q =  ',num2str(kdeq(j)));
@@ -460,6 +492,11 @@ vOmega  = logspace(log10(OmegaIni),log10(OmegaFin),Nomega);
 %      Gm_dB.theta(i,j) = 20*log10(Gm.theta(i,j));
 %       [Gm.q(i,j),Pm.q(i,j),Wgm.q(i,j),Wpm.q(i,j)] = margin(TFCL.TFOL(i,j)) ;
 %      Gm_dB.q(i,j) = 20*log10(Gm.q(i,j));
+
+% figure(1)
+% bode(TFCL.TFOL(i,j)) 
+% hold all
+
   
     [vMagBodeTemp(i,j,:), vPhaseBodeTemp(i,j,:)] = bode(TFCL.TFOL(i,j),vOmega);
     vMagBodedB(i,j,:)    =  squeeze(20*log10(vMagBodeTemp(i,j,:)));
@@ -479,6 +516,8 @@ vOmega  = logspace(log10(OmegaIni),log10(OmegaFin),Nomega);
      ylabel('Mag(dB)')
    hold on;set(gca,'XTick',[-720:45:720]);
    hold on;set(gca,'YTick',[-100:10:100]);
+   
+
 %     set(gcf,'Color',[1 1 1]);
 % %     title(titles(i));
 %     
