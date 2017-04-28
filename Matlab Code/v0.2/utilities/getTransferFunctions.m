@@ -482,7 +482,7 @@ RC.CmTs   = 0.000;  %Coeficiente de momentos debido a los motores de referencia
         TF.long.Elevator_ThetaRate = tf([TF.long.Coeffs,0],ChEq.long.Coeffs);
     % Devolvemos las dimensiones a la velocidad angular de cabeceo, para
     % ello: q = q_adim * (2·Us/c)
-        TF.long.Elevator_ThetaRate = (2*FC.us/Geo.c) * TF.long.Elevator_ThetaRate;
+        TF.long.Elevator_ThetaRate = TF.long.Elevator_ThetaRate * (2*FC.us/Geo.c);
         disp('Theta Rate to Elevator transfer function [(rad/s)/rad]:')
         TF.long.Elevator_ThetaRate
         fprintf('\n\n')
@@ -496,11 +496,19 @@ RC.CmTs   = 0.000;  %Coeficiente de momentos debido a los motores de referencia
     
         
 % SE CALCULAN LAS GANANCIAS ESTATICAS
-    TF.long.StaticGains.Elevator_Speed     = TF.long.Elevator_Speed.Numerator{1}(end)/TF.long.Elevator_Speed.Denominator{1}(end);
-    TF.long.StaticGains.Elevator_Alpha     = TF.long.Elevator_Alpha.Numerator{1}(end)/TF.long.Elevator_Alpha.Denominator{1}(end);
-    TF.long.StaticGains.Elevator_Theta     = TF.long.Elevator_Theta.Numerator{1}(end)/TF.long.Elevator_Theta.Denominator{1}(end);
-    TF.long.StaticGains.Elevator_ThetaRate = TF.long.Elevator_ThetaRate.Numerator{1}(end)/TF.long.Elevator_ThetaRate.Denominator{1}(end);
+%Elevador
+    response = step(TF.long.Elevator_Speed);
+    TF.long.StaticGains.Elevator_Speed = response(end);
     
+    response = step(TF.long.Elevator_Alpha);
+    TF.long.StaticGains.Elevator_Alpha = response(end);
+    
+    response = step(TF.long.Elevator_Theta);
+    TF.long.StaticGains.Elevator_Theta = response(end);
+    
+    response = step(TF.long.Elevator_ThetaRate);
+    TF.long.StaticGains.Elevator_ThetaRate = response(end);
+    clear response
     
     
 % SE GUARDAN LOS NUMERADORES Y EL DENOMINADOR (Por comodidad)
@@ -810,6 +818,7 @@ RC.CmTs   = 0.000;  %Coeficiente de momentos debido a los motores de referencia
     
     response = step(TF.lat.Rudder_YawRate);
     TF.lat.StaticGains.Rudder_YawRate = response(end);    
+    clear response
     
     
 % SE GUARDAN LOS NUMERADORES Y EL DENOMINADOR (Por comodidad)

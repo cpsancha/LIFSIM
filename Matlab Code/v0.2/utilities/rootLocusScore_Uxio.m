@@ -1,12 +1,12 @@
-function [ score ] = rootLocusScore( x)
+function [ score ] = rootLocusScore_Uxio( x)
     marker = ['+','o','*','s','^','p','v','<'];
     color  = ['k','m','c','r','g','b','y','m'];
 gainValues = [0,0];
 gainsEstable = [0,0];
 
 global TF
-kdealfa=x(1);
-kdeq=x(2);
+kdealfa=x(1)/100;
+kdeq=x(2)/100;
 
    for i = 1:length(kdealfa)
      for j = 1:length(kdeq)
@@ -19,8 +19,8 @@ kdeq=x(2);
     TFCL.theta = (TF.actuador*TF.DirectLink*TF.Nthetade)/(TF.Den-TF.actuador*(TF.sensor*Kdealfa*TF.Nalfade+TF.sensor*Kdeq*TF.Nqde));
     TFCL.TFOL  = -TF.actuador*(TF.sensor*Kdealfa*TF.Nalfade+TF.sensor*Kdeq*TF.Nqde)/TF.Den;
 
- [Gm.TFOL(i,j),Pm.TFOL(i,j),Wgm.TFOL(i,j),Wpm.TFOL(i,j)] = margin(TFCL.TFOL(i,j)) ;
-     Gm_dB.TFOL(i,j) = 20*log10(Gm.TFOL(i,j));
+%    [Gm.TFOL,Pm.TFOL,Wgm.TFOL,Wpm.TFOL] = margin(TFCL.TFOL) ;
+%    Gm_dB.TFOL = 20*log10(Gm.TFOL);
    % getEigenData(pole(TFCL.theta))
      aux = pole(TFCL.theta); 
      auxReal = real(aux);
