@@ -1,0 +1,231 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass ../PhDThesisLyX
+\begin_preamble
+\usepackage{tocloft}    % tocloft for table of contents style
+\usepackage[compact]{titlesec}  % titlesec for title section layout
+% Main matter
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\titleformat{\chapter}{\Huge\bfseries}{\chaptername\ \thechapter}{0pt}{\vskip 0.05em \raggedright}%
+\titlespacing{\chapter}{0em}{0em}{1.5em}
+\titlespacing{\section}{0em}{1em}{-0.5em}
+\titlespacing{\subsection}{0em}{0em}{-0.5em}
+%\titlespacing{<command>}{<left>}{<before-sep>}{<after-sep>}[<right>]
+\end_preamble
+\options a4paper,12pt,oneside,print,authoryear,times
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package babel
+\inputencoding auto
+\fontencoding global
+\font_roman "lmodern" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3cm
+\topmargin 3cm
+\rightmargin 2.5cm
+\bottommargin 3cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Introducción
+\end_layout
+
+\begin_layout Section
+Objetivo
+\end_layout
+
+\begin_layout Standard
+El presente documento trata de ser una breve documentación de la versión
+ preliminar del simulador de vuelo desarrollado en el transcurso de las
+ prácticas curriculares para el RPAS 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+LIBIS
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ diseñado por el departamento de Aeronaves y Vehículos Espaciales de la
+ Universidad Politécnica de Madrid (UPM).
+\end_layout
+
+\begin_layout Standard
+Sin embargo, no hay que olvidar que el simulador todavía se encuentra en
+ fase de diseño, por lo que todavía no se encuentra implementado en su totalidad
+ y continúan existiendo numerosos aspectos que deben ser depurados.
+ Esto implica que la presente documentación no es definitiva, y deberá ser
+ actualizada según se añadan o modifiquen aspectos de éste.
+\end_layout
+
+\begin_layout Section
+Filosofía de diseño
+\end_layout
+
+\begin_layout Standard
+El simulador se encuentra parcialmente desarrollado en MATLAB y parcialmente
+ en Simulink bajo el siguiente criterio.
+\end_layout
+
+\begin_layout Standard
+La parte de importación y validación de datos, cálculo matemático e interfaz
+ con programas externos (de ser necesaria) se realiza en MATLAB, elaborándose
+ de esta forma una estructura en el Workspace con todos los datos necesarios
+ a la que posteriormente accederá Simulink para leer los valores de cada
+ parámetro.
+ Por otra parte, la definición de los diferentes 
+\shape italic
+bloques
+\shape default
+ que componen el simulador, las relaciones entre ellos, la integración en
+ el dominio del tiempo y el postprocesado y visualización, se encuentra
+ programada en Simulink.
+\end_layout
+
+\begin_layout Standard
+Este criterio permite modificar fácilmente los datos de entrada, al encontrarse
+ éstos en texto plano, pudiendo de esta forma probar fácilmente nuevas configura
+ciones, motores, hélices, ...
+ con apenas mínimos cambios de código, a la vez que se hace uso de las ventajas
+ de Simulink.
+\end_layout
+
+\begin_layout Section
+Descripción del modelo
+\end_layout
+
+\begin_layout Standard
+El modelo completo, así como las conexiones entre sus componentes se puede
+ observar en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Esquema-global"
+
+\end_inset
+
+.
+ Más adelante se explicarán cada uno de los bloques por separado, detallando
+ el contenido de éstos, los scripts de MATLAB relacionados donde se importan
+ los datos del modelos correspondientes y cualquier otro aspecto del mismo
+ que sea considerado de interés para un futuro usuario/desarrollador.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Fig/esquemaGlobal.pdf
+	width 100text%
+	BoundingBox 0bp 150bp 792bp 450bp
+	clip
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Esquema global del modelo
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Esquema-global"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A la hora de inicializar el modelo, 
+\end_layout
+
+\end_body
+\end_document

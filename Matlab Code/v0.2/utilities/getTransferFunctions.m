@@ -223,14 +223,20 @@ RC.CmTs   = 0.000;  %Coeficiente de momentos debido a los motores de referencia
         	ChEq.long.EigenStruct = getEigenData(ChEq.long.Eigenvalues);
             [~,I] = sort(ChEq.long.EigenStruct.freqNat);
             %Phugoid --> Modo Fugoide
-            Modes.Phugoid.mode  = ChEq.long.EigenStruct.mode{I(1)};
-            Modes.Phugoid.value = [ChEq.long.EigenStruct.value(I(1)),ChEq.long.EigenStruct.value(I(2))];
-            Modes.Phugoid.freqNat = ChEq.long.EigenStruct.freqNat(I(1));
-            Modes.Phugoid.Damp = ChEq.long.EigenStruct.Damp(I(1));
-            Modes.Phugoid.Period = ChEq.long.EigenStruct.Period(I(1));
-            Modes.Phugoid.t_12 = ChEq.long.EigenStruct.t_12(I(1));
-            Modes.Phugoid.T2 = ChEq.long.EigenStruct.T2(I(1));
-            Modes.Phugoid.Tau = ChEq.long.EigenStruct.Tau(I(1));
+            Modes.Phugoid.mode        = ChEq.long.EigenStruct.mode{I(1)};
+            Modes.Phugoid.Eigenvalue  =[ChEq.long.EigenStruct.value(I(1)),ChEq.long.EigenStruct.value(I(2))];
+            Modes.Phugoid.freqNat     = ChEq.long.EigenStruct.freqNat(I(1));
+            Modes.Phugoid.Damp        = ChEq.long.EigenStruct.Damp(I(1));
+            Modes.Phugoid.Period      = ChEq.long.EigenStruct.Period(I(1));
+            Modes.Phugoid.t_12        = ChEq.long.EigenStruct.t_12(I(1));
+            Modes.Phugoid.T2          = ChEq.long.EigenStruct.T2(I(1));
+            Modes.Phugoid.Tau         = ChEq.long.EigenStruct.Tau(I(1));
+            syms u alpha theta
+            eq = double(subs(ChEq.long.M,s,ChEq.long.EigenStruct.value(I(2))))*[u alpha theta]';
+            eq = subs(eq,theta,1);
+            sol = solve([eq(1),eq(2)],[u,alpha]);
+            Modes.Phugoid.Eigenvector = [double(sol.u) double(sol.alpha) 1];
+            
 
             %Short Period --> Corto Periodo
             Modes.ShortPeriod.mode  = ChEq.long.EigenStruct.mode{I(3)};
@@ -241,7 +247,11 @@ RC.CmTs   = 0.000;  %Coeficiente de momentos debido a los motores de referencia
             Modes.ShortPeriod.t_12 = ChEq.long.EigenStruct.t_12(I(3));
             Modes.ShortPeriod.T2 = ChEq.long.EigenStruct.T2(I(3));
             Modes.ShortPeriod.Tau = ChEq.long.EigenStruct.Tau(I(3));
-            clear I
+            eq = double(subs(ChEq.long.M,s,ChEq.long.EigenStruct.value(I(4))))*[u alpha theta]';
+            eq = subs(eq,theta,1);
+            sol = solve([eq(1),eq(2)],[u,alpha]);
+            Modes.ShortPeriod.Eigenvector = [double(sol.u) double(sol.alpha) 1];
+            clear I u alpha theta eq sol
         else
             wrn = msgbox({'Alguno de los modos longitudinales no es oscilatorio.',...
                           'Se recomienda revisar a mano lo que está sucediendo.'},...
@@ -329,16 +339,25 @@ RC.CmTs   = 0.000;  %Coeficiente de momentos debido a los motores de referencia
             Modes.Spiral.t_12 = ChEq.lat.EigenStruct.t_12(I(2));
             Modes.Spiral.T2 = ChEq.lat.EigenStruct.T2(I(2));
             Modes.Spiral.Tau = ChEq.lat.EigenStruct.Tau(I(2));
+            syms beta Phi Psi
+            eq = double(subs(ChEq.lat.M,s,ChEq.lat.EigenStruct.value(I(2))))*[beta Phi Psi]';
+            eq = subs(eq,Phi,1);
+            sol = solve([eq(1),eq(3)],[beta Psi]);
+            Modes.Spiral.Eigenvector = [double(sol.beta) 1 double(sol.Psi)];
             
             %Roll --> Modo de Convergencia en Balance
-            Modes.Roll.mode  = ChEq.lat.EigenStruct.mode{I(5)};
-            Modes.Roll.value = ChEq.lat.EigenStruct.value(I(5));
-            Modes.Roll.freqNat = ChEq.lat.EigenStruct.freqNat(I(5));
-            Modes.Roll.Damp = ChEq.lat.EigenStruct.Damp(I(5));
-            Modes.Roll.Period = ChEq.lat.EigenStruct.Period(I(5));
-            Modes.Roll.t_12 = ChEq.lat.EigenStruct.t_12(I(5));
-            Modes.Roll.T2 = ChEq.lat.EigenStruct.T2(I(5));
-            Modes.Roll.Tau = ChEq.lat.EigenStruct.Tau(I(5));
+            Modes.RollingConvergence.mode  = ChEq.lat.EigenStruct.mode{I(5)};
+            Modes.RollingConvergence.value = ChEq.lat.EigenStruct.value(I(5));
+            Modes.RollingConvergence.freqNat = ChEq.lat.EigenStruct.freqNat(I(5));
+            Modes.RollingConvergence.Damp = ChEq.lat.EigenStruct.Damp(I(5));
+            Modes.RollingConvergence.Period = ChEq.lat.EigenStruct.Period(I(5));
+            Modes.RollingConvergence.t_12 = ChEq.lat.EigenStruct.t_12(I(5));
+            Modes.RollingConvergence.T2 = ChEq.lat.EigenStruct.T2(I(5));
+            Modes.RollingConvergence.Tau = ChEq.lat.EigenStruct.Tau(I(5));
+            eq = double(subs(ChEq.lat.M,s,ChEq.lat.EigenStruct.value(I(5))))*[beta Phi Psi]';
+            eq = subs(eq,Phi,1);
+            sol = solve([eq(1),eq(3)],[beta Psi]);
+            Modes.RollingConvergence.Eigenvector = [double(sol.beta) 1 double(sol.Psi)];
             
             %Dutch Roll --> Modo de Balanceo Holandes
             Modes.DutchRoll.mode  = ChEq.lat.EigenStruct.mode{I(3)};
@@ -349,7 +368,11 @@ RC.CmTs   = 0.000;  %Coeficiente de momentos debido a los motores de referencia
             Modes.DutchRoll.t_12 = ChEq.lat.EigenStruct.t_12(I(3));
             Modes.DutchRoll.T2 = ChEq.lat.EigenStruct.T2(I(3));
             Modes.DutchRoll.Tau = ChEq.lat.EigenStruct.Tau(I(3));
-            clear I
+            eq = double(subs(ChEq.lat.M,s,ChEq.lat.EigenStruct.value(I(4))))*[beta Phi Psi]';
+            eq = subs(eq,Phi,1);
+            sol = solve([eq(1),eq(3)],[beta Psi]);
+            Modes.DutchRoll.Eigenvector = [double(sol.beta) 1 double(sol.Psi)];
+            clear I beta Phi Psi eq sol
         else
             wrn = msgbox({'Los modos lateral-direccionales no son 3 reales y 2 oscilatorios.',...
                           'Se recomienda revisar a mano lo que está sucediendo.'},...

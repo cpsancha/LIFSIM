@@ -1,0 +1,738 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass PhDThesisLyX
+\begin_preamble
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                            %%
+%% Class ``PhD Thesis LyX''                                                   %%
+%%                                                                            %%
+%% A PhD thesis LyX template for Cambridge University Engineering Department  %%
+%%                                                                            %%
+%% Version: v1.0                                                              %%
+%% Authors: Krishna Kumar                                                     %%
+%% Date: 10/01/2014 (inception)                                               %%
+%% License: MIT License (c) 2014 Krishna Kumar                                %%
+%% GitHub Repo: https://github.com/kks32/PhDThesisLyX			      %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\title{LIBIS Flight Simulator. \\~\\ Documentación}
+\author{Pérez Sancha, Carlos \\ Suárez Tapia, Uxio}
+\dept{Departmento de Aeronaves y Vehículos Espaciales}
+\university{Universidad Politécnica de Madrid}
+\crest{\includegraphics[width=0.25\textwidth]{Figs/LogoColored.png}}
+\logo{\includegraphics[width=0.80\textwidth]{Figs/NameLogo.png}}
+\degree{degree}
+\college{college}
+\degreedate{~\\ Mayo, 2017}
+\usepackage{tocloft}    % tocloft for table of contents style
+\usepackage[compact]{titlesec}  % titlesec for title section layout
+\end_preamble
+\options a4paper,12pt,oneside,print,authoryear,times
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package babel
+\inputencoding auto
+\fontencoding global
+\font_roman "lmodern" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 0
+\use_package amssymb 0
+\use_package cancel 1
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3cm
+\topmargin 3cm
+\rightmargin 2.5cm
+\bottommargin 3cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset Note Comment
+status collapsed
+
+\begin_layout Plain Layout
+
+\series bold
+Cambridge University Engineering Department Thesis Template ported to \SpecialChar LyX
+2.0
+ 
+\end_layout
+
+\begin_layout Plain Layout
+Author: Krishna Kumar
+\end_layout
+
+\begin_layout Plain Layout
+Distributed under MIT License.
+\end_layout
+
+\begin_layout Plain Layout
+Website: https://github.com/kks32/PhDThesis\SpecialChar LyX
+
+\end_layout
+
+\begin_layout Plain Layout
+********************************************************************************
+********************************
+\end_layout
+
+\begin_layout Plain Layout
+
+\series bold
+Thesis Information
+\end_layout
+
+\begin_layout Plain Layout
+Go to 
+\family sans
+Document > Settings > \SpecialChar LaTeX
+ preamble
+\family default
+ to modify the 
+\family sans
+title, author, year, department
+\family default
+ fields.
+\end_layout
+
+\begin_layout Plain Layout
+********************************************************************************
+********************************
+\end_layout
+
+\begin_layout Plain Layout
+
+\series bold
+Custom Options
+\end_layout
+
+\begin_layout Plain Layout
+To set custom options supported by the class file go to Document > Settings
+ > Document class and enter 
+\series bold
+
+\begin_inset Quotes eld
+\end_inset
+
+a4paper,12pt,numbered,oneside,print
+\series default
+
+\begin_inset Quotes erd
+\end_inset
+
+ without quotes in the custom field.
+\end_layout
+
+\begin_layout Plain Layout
+
+\series bold
+Paper Size
+\series default
+: a4paper / a5paper
+\end_layout
+
+\begin_layout Plain Layout
+`a4paper'(The University of Cambridge PhD thesis guidelines recommends a4
+ page size - default option) or `a5paper': A5 Paper size is also allowed
+ as per the Cambridge University Engineering Deparment guidelines for PhD
+ thesis 
+\end_layout
+
+\begin_layout Plain Layout
+
+\series bold
+FontSize: 
+\series default
+10pt / 11pt / 12pt
+\end_layout
+
+\begin_layout Plain Layout
+`11pt' or `12pt'(default): Font Size 10pt is NOT recommended by the University
+ guidelines 
+\end_layout
+
+\begin_layout Plain Layout
+
+\series bold
+Layout: 
+\series default
+`
+\series bold
+oneside
+\series default
+' or `
+\series bold
+twoside
+\series default
+'(default): Printing double side (twoside) or single side.
+\end_layout
+
+\begin_layout Plain Layout
+
+\series bold
+Mode (print / online)
+\series default
+: Use `print' for print version with appropriate margins and page layout.
+ Leaving the options field blank will activate Online version.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+\series bold
+draft
+\series default
+: For draft mode without loading any images (same as draft in book) 
+\end_layout
+
+\begin_layout Plain Layout
+********************************************************************************
+********************************
+\end_layout
+
+\begin_layout Plain Layout
+
+\series bold
+Bibliography style: 
+\end_layout
+
+\begin_layout Plain Layout
+To define document class options like bibliography style (
+\series bold
+numbered
+\series default
+ / 
+\series bold
+authoryear
+\series default
+) go to Document > Settings > Document classs and enter 
+\begin_inset Quotes eld
+\end_inset
+
+numbered
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+authoryear
+\begin_inset Quotes erd
+\end_inset
+
+ without quotes in the custom field.
+\end_layout
+
+\begin_layout Plain Layout
+********************************************************************************
+********************************
+\end_layout
+
+\begin_layout Plain Layout
+
+\series bold
+Page Style
+\end_layout
+
+\begin_layout Plain Layout
+`
+\series bold
+default (leave empty)
+\series default
+': For Page Numbers in Header (Left Even, Right Odd) and Chapter Name in
+ Header (Right Even) and Section Name (Left Odd).
+ Blank Footer.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+\series bold
+`PageStyleI'
+\series default
+: Chapter Name next & Page Number on Even Side (Left Even).
+ Section Name & Page Number in Header on Odd Side (Right Odd).
+ Footer is empty.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+\series bold
+`PageStyleII'
+\series default
+: Chapter Name on Even Side (Left Even) in Header.
+ Section Number % and Section Name in Header on Odd Side (Right Odd).
+ Page numbering in footer 
+\end_layout
+
+\begin_layout Plain Layout
+********************************************************************************
+********************************
+\end_layout
+
+\begin_layout Plain Layout
+
+\series bold
+Font
+\end_layout
+
+\begin_layout Plain Layout
+`
+\series bold
+times
+\series default
+`: (The University of Cambridge guidelines recommend using Times).
+ Specifying times option in the document class will use `mathptpx` or `Times`
+ font with Math Support.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+`
+\series bold
+fourier
+\series default
+`: fourier font with math support
+\end_layout
+
+\begin_layout Plain Layout
+`
+\series bold
+default (empty)
+\series default
+`: When no font is specified, `Latin Modern` is used as the default font
+ with Math Support.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+Go to Document > Settings > Document class and include `times` or `fourier`
+ in the custom field.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+% Title Page
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{romanpages}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{titlepage}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+maketitle
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{titlepage}
+\end_layout
+
+\begin_layout Plain Layout
+
+% FrontMatter
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+% List of Contents, Figures and Tables
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+setlength{
+\backslash
+cftbeforetoctitleskip}{-0.5em}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+addtocontents{toc}{
+\backslash
+vskip -1.0cm}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+setlength{
+\backslash
+cftbeforeloftitleskip}{-0.5em}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+addtocontents{lof}{
+\backslash
+vskip -1.0cm}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+setlength{
+\backslash
+cftbeforelottitleskip}{-0.5em}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+addtocontents{lot}{
+\backslash
+vskip -1.0cm}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newpage
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FloatList figure
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+newpage
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FloatList table
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+% To print nomenclature
+\end_layout
+
+\begin_layout Plain Layout
+
+% 
+\backslash
+printnomenclature[space] %space can be set as 2.5cm between symbol and descriptio
+n
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+printnomenclature[2.5cm]
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{romanpages}
+\end_layout
+
+\begin_layout Plain Layout
+
+% Main matter
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+setcounter{page}{1}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+setlength{
+\backslash
+parindent}{2em} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+setlength{
+\backslash
+parskip}{1em} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+titleformat{
+\backslash
+chapter}{
+\backslash
+Huge
+\backslash
+bfseries}{
+\backslash
+chaptername
+\backslash
+ 
+\backslash
+thechapter}{0pt}{
+\backslash
+vskip 0.05em
+\backslash
+raggedright}
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+titlespacing{
+\backslash
+chapter}{0em}{0em}{1.5em} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+titlespacing{
+\backslash
+section}{0em}{1em}{-0.5em} 
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+titlespacing{
+\backslash
+subsection}{0em}{0em}{-0.5em}
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+titlespacing{<command>}{<left>}{<before-sep>}{<after-sep>}[<right>]
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "1. Introducción/Introducción.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "2. Módulos/Chapter2.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "3. MoreRandomStuff/Chapter3.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+% Back matter
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FormulaMacro
+\newcommand{\bibname}{References}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "References/references"
+options "plainnat"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

@@ -19,4 +19,6 @@ LD.FCS.Quadcopter.Throttle.bias      = 0;
 % LD.FCS.flightCondition = 2 --> LIBIS is acting as fixed-wing plane
 % LD.FCS.flightCondition = 3 --> Transition from fixed-wing plane to quadcopter
 % LD.FCS.flightCondition = 4 --> Some random conditions to test TO BE DONE....
-  LD.FCS.fligthCondition = 0;
+% LD.FCS.fligthCondition = 5 --> Take-off as fixed-wing
+
+  LD.FCS.fligthCondition = 5;

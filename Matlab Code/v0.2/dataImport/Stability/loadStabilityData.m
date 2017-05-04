@@ -53,8 +53,8 @@ LD.Stability.coeffs = string({'CD0','CDalpha','CDalpha_dot','CDq','CDdeltae','CD
         LD.xcg    = -1.013;
     %Array of elevator, rudder, and right and left flaperons streamwise control 
     %deflection angles, which are defined positive for trailing-edge down.
-        LD.deltae  = 10*pi/180;
-        LD.deltar  = 10*pi/180;
+        LD.deltae  = -30*pi/180;
+        LD.deltar  = 0;
         LD.deltafr = 10*pi/180;
         LD.deltafl = 10*pi/180;
 

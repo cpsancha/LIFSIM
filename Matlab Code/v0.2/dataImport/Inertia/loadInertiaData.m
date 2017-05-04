@@ -6,8 +6,8 @@
 % Mass input
 LD.Inertia.mass = 24.99;   %kg
 
-% Gravity center vector position
-LD.Inertia.CG = [LD.xcg , 0 , 0]'; 
+% Gravity center vector position at initial time (t=0)
+LD.Inertia.CG = [-1.013 , 0 , 0]'; 
 
 % Inertia tensor matrix
 LD.Inertia.Ixx = 6.39;      %kg*m^2
