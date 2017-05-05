@@ -180,12 +180,12 @@ reference "fig:Esquema-global"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename Fig/esquemaGlobal.pdf
+	filename Figs/esquemaGlobal.pdf
 	width 100text%
 	BoundingBox 0bp 150bp 792bp 450bp
 	clip
@@ -224,7 +224,59 @@ name "fig:Esquema-global"
 \end_layout
 
 \begin_layout Standard
-A la hora de inicializar el modelo, 
+A la hora de inicializar el modelo, se ejecutan de forma automática los
+ scripts 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+
+\backslash
+utilities
+\backslash
+setUpProject.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ que se encarga de añadir al Path las carpetas pertenecientes al modelo
+ y el script 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+
+\backslash
+dataImport
+\backslash
+initializeVars.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ encargado de definir el tiempo de sampleo, arrancar el script de importación
+ de datos 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+
+\backslash
+dataImport
+\backslash
+loadData.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ y cargar los valores iniciales de algunas variables y estados a usar en
+ las condiciones iniciales de Simulink.
 \end_layout
 
 \end_body

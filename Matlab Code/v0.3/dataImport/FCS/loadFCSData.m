@@ -21,4 +21,4 @@ LD.FCS.Quadcopter.Throttle.bias      = 0;
 % LD.FCS.flightCondition = 4 --> Some random conditions to test TO BE DONE....
 % LD.FCS.fligthCondition = 5 --> Take-off as fixed-wing
 
-  LD.FCS.fligthCondition = 5;
+  LD.FCS.fligthCondition = 0;

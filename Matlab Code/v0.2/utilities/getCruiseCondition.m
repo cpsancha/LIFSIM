@@ -29,7 +29,7 @@ X8 = LD.deltafl;
 % Xqn = Punto en el que queremos conocer el valor de las derivadas.
 Xq1 = 0; %Se asume que el equilibirio se encuentra para ángulos de ataque muy pequeños (zona lineal)
 Xq2 = 0;
-Xq3 = height;
+Xq3 = height+91.44;  %Debido a que el interpn no permite el clip, los valores no pueden ser inferiores a la altura para la que se definen los ceoficientes
 Xq4 = LD.Inertia.CG(1);
 Xq5 = 10*pi/180;
 Xq6 = 0;
@@ -81,11 +81,14 @@ CD = 0.0241+0.065*CL; %Polar roskam
 CD = CD0+alpha_wb*CDalpha+CDdeltae*delta_e; %Derivadas de estabilidad
 D = qbar*LD.sref*CD; 
 
+%% Interpolacion en el mapeado del motor
+
+% Se obtiene el empuje en funcion del voltaje de entrada al motor para la
+% condición de vuelo (VEAS,height)
 
 X1 = LD.Propulsion.motor1.Voltage;
 X2 = LD.Propulsion.motor1.Height;
 X3 = LD.Propulsion.motor1.Vflight;
-
 
 V = LD.Propulsion.motor1.Thrust;
 
@@ -95,18 +98,30 @@ Xq3 = VEAS*cos(alpha_wb);
 
 T_v = interpn (X1,X2,X3,V,Xq1,Xq2,Xq3);
 
-[~ , index] = min(abs(T_v-D));
-Voltage =  LD.Propulsion.motor1.Voltage(index);
+% Se vuelve a interpolar para encontrar el voltaje que corresponde a la
+% tracción necesaria en la condición de vuelo (T=D)
+
+ [T_v, index] = unique(T_v); 
+ Voltage = interp1(T_v, LD.Propulsion.motor1.Voltage(index), D);
+
+% X1  = T_v;
+% V   = LD.Propulsion.motor1.Voltage;
+% Xq1 = D;
+% 
+% Voltage = interpn(X1,V,Xq1);
+% 
+% [~ , index] = min(abs(T_v-D));
+% Voltage =  LD.Propulsion.motor1.Voltage(index)
 
 deltat_1 = Voltage/(LD.Propulsion.ESC1.eta*29.6*0.98);
 
 %% Se sobreescriben los valores iniciales a la condición de crucero:
 
-initialValues.u0 = cos(alpha_wb)*VEAS;
-initialValues.w0 = sin(alpha_wb)*VEAS;
+initialValues.u0 = 0;%cos(alpha_wb)*VEAS;
+initialValues.w0 = 0; %sin(alpha_wb)*VEAS;
 
-initialValues.uned0 = VEAS;
+initialValues.uned0 = 0;VEAS;
 
-initialValues.Ze0 = -height; %Cruise height
-initialValues.pitch0 = alpha_wb; %Para que el vuelo sea horizontal, además de uniforme
+initialValues.Ze0 = -0.5;%-height; %Cruise height
+initialValues.pitch0 = 0; %alpha_wb; %Para que el vuelo sea horizontal, además de uniforme
 

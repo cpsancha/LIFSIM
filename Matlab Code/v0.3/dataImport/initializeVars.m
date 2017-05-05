@@ -28,7 +28,10 @@ tic
     initialValues.Xe0 = 0;
     initialValues.Ye0 = 0;
     initialValues.Ze0 = -LD.LandingGear.hcg;
-    
+%Initial velocity in earth axes [u,v,w]
+    initialValues.uned0 = 0;
+    initialValues.vned0 = 0;
+    initialValues.wned0 = 0;   
 %Initial velocity in body axes [u,v,w]:
     initialValues.u0 = 0;
     initialValues.v0 = 0;
@@ -42,6 +45,20 @@ tic
     initialValues.q0 = 0;
     initialValues.r0 = 0;
     
+%Auxiliar trim variables initialization:
+%Initial body Forces [Fx0,Fy0,Fz0]:
+    initialValues.Fx0 = 0;
+    initialValues.Fy0 = 0;
+    initialValues.Fz0 = 0;   
+%Initial body Moments [Mx0,My0,Mz0]:
+    initialValues.Mx0 = 0;
+    initialValues.My0 = 0;
+    initialValues.Mz0 = 0;
+%Initial aerodynamic forces:
+    initialValues.D = 0;
+    initialValues.L = 0;
+%Initial angle of attack
+    initialValues.alpha_wb = 0;
     
 %% Ground reaction constants
     groundReaction.K = 1e6;

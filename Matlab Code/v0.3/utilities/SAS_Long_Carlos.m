@@ -1,16 +1,16 @@
 %% CLEAR VARIABLES
 close all
-clearvars -except optimresults
+clearvars -except LD optimresults
 clc
 global TF
 
 %% ACTUATOR TRANSFER FUNCTION
 %Primer orden --> Tlag = 0.05
-    TF.Actuator = tf(1,[0.05 1]);
+    TF.Actuator = tf(1,[LD.LFO.timeLag 1]);
 
 %Segundo orden: Sacado del actuador del modelo ' aeroblk_HL20 '
-    wn_act = 44;
-    z_act  = 0.707106781186547;
+    wn_act = LD.Actuators.LSO.naturalFreq;
+    z_act  = LD.Actuators.LSO.dampingRatio;
     TF.Actuator = tf(1,[1/wn_act^2 2*z_act/wn_act 1]);
     clear wn_act z_act
 
@@ -52,8 +52,8 @@ TF.Nqde     = tf(LibisTF.long.Numerators(4),1);
 % Barrido de ganancias estables:
     KdealphaVect =  0.240807761235244*1e+0;
     KdeqVect     =  0.614669052712092*1e-4;
-    KdealphaVect = optimresults.x(1)*1e+0;
-    KdeqVect     = optimresults.x(2)*1e+0;
+%     KdealphaVect = optimresults.x(1)*1e+0;
+%     KdeqVect     = optimresults.x(2)*1e+0;
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

@@ -684,7 +684,7 @@ filename "1. Introducción/Introducción.lyx"
 \begin_layout Standard
 \begin_inset CommandInset include
 LatexCommand include
-filename "2. Módulos/Chapter2.lyx"
+filename "2. Módulos/Actuators.lyx"
 
 \end_inset
 
@@ -694,7 +694,57 @@ filename "2. Módulos/Chapter2.lyx"
 \begin_layout Standard
 \begin_inset CommandInset include
 LatexCommand include
-filename "3. MoreRandomStuff/Chapter3.lyx"
+filename "2. Módulos/Environment.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "2. Módulos/FCS.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "2. Módulos/LIBISPlant.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "2. Módulos/PilotCommands.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "2. Módulos/Sensors.lyx"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand include
+filename "2. Módulos/Visualization.lyx"
 
 \end_inset
 
@@ -709,25 +759,6 @@ status open
 
 % Back matter
 \end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset FormulaMacro
-\newcommand{\bibname}{References}
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset CommandInset bibtex
-LatexCommand bibtex
-bibfiles "References/references"
-options "plainnat"
 
 \end_inset
 
