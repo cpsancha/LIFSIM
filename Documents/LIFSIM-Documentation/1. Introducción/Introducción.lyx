@@ -136,16 +136,19 @@ El simulador se encuentra parcialmente desarrollado en MATLAB y parcialmente
 \begin_layout Standard
 La parte de importación y validación de datos, cálculo matemático e interfaz
  con programas externos (de ser necesaria) se realiza en MATLAB, elaborándose
- de esta forma una estructura en el Workspace con todos los datos necesarios
- a la que posteriormente accederá Simulink para leer los valores de cada
- parámetro.
- Por otra parte, la definición de los diferentes 
-\shape italic
-bloques
-\shape default
- que componen el simulador, las relaciones entre ellos, la integración en
- el dominio del tiempo y el postprocesado y visualización, se encuentra
- programada en Simulink.
+ de esta forma una estructura llamada 
+\begin_inset Quotes eld
+\end_inset
+
+LD
+\begin_inset Quotes erd
+\end_inset
+
+ (LIBIS Data) el Workspace con todos los datos necesarios a la que posteriorment
+e accederá Simulink para leer los valores de cada parámetro.
+ Por otra parte, la definición de los diferentes bloques que componen el
+ simulador, las relaciones entre ellos, la integración en el dominio del
+ tiempo y el postprocesado y visualización, se encuentra programada en Simulink.
 \end_layout
 
 \begin_layout Standard
@@ -231,11 +234,7 @@ A la hora de inicializar el modelo, se ejecutan de forma automática los
 
 
 \shape italic
-
-\backslash
-utilities
-\backslash
-setUpProject.m
+/utilities/setUpProject.m
 \shape default
 
 \begin_inset Quotes erd
@@ -248,11 +247,7 @@ setUpProject.m
 
 
 \shape italic
-
-\backslash
-dataImport
-\backslash
-initializeVars.m
+/dataImport/initializeVars.m
 \shape default
 
 \begin_inset Quotes erd
@@ -265,11 +260,7 @@ initializeVars.m
 
 
 \shape italic
-
-\backslash
-dataImport
-\backslash
-loadData.m
+/dataImport/loadData.m
 \shape default
 
 \begin_inset Quotes erd

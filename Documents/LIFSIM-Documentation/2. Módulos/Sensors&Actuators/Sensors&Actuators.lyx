@@ -1,0 +1,659 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass PhDThesisLyX
+\begin_preamble
+\usepackage{tocloft}    % tocloft for table of contents style
+\usepackage[compact]{titlesec}  % titlesec for title section layout
+\usepackage{changepage}
+
+% Main matter
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\titleformat{\chapter}{\Huge\bfseries}{\chaptername\ \thechapter}{0pt}{\vskip 0.05em \raggedright}%
+\titlespacing{\chapter}{0em}{0em}{0.5em}
+\titlespacing{\section}{0em}{1em}{-0.5em}
+\titlespacing{\subsection}{0em}{0em}{-0.5em}
+%\titlespacing{<command>}{<left>}{<before-sep>}{<after-sep>}[<right>]
+\end_preamble
+\options a4paper,12pt,oneside,print,authoryear,times
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package babel
+\inputencoding auto
+\fontencoding global
+\font_roman "lmodern" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3cm
+\topmargin 3cm
+\rightmargin 2.5cm
+\bottommargin 3cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Sensores y Actuadores
+\end_layout
+
+\begin_layout Section
+Sensores
+\end_layout
+
+\begin_layout Standard
+Para poder trabajar con variables obtenidas en la planta, es necesario que
+ éstas pasen por los sensores, al igual que sucedería en la vida real.
+ Para aumentar progresivamente el realismo del modelo se han implementado
+ unos sensores ideales (Feedthrough) donde únicamente se renombran las variables
+ y se devuelven como si fuesen las medidas por los sensores, y otro modelo
+ donde se ha empezado a introducir ruido en algunos sensores, sin embargo
+ este último modelo no está acabado y sería necesario hacer un estudio del
+ ruido que introduce cada sensor así como realizar la implementación oportuna
+ de éste.
+\end_layout
+
+\begin_layout Standard
+Para definir estas dos opciones y que al inicio de cada simulación se pueda
+ elegir la deseada, se ha hecho uso de los 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+Simulink Variants
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+, cuyo esquema se puede ver en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Modelos-de-Sensores"
+
+\end_inset
+
+, en este caso la variable que determina la selección deseada es 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+noisySensors
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+, inicializada en 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/Sensors and Actuators/loadSensorsActuators.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ y como se muestra en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Valor-de-noisySensors"
+
+\end_inset
+
+, un valor de 1 en esta variable selecciona los sensores reales y cualquier
+ otro valor los sensores ideales.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/Sensors.pdf
+	width 75text%
+	BoundingBox 75bp 180bp 720bp 360bp
+	clip
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Modelos de Sensores implementados
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Modelos-de-Sensores"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/SensorsVariants.PNG
+	width 75text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Valor de 
+\begin_inset Quotes erd
+\end_inset
+
+
+\shape italic
+noisySensors
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ para cada modelo de sensor
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Valor-de-noisySensors"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Sensores Ideales (Feedtrough)
+\end_layout
+
+\begin_layout Standard
+Los sensores ideales no introducen ruido en las variables medidas, por lo
+ que no son realistas.
+ Sin embargo, evitan que se cometan errores conceptuales como podría ser
+ trabajar en el FCS con variables que no se conocerían en la realidad.
+\end_layout
+
+\begin_layout Standard
+En el momento de la creación de ésta documentación, no son conocidos los
+ sensores que llevará el RPAS LIBIS, por lo que se han implementado los
+ sensores que se han estimado oportunos (GPS, IMU, tubo de Pitot, veleta
+ y una CPU), pudiendo ser que falte alguno o que alguno de ellos finalmente
+ no sea necesario.
+ 
+\end_layout
+
+\begin_layout Standard
+Como se muestra en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Sensores-ideales-implementados"
+
+\end_inset
+
+, los sensores necesitan información del bus de datos de la planta y del
+ bus de datos del ambienente, y a su vez escriben toda la información en
+ un bus propio que se denominará de sensores y se definirá más adelante.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/Feedthrough Sensors.pdf
+	width 75text%
+	BoundingBox 40bp 50bp 750bp 580bp
+	clip
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Sensores ideales implementados
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Sensores-ideales-implementados"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Sensores Reales (Sensores con ruido)
+\end_layout
+
+\begin_layout Standard
+Los sensores reales, como ya se ha comentados, no se encuentran definidos
+ ni modelizados en su totalidad y es un trabajo que queda propuesto para
+ un futuro trabajo.
+ En esta etapa de diseño únicamente se ha implementado una IMU con ruido,
+ sin ni siquiera haberse podido hacer un estudio de los valores adecuados
+ de la frecuencia natural o amortiguamiento del acelerometro o el giróscopo,
+ así como de los ruidos introducidos, sino que únicamente se han dejado
+ los valores existentes por defecto en el modelo de la librería de Simulink.
+ 
+\end_layout
+
+\begin_layout Subsection
+Bus de Sensores
+\end_layout
+
+\begin_layout Standard
+Para transportar de forma cómoda y organizada la información de los sensores
+ entre bloques, ésta se introduce en un bus no virtual denominado 
+\begin_inset Quotes eld
+\end_inset
+
+SensorsBus
+\begin_inset Quotes erd
+\end_inset
+
+ que tiene que ser declarado e inicializado de forma previa a la ejecución
+ de la simulación y que se encuentra declarado en 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/Buses/loadSensorsBus.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ y se ejecuta de forma automática al cargar el proyecto desde 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/loadData.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Si bien, no es necesario, si se recomienda para facilitar la comprensión
+ del modelo y evitar errores involuntarios al conectar los bloques, definir
+ en los imputs y outputs de los modelos que lo usen la el tipo de variable
+ esperado como 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+SensorsBus
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Actuadores
+\end_layout
+
+\begin_layout Standard
+A la hora de implementar los actuadores se han creado los modelos mostrados
+ en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Modelos-de-actuadores"
+
+\end_inset
+
+, véase, actuador ideal (Feedtrough), actuador lineal de primer orden, actuador
+ lineal de segundo orden y actuador no lineal de segundo orden.
+ Se considera que estos modelos son lo suficientemente conocidos como para
+ no necesitar profundizar en ellos.
+ Sin embargo, sí que merece la pena indicar que los parámetros de cada uno
+ de ellos se encuentran referenciados al campo 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+LD.Actuators
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+, por lo que para personalizar cada actuador sólo es necesario editar los
+ campos correspondientes dentro del archivo 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/Sensors and Actuators/loadSensorsActuators.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+, siendo especialmente necesario modificar los campos correspondientes al
+ actuador no lineal de segundo orden, puesto que no se han buscado valores
+ típicos de este tipo de actuador y símplemente se han inicializado los
+ campos como 0.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/Actuators.pdf
+	width 70text%
+	BoundingBox 75bp 185bp 720bp 350bp
+	clip
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Modelos de actuadores implementados
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Modelos-de-actuadores"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Estos modelos, al igual que en el caso de los sensores, se han definido
+ como 
+\begin_inset Quotes eld
+\end_inset
+
+Simulink Variants
+\begin_inset Quotes erd
+\end_inset
+
+ y en este caso la variable que realiza la selección es 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+actuatorsDynamics
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+, la cual se inicializa en 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/Sensors and Actuators/loadSensorsActuators.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ y en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Valor-de-actuatorsDynamics"
+
+\end_inset
+
+ se muestran los posibles valores que puede tomar en función del modelo
+ que se quiera seleccionar.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/ActuatorsVariants.PNG
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Valor de 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+actuatorsDynamics
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ para cada modelo de actuador
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Valor-de-actuatorsDynamics"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Bus de Actuadores
+\end_layout
+
+\begin_layout Standard
+En el caso de los actuadores, tanto la entrada como la salida es un bus
+ de actuadores, definido en 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/Buses/loadActuatorsBus.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ y que se ejecuta de forma automática al cargar el proyecto desde 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/loadData.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ 
+\end_layout
+
+\end_body
+\end_document

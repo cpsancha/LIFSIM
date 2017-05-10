@@ -1,0 +1,457 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass PhDThesisLyX
+\begin_preamble
+\usepackage{tocloft}    % tocloft for table of contents style
+\usepackage[compact]{titlesec}  % titlesec for title section layout
+\usepackage{changepage}
+% Main matter
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\titleformat{\chapter}{\Huge\bfseries}{\chaptername\ \thechapter}{0pt}{\vskip 0.05em \raggedright}%
+\titlespacing{\chapter}{0em}{0em}{ 0.5em}
+\titlespacing{\section}{0em}{1em}{-0.5em}
+\titlespacing{\subsection}{0em}{0em}{-0.5em}
+%\titlespacing{<command>}{<left>}{<before-sep>}{<after-sep>}[<right>]
+\end_preamble
+\options a4paper,12pt,oneside,print,authoryear,times
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package babel
+\inputencoding auto
+\fontencoding global
+\font_roman "lmodern" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3cm
+\topmargin 3cm
+\rightmargin 2.5cm
+\bottommargin 3cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Entorno Atmosférico
+\end_layout
+
+\begin_layout Standard
+Para obtener los valores de las variables dependientes del entorno en el
+ que se encuentra en cada instante la aeronave, se ha implementado un bloque
+ que simule el entono atmosférico y que proporcione dichos valores en función
+ de la posición, geometría y actuaciones de la aeronave.
+\end_layout
+
+\begin_layout Standard
+El modelo generado se puede ver en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Modelo-atmosferico"
+
+\end_inset
+
+, y se descompone a su vez en los subsistemas encargados de proporcionar
+ las reacciones del terreno con la aeronave, los modelos de viento atmosférico,
+ el modelo de atmósfera estandar, de gravedad y de campo magnético.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/Environment.pdf
+	width 90text%
+	BoundingBox 40bp 0bp 750bp 612bp
+	clip
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Modelo de entorno atmosférico
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Modelo-atmosferico"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Modelo de reacción con el terreno
+\end_layout
+
+\begin_layout Standard
+Para detectar la situación de contacto de la aeronave con el terreno y calcular
+ las reacciones que éste genera sobre la aeronave se definen en el archivo
+ 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/LandingGear/loadLandingGear.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ las posiciones de las tres patas de la aeronave a partir de la posición
+ longitudinal de éstas, la posición vertical del punto de contacto respecto
+ del centro de gravedad y de la ballesta del tren principal (track), tal
+ y como se muestra en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Esquema-del-tren"
+
+\end_inset
+
+.
+ 
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/LandingGear1.PNG
+	width 45text%
+	BoundingBox 0bp 0bp 808bp 476bp
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figs/LandingGear2.PNG
+	width 35text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Esquema del tren de aterrizaje
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Esquema-del-tren"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A partir de estas variables, se modela el suelo como un elemento elástico
+ que reacciona de forma proporcional a la distancia que se introducen bajo
+ tierra los puntos de control de las patas y a la velocidad con la que se
+ introducen, ejerciendo una reacción nula en caso de que no se encuentren
+ en contacto las patas y el suelo, tal y como se muestra en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Modelo-de-reacción-terreno"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{adjustwidth}{-0.5cm}{0cm} 
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figs/Terrain.pdf
+	width 110text%
+	BoundingBox 150bp 155bp 792bp 460bp
+	clip
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{adjustwidth}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Modelo de reacción del terreno
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Modelo-de-reacción-terreno"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Es importante destacar que éste es un modelo limitado con gran márgen de
+ mejora, donde el suelo únicamente proporciona una reacción normal, sin
+ existir componente tangencial.
+ A su vez, sólo se detecta contacto con las patas, pudiéndose producir el
+ caso de que cualquier otra parte de la aeronave entre en contacto con el
+ suelo, sin que en ese caso se produzca reacción de ningun tipo.
+\end_layout
+
+\begin_layout Section
+Modelo de viento atmosférico
+\end_layout
+
+\begin_layout Standard
+Para modelizar el viento, se ha realizado una composición de los modelos
+ de viento cortante, turbulento y ráfaga, a partir de los propios modelos
+ que incorporla la Aerospace Toolbox de Simulink, tal y como se muestra
+ en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Modelos-de-viento"
+
+\end_inset
+
+.
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/WindModels.pdf
+	width 70text%
+	BoundingBox 40bp 60bp 750bp 380bp
+	clip
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Modelos de viento atmosférico
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Modelos-de-viento"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Modelos de atmósfera, campo gravitatorio y campo magnético
+\end_layout
+
+\begin_layout Standard
+A su vez, para los modelos de atmósfera estandar, campo gravitatorio y campo
+ magnético se incorporan los implementados en la Aerospace Toolbox, para
+ a la posición y altitud a la que se encuentre la aeronave, así como al
+ instante temporal en que se realice la simulación, el cual se define en
+ 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/initializeVars
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Bus de entorno atmosférico
+\end_layout
+
+\begin_layout Standard
+Por último, todos los datos atmosféricos se almacenan en un bus de datos
+ no virtual denominado 
+\begin_inset Quotes eld
+\end_inset
+
+envDataBus
+\begin_inset Quotes erd
+\end_inset
+
+, el cual se encuentra definido en 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/Buses/loadEnvironmentBus.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ y se ejecuta a través de 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/loadData.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ de forma automática al inicializar el proyecto.
+\end_layout
+
+\end_body
+\end_document

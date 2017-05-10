@@ -1,0 +1,151 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass PhDThesisLyX
+\begin_preamble
+\usepackage{tocloft}    % tocloft for table of contents style
+\usepackage[compact]{titlesec}  % titlesec for title section layout
+\usepackage{changepage}
+
+% Main matter
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\titleformat{\chapter}{\Huge\bfseries}{\chaptername\ \thechapter}{0pt}{\vskip 0.05em \raggedright}%
+\titlespacing{\chapter}{0em}{0em}{0.5em}
+\titlespacing{\section}{0em}{1em}{-0.5em}
+\titlespacing{\subsection}{0em}{0em}{-0.5em}
+%\titlespacing{<command>}{<left>}{<before-sep>}{<after-sep>}[<right>]
+\end_preamble
+\options a4paper,12pt,oneside,print,authoryear,times
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package babel
+\inputencoding auto
+\fontencoding global
+\font_roman "lmodern" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3cm
+\topmargin 3cm
+\rightmargin 2.5cm
+\bottommargin 3cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Utilities
+\end_layout
+
+\begin_layout Standard
+En la carpeta del proyecto 
+\shape italic
+'/utilities' 
+\shape default
+se encuentran una serie de scripts que pueden resultar de utilidad en las
+ futuras ampliaciones del programa.
+\end_layout
+
+\begin_layout Section
+getTransferFunctions.m
+\end_layout
+
+\begin_layout Standard
+Calcula las funciones de transferencia de la planta del LIBIS en bucle abierto
+ y las guarda en un archivo 
+\shape italic
+LibisTransferFunctions.mat
+\shape default
+ .
+ De aquí se puede extraer información sobre los modos propios (guardados
+ en la estructura 'Modes') y la respuesta de la aeronave frente a entradas
+ en los mandos.
+\end_layout
+
+\begin_layout Section
+SAS_Long.m
+\end_layout
+
+\begin_layout Standard
+Partiendo de las funciones de transferencia calculadas a través del script
+ anterior, calcula las funciones de transferencia en bucle cerrado para
+ un Sistema de Aumento de Estabilidad del canal longitudinal en el que se
+ realimentan el ángulo de ataque y la velocidad angular de cabeceo.
+ Hace un barrido en ganancias de realimentación y muestra la posición de
+ las raíces para las diferentes combinaciones ganancias.
+\end_layout
+
+\begin_layout Section
+getCruiseConditions.m
+\end_layout
+
+\begin_layout Standard
+Este script sirve para calcular las variables de trimado necesarias para
+ mantener un vuelo horizontal, rectilíneo y uniforme a la altura y velocidad
+ seleccionadas en la sección input.
+ Las variables calculadas se sobreescribirán sobre los valores iniciales
+ de la simulación, de tal forma que ésta comenzará en la condición de vuelo
+ seleccionada.
+ 
+\end_layout
+
+\end_body
+\end_document

@@ -1,0 +1,457 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass PhDThesisLyX
+\begin_preamble
+\usepackage{tocloft}    % tocloft for table of contents style
+\usepackage[compact]{titlesec}  % titlesec for title section layout
+\usepackage{changepage}
+
+% Main matter
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\titleformat{\chapter}{\Huge\bfseries}{\chaptername\ \thechapter}{0pt}{\vskip 0.05em \raggedright}%
+\titlespacing{\chapter}{0em}{0em}{0.5em}
+\titlespacing{\section}{0em}{1em}{-0.5em}
+\titlespacing{\subsection}{0em}{0em}{-0.5em}
+%\titlespacing{<command>}{<left>}{<before-sep>}{<after-sep>}[<right>]
+\end_preamble
+\options a4paper,12pt,oneside,print,authoryear,times
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package babel
+\inputencoding auto
+\fontencoding global
+\font_roman "lmodern" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3cm
+\topmargin 3cm
+\rightmargin 2.5cm
+\bottommargin 3cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+\begin_inset CommandInset label
+LatexCommand label
+name "chap:CmdPilot"
+
+\end_inset
+
+Comandos del Piloto
+\end_layout
+
+\begin_layout Standard
+En este bloque se establecen todos los comandos necesarios para controlar
+ la aeronave.
+ A continuación se definen las salidas de este bloque, los diferentes modos
+ de control existentes y su comportamiento al activar o desactivar el joystick.
+ Las salidas de este bloque demandan una actitud del RPAS y entran al FCS,
+ que en función de las variables demandadas establecerá las deflexiones
+ de las superficies de mando y tracciones de los motores oportunas.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/pilotComandsBlock.pdf
+	width 80text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Diagrama de bloques de Comandos del piloto 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Diagrama-de-bloques Pilot Comands"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Variables demandadas
+\end_layout
+
+\begin_layout Standard
+A través de este bloque, el piloto puede establecer una serie de comandos
+ para definir la posición y actitud de la aeronave.
+ Son los siguientes:
+\end_layout
+
+\begin_layout Itemize
+roll_cmd: controla el ángulo de balance de la aeronave.
+\end_layout
+
+\begin_layout Itemize
+pitch_cmd: controla el ángulo de cabeceo de la aeronave.
+\end_layout
+
+\begin_layout Itemize
+yaw_cmd: controla el ángulo de guiñada de la aeronave.
+ En modo 'Quadrotor', controla la velocidad de guiñada de la aeronave.
+\end_layout
+
+\begin_layout Itemize
+altitude_cmd: en el modo 'Fixed-wing - Cruise' permite mantener la altitud
+ de la aeronave al valor comandado.
+ En el modo 'Quadrotor' con el joystick activado, permite variar la altura
+ respecto al valor de referencia establecido en la componente Z de Position_cmd.
+\end_layout
+
+\begin_layout Itemize
+Throttle1_cmd: controla el 
+\begin_inset Formula $\delta_{throttle1}$
+\end_inset
+
+ del motor trasero.
+ No se utiliza en los modos de control implementados hasta el momento.
+\end_layout
+
+\begin_layout Itemize
+flightCondition: indica el modo de control activo en cada momento.
+\end_layout
+
+\begin_layout Itemize
+Position_cmd: posición en ejes XYZ tierra comandada en modo 'Quadrotor'.
+\end_layout
+
+\begin_layout Itemize
+joystickEnabled: indica si el joystick está activo.
+\end_layout
+
+\begin_layout Section
+Control por joystick
+\end_layout
+
+\begin_layout Standard
+Existen dos modos de control principales: 'joystickEnabled: off' y 'joystickEnab
+led: on', en función de si se desea controlar al RPAS a través de señales
+ numéricas o utilizar un joystick.
+ Esto interacciona de forma diferente con cada uno de los modos de control.
+ Para activar o desactivar el joystick se utiliza el switch 'Enable joystick'
+ (ver figura
+\color black
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Diagrama-de-bloques Pilot Comands"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+Con el joystick activo, los valores de roll_cmd, pitch_cmd, yaw_cmd se sobreescr
+iben con la lectura de los 3 ejes correspodientes del joystick.
+ La variable altitude_cmd se sobreescribe con la lectura del valor de throttle
+ del joystick.
+\end_layout
+
+\begin_layout Standard
+Con el joystick desactivado, los valores de estas señales se pueden establecer
+ en función del tiempo a través del Signal Builder.
+\end_layout
+
+\begin_layout Section
+Modos de control
+\end_layout
+
+\begin_layout Standard
+Existen 5 modos de control implementados actualmente.
+ Se puede escoger cada uno de ellos 
+\color black
+a través del switch 'Control mode selector' que aparece en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Diagrama-de-bloques Pilot Comands"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Quadrotor
+\end_layout
+
+\begin_layout Standard
+Permite comandar una posición en ejes tierra introduciendo su valor en el
+ bloque 'Comanded position in Earth axis'.
+ También permite controlar el ángulo de guiñada a través de yaw_cmd, orientando
+ la aeronave en la dirección deseada.
+\end_layout
+
+\begin_layout Standard
+En caso de que el joystick se encuentre activo, los valores de las posiciones
+ XY de Position_cmd serán ignorados y el piloto tendrá control directo sobre
+ los ángulos de cabeceo, balanceo y velocidad de guiñada a través de los
+ 3 ejes del joystick.
+ El valor de la posición Z de Position_cmd seguirá activo y actuará como
+ una altitud de referencia que la aeronave intentará mantener.
+ Variaciones de 
+\begin_inset Formula $\pm10$
+\end_inset
+
+m sobre esta altitud de referencia se pueden obtener a través del throttle
+ del joystick.
+\end_layout
+
+\begin_layout Subsection
+Transition
+\end_layout
+
+\begin_layout Standard
+Este modo permite realizar una transición segura entre el vuelo como quadrotor
+ y el vuelo como aeronave de ala fija.
+ El piloto seleccionará este modo partiendo de una posición estabilizada
+ en modo 'Quadrotor'.
+ En ese momento se activará el motor trasero y la aeronave comenzará a acelerar
+ hasta alcanzar una velocidad de 
+\begin_inset Formula $19.5\unitfrac{m}{s}$
+\end_inset
+
+, valor de seguridad sobre la velocidad de entrada en pérdida que permite
+ a la aeronave continuar ascendiendo.
+ Para garantizar la estabilidad durante la transición, se desactiva cualquier
+ comando del piloto durante esta fase y se mantienen los ángulos de actitud
+ los más cercanos posibles a 
+\begin_inset Formula $0$
+\end_inset
+
+.
+ Una vez alcanzada la velocidad de seguridad, se considera que la transición
+ ha sido completada y el FCS activará el modo 'Climb' de manera automática.
+ 
+\end_layout
+
+\begin_layout Subsection
+Climb
+\end_layout
+
+\begin_layout Standard
+En este modo, la aeronave intenta mantener una velocidad constante que le
+ permita ir ganando altitud sin entrar en pérdida.
+ Sería equivalente a un autopiloto tipo 'airspeed hold'.
+ Para ello se utilizará el elevador horizontal, por lo que la variable pitch_cmd
+ no tendrá ningún efecto.
+ Se conserva el control lateral-direccional a través de roll_cmd y yaw_cmd.
+\end_layout
+
+\begin_layout Subsection
+Cruise
+\end_layout
+
+\begin_layout Standard
+Con el joystick desactivado, la aeronave intentará mantener la altitud especific
+ada en la variable altitude_cmd..
+ El piloto sigue manteniendo el control lateral-direccional a través de
+ roll_cmd y yaw_cmd.
+\end_layout
+
+\begin_layout Standard
+Si el joystick está activo, además de mantener el control lateral-direccional,
+ el piloto puede comandar un ángulo de asiento a través de pitch_cmd pero
+ se ignorará el valor de altitud_cmd.
+\end_layout
+
+\begin_layout Subsection
+Take-Off
+\end_layout
+
+\begin_layout Standard
+Modo utilizado para el despegue de la aeronave como ala fija.
+ Se mantiene el control lateral-direccional.
+ Una vez alcanzada una altura mínima de seguridad, se recomienda activar
+ el modo Climb para iniciar el ascenso.
+\end_layout
+
+\begin_layout Subsection
+Otros modos
+\end_layout
+
+\begin_layout Standard
+Sería interesante implentar más modos de control que permitan la operación
+ de la aeronave a lo largo de toda su misión (Aterrizaje, Transición ala
+ fija- quadrotor, airspeed hold usando throttle, etc.), así como implementar
+ un controlador que elija entre los diversos modos para cada condición de
+ vuelo.
+\end_layout
+
+\begin_layout Section
+Ejemplos de maniobras
+\end_layout
+
+\begin_layout Subsection
+Despegue quadrotor - transición - crucero
+\end_layout
+
+\begin_layout Standard
+Para realizar esta maniobra debe iniciarse la simulación desde el modo de
+ control 'Quadrotor' y con el control por joystick desactivado.
+ La aeronave volará hasta el punto especificado por defecto en 'Comanded
+ position in Earth axis' 
+\begin_inset Formula $[10,2,10]$
+\end_inset
+
+.
+ Una vez estabilizada en este punto, debe seleccionarse el modo 'Transition'.
+ Al alcanzar la velocidad de seguridad para el ascenso, la aeronave entrará
+ automáticamente en modo 'Climb'.
+ 
+\end_layout
+
+\begin_layout Standard
+Cuando la aeronave se encuentre a una altura superior a la del crucero elegido,
+ se activará el modo 'Cruise' y se introducirá la altura de crucero en el
+ campo 'Comanded altitude'.
+\end_layout
+
+\begin_layout Standard
+La maniobra puede realizarse de manera similar con el joystick activado,
+ teniendo un control más directo sobre el estado de la aeronave en todas
+ las fases.
+\end_layout
+
+\begin_layout Subsection
+Despegue ala fija - ascenso - crucero
+\end_layout
+
+\begin_layout Standard
+Para realizar esta maniobra debe iniciarse la simulación desde el modo de
+ control 'Take-off'.
+ Cuando la aeronave despegue del suelo y tome cierta altura de seguridad,
+ debe cambiarse al modo 'Climb, lo que permitirá ascender hasta régimen
+ de crucero.
+ Una vez alcanzada la altura objetivo, se activará el modo 'Cruise' y se
+ considera finalizada la maniobra.
+\end_layout
+
+\begin_layout Section
+Bus de comandos
+\end_layout
+
+\begin_layout Standard
+Las variables demandadas se almacenan en un bus de datos no virtual denominado
+ 
+\begin_inset Quotes eld
+\end_inset
+
+CommandBus
+\begin_inset Quotes erd
+\end_inset
+
+, el cual se encuentra definido en el script 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/Buses/loadCommandBus.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ y se ejecuta a través de 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/loadData.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ de forma automática al inicializar el proyecto.
+\end_layout
+
+\end_body
+\end_document

@@ -1,0 +1,2316 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass PhDThesisLyX
+\begin_preamble
+\usepackage{tocloft}    % tocloft for table of contents style
+\usepackage[compact]{titlesec}  % titlesec for title section layout
+\usepackage{changepage}
+
+% Main matter
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\titleformat{\chapter}{\Huge\bfseries}{\chaptername\ \thechapter}{0pt}{\vskip 0.05em \raggedright}%
+\titlespacing{\chapter}{0em}{0em}{0.5em}
+\titlespacing{\section}{0em}{1em}{-0.5em}
+\titlespacing{\subsection}{0em}{0em}{-0.5em}
+%\titlespacing{<command>}{<left>}{<before-sep>}{<after-sep>}[<right>]
+\end_preamble
+\options a4paper,12pt,oneside,print,authoryear,times
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package babel
+\inputencoding auto
+\fontencoding global
+\font_roman "lmodern" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3cm
+\topmargin 3cm
+\rightmargin 2.5cm
+\bottommargin 3cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Modelo de la Aeronave
+\end_layout
+
+\begin_layout Standard
+Este bloque es con diferencia el más complejo y el que más explicación necesita,
+ por lo que se tratará de poner especial detalle en los aspectos más complejos,
+ así como las diferentes funcionalidades adiccionales que se han dejado
+ implementadas y los aspectos inacabados que requieren de revisión.
+\end_layout
+
+\begin_layout Standard
+En este bloque, mostrado en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Vista-general"
+
+\end_inset
+
+, se calculan las fuerzas que actúan sobre la aeronave, se integran en el
+ tiempo y se obtienen las variaciones de posición y actitud que experimenta
+ la aeronave.
+ 
+\end_layout
+
+\begin_layout Standard
+Este procedimiento se puede separar en varias partes claramente diferenciadas,
+ véase, una correspondiente al cálculo de las fuerzas y momentos aerodinámicos
+ a partir del estado de la aeronave y las derivadas de estabilidad, otra
+ encargada del cálculo del sistema propulsivo y las fuerzas y momentos que
+ éste genera, otro bloque encargado del cálculo de la variación del centro
+ de gravedad y los momentos de inercia, un subsistema encargado de la integració
+n de estas fuerzas en el dominio del tiempo y finalmente una última parte
+ donde se estructuran los datos obtenidos y se almacenan en un bus de estados
+ denominado 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+PlantDataBus
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ para facilitar su comunicación con otros bloques.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{adjustwidth}{-0.7cm}{0cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figs/LIBISPlant.pdf
+	width 115text%
+	BoundingBox 0bp 180bp 792bp 430bp
+	clip
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{adjustwidth}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Vista general del modelo de la planta de la aeronave
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Vista-general"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Aerodinámica
+\end_layout
+
+\begin_layout Standard
+Para el cálculo de las fuerzas y momentos aerodinámicos se ha implementado
+ el esquema mostrado en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Esquema-del-modelo-aerodinamico"
+
+\end_inset
+
+, que consiste en la obtención de los valores de los coeficientes aerodinámicos
+ en ejes estabilidad a partir de los valores de las derivadas de estabilidad
+ correspondientes a los valores instantáneos de 
+\begin_inset Formula $\alpha$
+\end_inset
+
+, 
+\begin_inset Formula $\beta$
+\end_inset
+
+, altitud, posición del centro de gravedad y deflexión existente de las
+ superficies aerodinámicas.
+\end_layout
+
+\begin_layout Standard
+Por último, se dimensionalizan dichos coeficientes aerodinámicos obtenidos
+ previamente con la presión dinámica y las magnitudes de referencia declaradas
+ en 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/Stability/loadStabilityData.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ y se obtienen las fuerzas y momentos en cada eje.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{adjustwidth}{-1cm}{0cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figs/Aerodynamics.pdf
+	width 115text%
+	BoundingBox 0bp 120bp 792bp 500bp
+	clip
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{adjustwidth}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Esquema del modelo aerodinámico
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Esquema-del-modelo-aerodinamico"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+~
+\backslash
+
+\backslash
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Coeficientes de Estabilidad
+\end_layout
+
+\begin_layout Standard
+El proceso de definición e importación de los coeficientes de estabilidad,
+ o derivadas de estabilidad, se ha implementado de una forma, a priori poco
+ intuitiva, pero que se ha considerado que aporta una gran versatilidad
+ y logra solventar los problemas asociados a acoplar en el mismo proceso
+ de cálculo la aerodinámica del vuelo como ala fija y como quadrotor, por
+ lo que este paso se explicará en detalle.
+\end_layout
+
+\begin_layout Standard
+En los simuladores de aeronaves de ala fija, es habitual seguir el procedimiento
+ indicado anteriormente de definir las derivadas de estabilidad, calcular
+ con ellas los coeficientes aerodinámicos y a partir de éstos las fuerzas
+ y momentos aerodinámicos.
+ Sin embargo, este procedimiento sólo es válido cuando las hipótesis hechas
+ al calcular estas derivadas se siguen cumpliendo, es decir, ángulos de
+ ataque y de resbalamiento pequeños, etc.
+ Si bien, en el vuelo habitual de una aeronave éstas hipótesis se cumplen,
+ ésto ya no es así cuando se realiza un vuelo como quadrotor, situación
+ en la que el ángulo de entrada de la velocidad proporciona valores de 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ y 
+\begin_inset Formula $\beta$
+\end_inset
+
+ que distan mucho de ser pequeños.
+\end_layout
+
+\begin_layout Standard
+A su vez, para modelizar la posibilidad de entrada en pérdida, o para poder
+ simular las variaciones de actuaciones en función del centrado de la aeronave,
+ es necesario definir que las derivadas de estabilidad dejen de ser constantes
+ y que experimenten variaciones con una serie de parámetros.
+ Pese a que en la vida real los parámetros de los que dependen son numerosos,
+ de momento se han seleccionado los ocho parámetros siguientes: ángulo de
+ ataque (
+\begin_inset Formula $\alpha$
+\end_inset
+
+), ángulo de resbalamiento (
+\begin_inset Formula $\beta)$
+\end_inset
+
+, altitud de vuelo, posición longitudinal del centro de gravedad (x
+\begin_inset script subscript
+
+\begin_layout Plain Layout
+cg
+\end_layout
+
+\end_inset
+
+), deflexión del estabilizador horizontal (
+\begin_inset Formula $\delta_{e}$
+\end_inset
+
+), deflexión del timón de dirección (
+\begin_inset Formula $\delta_{r}$
+\end_inset
+
+), deflexión del flaperon derecho (
+\begin_inset Formula $\delta_{fr}$
+\end_inset
+
+) y deflexión del flaperon izquierdo (
+\begin_inset Formula $\delta_{fl}$
+\end_inset
+
+).
+ Sin embargo, como se verá, resulta extraordinariamente sencillo variar
+ éstos, o cambiar el número de parámetros de los que depende dicha variación.
+\end_layout
+
+\begin_layout Standard
+Toda la definición relacionada con la aerodinámica o la estabilidad se realiza
+ desde el sript 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/Stability/loadStabilityData.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ El él se deben declarar las variables de referencia, véase, superficie,
+ cuerda, envergadura y posición longitudinal del borde de ataque.
+ A su vez, se definirán en el campo 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+LD.Stability.analysisCases
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ el nombre de los parámetros de los que se ha decidido que dependan los
+ coeficientes de estabilidad y en el campo 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+LD.Stability.Coeffs
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ los nombres de los diferentes coeficientes.
+\end_layout
+
+\begin_layout Standard
+A continuación se declararán, en los campos 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+LD.XXX
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+, los valores de cada uno de los parámetros para los que se dispone de informaci
+ón ordenados de menor a mayor, donde 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+XXX
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ hace referencia al nombre definido para dicho parámetro, de forma que posterior
+mente Simulink interpolará linealmente los valores de cada coeficiente en
+ función del valor instantáneo de cada parámetro entre los dos valores más
+ cercanos de los aquí definidos.
+ Por ejemplo, si uno de los parámetros es el ángulo de ataque y hemos definido
+ que su nombre sea 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+alpha
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+, se deberá definir un vector con los valores de ángulo de ataque para los
+ que se han calculado las derivadas de estabilidad y almacenarlo en el campo
+ 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+LD.alpha
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Es importante tener en cuenta que ningún parámetro puede quedarse sin definir,
+ de forma que aunque en alguna situación no consideremos variación en ese
+ parámetro, se debe indicar el valor para el que han sido calculadas las
+ derivadas de estabilidad.
+\end_layout
+
+\begin_layout Standard
+Por último, para introducir los valores de cada derivada de estabilidad,
+ se debe crear una matriz del mismo número de dimensiones que el número
+ de parámetros definidos, respetando el orden definido en 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+LD.Stability.analysisCases
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+, donde el tamaño de cada dimensión sea acorde a la longitud del vector
+ de valores de dicho parámetro y almacenarla en 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+LD.Stability.XXX
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+, donde 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+XXX
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ hace referencia al nombre definido para dicho coeficiente.
+\end_layout
+
+\begin_layout Standard
+Es decir, siguiendo con el ejemplo anterior, si los valores definidos en
+ 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+LD.alpha
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ son 
+\begin_inset Formula $[-\pi,\,-\nicefrac{\pi}{2},\,0,\,\nicefrac{\pi}{2},\,\pi]$
+\end_inset
+
+, y 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+alpha
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ es el primer y único parámetro de los ocho declarados que experimenta variacion
+es, la matriz definida en 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+LD.Stability.CD0
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ deberá ser de [5x1x1x1x1x1x1x1] donde el primer valor se corresponda con
+ el primer valor definido de 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+alpha
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+, el segundo con el segundo y así sucesivamente.
+ Si en vez de experimentar variaciones únicamente el ángulo de ataque, se
+ definen también 10 valores de variaciones con la altitud (definida la tercera
+ en el campo 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+LD.Stability.analysisCases
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+) la matriz de cada coeficiente deberá ser de [5x1x10x1x1x1x1x1] y cada
+ uno de los 50 valores de cada coeficiente resultantes se deben colocar
+ en su posición adecuada de la matriz.
+\end_layout
+
+\begin_layout Standard
+Como realizar este proceso de colocación de cada coeficiente de forma manual
+ es tremendamente costoso y muy propenso a cometer errores en cuanto se
+ definan variaciones con varios parámetros no consecutivos, se ha elaborado
+ el script 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/Stability/fillStabilityCoeffs.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ que se encarga de realizarlo de forma automática.
+\end_layout
+
+\begin_layout Standard
+Para ello, se le deben pasar como argumentos: la estructura 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+LD
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ de la que leerá los parámetros definidos, un vector de campos de texto
+ con los nombres de los parámetros que experimentan variaciones y la matriz
+ con los valores de los coeficientes, donde la primera dimensión de ésta
+ representa la variación con el primer parámetro definido en el segundo
+ argumento, la segunda dimensión la variación con el segundo parámetro y
+ así sucesivamente.
+\end_layout
+
+\begin_layout Standard
+En el caso de que haya un único parámetro que varíe, por comodidad, no es
+ necesario introducirlo como vector columna (lo cual sería introducirlo
+ en la primera dimensión de una matriz), sino que acepta indistintamente
+ un vector fila o columna.
+\end_layout
+
+\begin_layout Standard
+Si en algún momento se decide cambiar o aumentar el número de parámetros
+ de los que dependen las derivadas de estabilidad, sólo es necesario modificar
+ los campos de 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+LD.Stability.analysisCases
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ y modificar el nombre y número de prelookups del modelo aerodinámico de
+ Simulink para que refleje dicha variación.
+\end_layout
+
+\begin_layout Subsection
+Validación de los coeficientes
+\end_layout
+
+\begin_layout Standard
+Dado que el proceso de introducción de los coeficientes es complejo y pueden
+ haber existido errores al introducirlos que impidan al modelo de Simulink
+ su correcta lectura, como que sea diferente el número de parámetros establecido
+s en 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+LD.Stability.analysisCases
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ que el número de dimensiones de las matrices de cada coeficiente, que se
+ hayan indicado más coeficientes en el campo 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+LD.Stability.Coeffs
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ que los finalmente declarados o que alguno de los parámetros se encuentre
+ vacío, despues de cargar los coeficientes de estabilidad se ejecuta desde
+ 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/loadData.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ el script de validación 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/utilities/dataValidations.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Este script es el encargado de comprobar estos casos y, en caso de que
+ se hayan producido, mostrar por pantalla una advertencia para solucionarlo,
+ junto con la pertinente información para localizar fácilmente la causa
+ de dicho error, así como de dejar constancia de ello activando las flags
+ pertinentes dentro de la estructura de 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+checks
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Otra situación detectada como error y que este script debe solucionar, es
+ el caso de que en un parámetro no se consideren variaciones, ya que el
+ procedimiento de interpolación de los valores de los coeficientes a partir
+ de prelookups necesita de al menos un mínimo de dos valores.
+ Para solucionar esto, se añade al final de cada vector de parámetros un
+ nuevo elemento que no se usará y en la dimensión pertinente de cada coeficiente
+ se añade un elemento más.
+ A su vez, se activa un flag de que dicho parámetro no experimenta variación,
+ de forma que Simulink no use en ese caso la información proveniente de
+ los prelookups, utilizando directamente la información proporcionada por
+ el usuario.
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+~
+\backslash
+
+\backslash
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Planta Propulsiva
+\end_layout
+
+\begin_layout Standard
+El LIBIS obtiene la tracción necesaria para el vuelo de cinco motores eléctricos
+ alimentados mediante dos baterías conectadas en paralelo.
+ Cuatro de ellos se encuentran ubicados en las puntas de las alas, proporcionand
+o tracción en el eje vertical para el vuelo como quadrotor y otro ubicado
+ en la cola, empujando a la aeronave y proporcionando tracción para el vuelo
+ como ala fija.
+ 
+\end_layout
+
+\begin_layout Standard
+Para poder estudiar la variación de las actuaciones y actitud en función
+ de cada uno de los motores, éstos se han definido de forma independiente,
+ tal y como se observa en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Modelos-independientes-motores"
+
+\end_inset
+
+, siguiendo el siguiente orden: el primer motor es el de la cola, el encargado
+ del vuelo horizontral, el segundo motor es el correspondiente al semiala
+ delantera derecha , y se sigue en sentido horario, siendo el tercero el
+ de la semiala trasera derecha, el cuarto el de la trasera izquierda y el
+ quinto motor el de la delantera izquierda.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/Propulsion.pdf
+	width 100text%
+	BoundingBox 210bp 240bp 560bp 380bp
+	clip
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Modelos independientes para cada uno de los motores
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Modelos-independientes-motores"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Los datos de cada uno de los motores, hélices y variadores se definen en
+ el script 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/Propulsion/loadPropulsionData.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+, como se explicará en la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Obtención-de-datos-motor"
+
+\end_inset
+
+, junto con las flags pertinentes para elegir el método de cálculo del sistema
+ propulsivo deseado, véase, que en cada instante de ejecución Simulink resuelva
+ el acoplamiento entre la hélice y el motor para calcular la tracción, lo
+ cual es más lento pero permite probar diferentes motores y hélices de forma
+ instantánea, o que al cargar el proyecto se ejecute un script que calcule
+ el acoplamiento para un determinado rango de velocidades de vuelo, alturas
+ y voltajes de salida del variador, lo cual permite agilizar la simulación
+ pero requiere un significativo tiempo de cálculo cada vez que se modifican
+ los motores o las hélices.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/Variant_Motor_1.pdf
+	width 69text%
+	BoundingBox 30bp 150bp 760bp 410bp
+	clip
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Definición de la planta propulsiva como 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+Simulink Variants
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Definición-de-la-planta-propulsiva-variants"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para posibilitar esta dualidad en el cálculo del sistema propulsivo, se
+ ha definido cada motor como un 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+Simulink Variant
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+, tal y como se muestra en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Definición-de-la-planta-propulsiva-variants"
+
+\end_inset
+
+, y en el script anterior se declara la variable 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+mappedMotors
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ de forma que en función del valor que ésta tome, se encuentre activo uno
+ u otro modelo.
+ Los valores que puede tomar esta variable en función del modelo de cálculo
+ que se desee se muestran en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Valores-de-mappedMotors"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/MotorVariants.PNG
+	width 75text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Valores de 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+mappedMotors
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ en función del modo de cálculo del sistema propulsivo deseado
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Valores-de-mappedMotors"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Fundamento Teórico
+\end_layout
+
+\begin_layout Standard
+El conjunto motor eléctrico-hélice se modela con un sistema de 3 ecuaciones
+ donde intervienen las siguientes variables: 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $V_{m}$
+\end_inset
+
+: voltaje de entrada al motor, regulado a través del ESC.
+ 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $I_{m}$
+\end_inset
+
+: Intensidad de entrada al motor, demandada en función de las condiciones
+ de carga.
+ 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $n$
+\end_inset
+
+: RPM del conjunto motor-hélice.
+ Motor y hélice giran a la misma velocidad debido al acoplamiento mecánico.
+ No existe reductora.
+ 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $P_{eje_{motor}}$
+\end_inset
+
+: Potencia en el eje suministrada por el motor.
+ 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $P_{eje_{hélice}}$
+\end_inset
+
+: Potencia demandada por la hélice en el eje a un régimen de giro (
+\begin_inset Formula $n$
+\end_inset
+
+) y en unas condiciones de vuelo concretas (Velocidad de vuelo, densidad
+ del aire).
+ 
+\end_layout
+
+\begin_layout Standard
+Las ecuaciones correspondientes al motor aislado son las siguientes:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+I_{m}=\frac{P_{eje_{motor}}}{n/K_{v}}+I_{0}\label{eq: Im}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+V_{m}=\frac{n}{K_{v}}+I_{m}R_{m}\label{eq: Vm}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Donde 
+\begin_inset Formula $I_{0}\left(\unit{A}\right)$
+\end_inset
+
+, 
+\begin_inset Formula $R_{m}\left(\unit{\Omega}\right)$
+\end_inset
+
+ y 
+\begin_inset Formula $K_{v}\left(\unit{\nicefrac{V}{\Omega}}\right)$
+\end_inset
+
+ son constantes características del motor (intensidad en vacío, resistencia
+ interna y constante de vueltas respectivamente).
+ Se trata de un sistema de 4 variables, donde el valor de 
+\begin_inset Formula $V_{m}$
+\end_inset
+
+ es el parámetro de control y vendrá fijado por el sistema de control de
+ vuelo a través de 
+\begin_inset Formula $\delta_{throttle}$
+\end_inset
+
+.
+ Queda por tanto un sistema de 2 ecuaciones con 3 incógnitas (
+\begin_inset Formula $I_{m},\,P_{eje_{motor}}$
+\end_inset
+
+ y 
+\begin_inset Formula $n$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+Se necesita la ecuación de acoplamiento de potencias en el eje para cerrar
+ el sistema.
+ Puesto que la potencia que proporciona el motor debe ser la misma que absorbe
+ la hélice para una condición de vuelo:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+P_{eje_{motor}}=P_{eje_{hélice}}=\left.f\left(n,V_{flight,}\rho\right)\right\rfloor _{condición\,de\,vuelo}=f(n)\label{eq: Peje}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Es decir, para una condición de vuelo (
+\begin_inset Formula $V_{flight,}\rho$
+\end_inset
+
+ dados), la hélice demanda una potencia en el eje para mantenerse girando
+ a ciertas 
+\begin_inset Formula $n$
+\end_inset
+
+.
+ La potencia demandada en el eje por la hélice es una función de 
+\begin_inset Formula $n$
+\end_inset
+
+ de la que no se dispone expresión analítica.
+ Se utilizan por tanto datos tabulados del fabricante de la hélice.
+\end_layout
+
+\begin_layout Standard
+Quedan por tanto determinadas todas las variables del sistema para un control
+ y una condición de vuelo dados.
+ Para obtener la tracción del conjunto, basta con dimensionalizar el coeficiente
+ de tracción 
+\begin_inset Formula $C_{T}$
+\end_inset
+
+ de la hélice (datos del fabricante) para la condición y control especificados.
+\end_layout
+
+\begin_layout Standard
+Se procede de modo similar para hallar el momento de reacción del grupo
+ motor-hélice sobre la aeronave: interpolando el torque en las tablas del
+ fabricante.
+ Así mismo, los motores también producen otro momento sobre la aeronave,
+ debido a que los vectores de tracción no pasan por el centro de gravedad.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Obtención-de-datos-motor"
+
+\end_inset
+
+Obtención de datos del motor y la hélice
+\end_layout
+
+\begin_layout Standard
+Para importar los datos de los motores y de las hélices, y facilitar la
+ posibilidad de cambiar fácilmente entre distintos modelos, se ha decidido
+ implementar una librería de motores y otra de hélices, donde el usuario
+ pueda ir añadiendo tantos elementos como estime oportuno, y desde la cual
+ seleccionen cuales serán los que se usarán en cada caso.
+\end_layout
+
+\begin_layout Standard
+El script que alberga la libería de motores y desde el cual se importa ésta
+ es 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/Propulsion/importMotorData.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ y en él se define el vector de estructuras 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+motorData
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ donde cada elemento del vector representa un motor diferente y al que posterior
+mente se hará referencia a partir del nombre del modelo que se defina en
+ los campos de ésta, siendo por tanto importante que dos motores nunca tengan
+ el mismo nombre de modelo.
+ Aparte del modelo de motor, en la actualidad se usan los campos de intensidad
+ en vacío (I
+\begin_inset script subscript
+
+\begin_layout Plain Layout
+0
+\end_layout
+
+\end_inset
+
+), resistencia interna del motor (R
+\begin_inset script subscript
+
+\begin_layout Plain Layout
+m
+\end_layout
+
+\end_inset
+
+) y el parámetro de vueltas (K
+\begin_inset script subscript
+
+\begin_layout Plain Layout
+v
+\end_layout
+
+\end_inset
+
+), los cuales resulta imprescindible rellenar, y se han añadido otra serie
+ de campos que se consideran de utilidad para futuras mejoras del programa.
+\end_layout
+
+\begin_layout Standard
+La librería de hélices se obtiene a partir de los archivos proporcionados
+ por el fabricante de hélices 
+\begin_inset Quotes eld
+\end_inset
+
+APC Propellers
+\begin_inset Quotes erd
+\end_inset
+
+ de datos de rendimientos de sus hélices en la siguiente página web 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://www.apcprop.com/v/PERFILES_WEB/listDatafiles.asp"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Para ello, APC Propellers, a partir de la geometría de éstas y haciendo
+ uso del software TAIR (Transonic Airfoil Analysis Computer Code) de la
+ NASA, basado en Vortex Theory, obtienen una estimación de la sustentación
+ y resistencia que éstas generan, proporcionando los parámetros mostrados
+ en la figura , aunque ya avisan que la resistencia puede estar subestimada
+ a bajas velocidades.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/basicEquations.png
+	width 75text%
+	BoundingBox 0bp 15bp 588bp 183bp
+	clip
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Parámetros existentes en los archivos de APC Propellers
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Parámetros-existentes-APC"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El usuario sólo debe descargar los ficheros de datos de cuantas hélices
+ desee, revisarlos para garantizar que el programa los puede procesar sin
+ problemas y guardarlos en la carpeta 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/Propulsion/Propellers/
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ con el formato de nombre 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+PER3_XXX.txt
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ donde 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+XXX
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ será el nombre del modelo con el que se guardará la hélice en la librería
+ y a partir del cual, posteriormente se hará referencia a ésta.
+\end_layout
+
+\begin_layout Standard
+Dentro de las revisiones que deber realizar el usuario se encuentran el
+ garantizar que existen 30 datos de velocidades para cada valor de RPM,
+ valor que se ha encontrado que es estandar en este tipo de ficheros, y
+ garantizar que no existe ninguna línea en la que por error, en vez de valores
+ de rendimientos, los ficheros descargados muestran 
+\shape italic
+NaN
+\shape default
+ (Not a Number), de producirse este fallo, que ha sido encontrado en varios
+ ficheros, se recomienda realizar una interpolación manual para cada valor
+ entre los correspondientes a una velocidad inmediatamente superior e inmediatam
+ente inferior a la afectada.
+\end_layout
+
+\begin_layout Standard
+Una vez se encuentan cargados todos los modelos de interés en las librerías,
+ se puede proceder a cargar los modelos deseados en la estructura de datos
+ 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+LD
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Para ello, es necesario modificar, y posteriormente ejecutar, el script
+ 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/Propulsion/loadPropulsionData.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+En éste, primero se debe indicar los valores deseados de los flags 
+\begin_inset Quotes eld
+\end_inset
+
+mappedMotors
+\begin_inset Quotes erd
+\end_inset
+
+ y 
+\begin_inset Quotes eld
+\end_inset
+
+improveMapping
+\begin_inset Quotes erd
+\end_inset
+
+, tal como se muestran en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Valores-de-mappedMotors"
+
+\end_inset
+
+ para el primero de ellos y como se explica en la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Motores-mapeados"
+
+\end_inset
+
+ para el segundo.
+ A continuación se carga la librería entera de motores, se definen los nombres
+ que tomarán en la estructura 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+LD
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ cada uno de los 5 motores, las posiciones y los modelos de la librería
+ que se asignan a cada uno de ellos.
+\end_layout
+
+\begin_layout Subsection
+Motores sin mapear
+\end_layout
+
+\begin_layout Standard
+Se trata de un modelo en Simulink (figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Modelo-del-sistema-no-mapeado"
+
+\end_inset
+
+) que resuelve en cada iteración el sistema de ecuaciones expuesto en el
+ planteamiento teórico.
+ El bloque 'motor_1' recibe el volatje del ESC (V_ESC, que sería equivalente
+ a 
+\begin_inset Formula $V_{m}$
+\end_inset
+
+) y un valor de la intensidad 
+\begin_inset Formula $I_{m}$
+\end_inset
+
+ (cuyo cálculo se explicará más adelante).
+ Con estos valores se resuelven las ecuaciones 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq: Im"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq: Vm"
+
+\end_inset
+
+, obteniéndose a la salida del bloque los valores de RPM (
+\begin_inset Formula $n$
+\end_inset
+
+) y Peje (
+\begin_inset Formula $P_{eje_{motor}}$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+El valor de RPM, junto con la condición de vuelo (V_flight y airDensity)
+ entran en el bloque 'Propeller_1'.
+ De esta forma se obtienen la potencia demandada en el eje por la hélice
+ y el empuje, interpolando en las tablas del fabricante.
+\end_layout
+
+\begin_layout Standard
+Queda por obligar a que se cumpla el acoplamiento (ecuación 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq: Peje"
+
+\end_inset
+
+).
+ Para ello se utiliza el bloque de 'algebraic constraint', cuya entrada
+ será 
+\begin_inset Formula $P_{eje_{motor}}-P_{eje_{hélice}}$
+\end_inset
+
+.
+ Este bloque irá variando un parámetro a su salida (
+\begin_inset Formula $I_{m}$
+\end_inset
+
+ en este caso) hasta que se anule el valor a su entrada: 
+\begin_inset Formula $P_{eje_{motor}}-P_{eje_{hélice}}=0$
+\end_inset
+
+.
+ De esta forma, el valor de 
+\begin_inset Formula $I_{m}$
+\end_inset
+
+ que entra al bloque por primera vez no es más que una estimación inicial.
+ Simulink realizará este proceso iterativo hasta encontrar el valor de intensida
+d absorbida por el motor 
+\begin_inset Formula $I_{m}$
+\end_inset
+
+ que haga que se cumpla la ecuación 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq: Peje"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Finalmente se construyen los vectores de tracción y momentos en ejes cuerpo
+ para cada motor, en función de su orientación y posición respecto al centro
+ de gravedad.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/noMappedMotor_1.pdf
+	width 100text%
+	BoundingBox 180bp 195bp 792bp 420bp
+	clip
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Modelo del sistema propulsivo sin necesidad de mapeado
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Modelo-del-sistema-no-mapeado"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Modelo del motor eléctrico
+\end_layout
+
+\begin_layout Standard
+En la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Modelo-del-motor-electrico"
+
+\end_inset
+
+ se muestra la implementación en Simulink de la resolución analítica del
+ sistema de ecuaciones del motor.
+\end_layout
+
+\begin_layout Standard
+En los casos en los que el voltaje de entrada al motor sea menor que 
+\begin_inset Formula $I_{0}R_{m}$
+\end_inset
+
+, el motor no sería capaz de ponerse en movimiento.
+ Puesto que este caso en particular no se recoge implementando las ecuaciones
+ del motor, ha sido necesario recurrir al modelo de la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Esquema-apagar-motor"
+
+\end_inset
+
+ para que el modelo no proporcione resultados erróneos.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/Motor_1.pdf
+	width 100text%
+	BoundingBox 0bp 180bp 792bp 440bp
+	clip
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Esquema del modelo implementado para poder apagar el motor
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Esquema-apagar-motor"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/ActiveMotor1.pdf
+	width 100text%
+	BoundingBox 0bp 190bp 792bp 420bp
+	clip
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Modelo del motor eléctrico
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Modelo-del-motor-electrico"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Modelo de la hélice
+\end_layout
+
+\begin_layout Standard
+Consiste en la interpolación en las tablas del fabricante y en una dimensionaliz
+ación de los coeficientes de potencia y empuje a través de las siguientes
+ ecuaciones:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+T=\frac{1}{2}\rho n^{2}D^{4}C_{T}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+P=\frac{1}{2}\rho n^{3}D^{5}C_{P}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/Propeller_1.pdf
+	width 100text%
+	BoundingBox 0bp 110bp 792bp 505bp
+	clip
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Modelo de la hélice a partir de prelookups
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Modelo-de-helice"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Modelo de torque
+\end_layout
+
+\begin_layout Standard
+Funciona interpolando el torque en las tablas de la hélice.
+ Debido a que el valor inferior de RPM proporcionado en las tablas es de
+ 1000 y el tipo de intepolación del lookup es clip, para valores inferiores
+ a 1000 rpm, el bloque devolvería un torque correspondiente a 1000 RPM.
+ Esto se soluciona con el Switch de la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Implementación-del-modelo-torque"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/Torque.pdf
+	width 100text%
+	BoundingBox 0bp 200bp 792bp 410bp
+	clip
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Implementación del modelo de torque
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Implementación-del-modelo-torque"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Motores-mapeados"
+
+\end_inset
+
+Motores mapeados
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/mappedMotor_1.pdf
+	width 100text%
+	BoundingBox 245bp 220bp 792bp 390bp
+	clip
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Modelo de la planta propulsiva mapeada
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Modelo-del-mapeado"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/Motor and Propeller Coupling_1.pdf
+	width 100text%
+	BoundingBox 0bp 170bp 792bp 450bp
+	clip
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Acoplamientro del motor y la hélice
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Acoplamientro-del-motor-helice-mapeado"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Batería
+\end_layout
+
+\begin_layout Standard
+La batería se encuentra declarada dentro del propio bloque de Simulink por
+ medio de constantes tal y como se muestra en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Datos-de-la-bateria"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/Battery.pdf
+	width 100text%
+	BoundingBox 0bp 210bp 792bp 420bp
+	clip
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Datos de la batería
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Datos-de-la-bateria"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En el momento de declarar la batería no se encontró una ventaja significativa
+ en crear expresamente un script de MATLAB para ello.
+\end_layout
+
+\begin_layout Standard
+Echando la vista atrás, pudiese haber sido interesante de cara a manterner
+ uniformidad con el resto de las declaraciones de parámetros que prácticamente
+ la totalidad de ellos se realiza en scripts externos, sin embargo, queda
+ pendiente para una futura ampliación el realizarlo, así como crear una
+ biblioteca de baterías entre las que se pueda elegir para estudiar las
+ actuaciones de la aeronave en función de ésta.
+\end_layout
+
+\begin_layout Standard
+También queda pendiente para una futura fase de mejora el limitar la máxima
+ descarga de la batería a través del parámetro de máxima descarga, garantizando
+ de esta forma con el simulador que nunca se alcanza dicha tasa de descarga
+ y que no peligra la batería.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/Propulsion.pdf
+	width 100text%
+	BoundingBox 580bp 260bp 792bp 350bp
+	clip
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Esquema del cálculo de la autonomía restante
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Esquema-del-cálculo-autonomia"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Por último a partir de la capacidad de la batería y la profundidad de descarga,
+ se puede calcular la capacidad nominal, de la cual se puede obtener en
+ cada instante la capacidad restante símplemente restandole la capacidad
+ consumida hasta entonces.
+ 
+\end_layout
+
+\begin_layout Section
+Modelo de Inercia
+\end_layout
+
+\begin_layout Standard
+El bloque de inercia (figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Modelo-de-inercia"
+
+\end_inset
+
+) es el encargado de importar en el simulador todos los parámetro másicos
+ e inerciales necesarios.
+ Estos parámetros se cargan a la estructura LD cuando se inicia el proyecto
+ a través del script 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/Inertia/loadInertiaData.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+A continuación se definen los parámetros básicos del modelo de inercia,
+ así como una serie de parámetros avanzados a utilizar si se contempla variación
+ de masa.
+\end_layout
+
+\begin_layout Subsection
+Parámetros básicos
+\end_layout
+
+\begin_layout Itemize
+LD.Inertia.mass: Masa al despegue del LIBIS.
+\end_layout
+
+\begin_layout Itemize
+LD.Inertia.CG: Vector de posición del centro de gravedad, en ejes cuerpo con
+ origen en el morro de la aeronave.
+\end_layout
+
+\begin_layout Itemize
+Tensor de inercia en ejes cuerpo, construido a partir de los valores de
+ cada una de sus componentes.
+\end_layout
+
+\begin_layout Subsection
+Variacion de la masa
+\end_layout
+
+\begin_layout Standard
+Si se contempla la variación de la masa durante el vuelo, hay una serie
+ de parámetros adiccionales que deben ser especificados (su valor es nulo
+ por defecto):
+\end_layout
+
+\begin_layout Itemize
+LD.Inertia.dmass: variación de la masa respecto al tiempo.
+\end_layout
+
+\begin_layout Itemize
+LD.Inertia.dmassdxb, LD.Inertia.dmassdyb, LD.Inertia.dmassdzb: Componentes del
+ vector de velocidad a la cual la masa se expulsa (o se gana) en ejes cuerpo.
+\end_layout
+
+\begin_layout Itemize
+Variaciones del tensor de inercia en ejes cuerpo respecto al tiempo.
+\end_layout
+
+\begin_layout Subsection
+Variación del centro de gravedad
+\end_layout
+
+\begin_layout Standard
+En caso de que la masa varíe, puede hacerlo también la posición del centro
+ de gravedad.
+ Se define una ley lineal que permite obtener la posición del centro de
+ gravedad en función de la masa en cada instante.
+ Para ello es necesario definir los siguientes valores:
+\end_layout
+
+\begin_layout Itemize
+Al despegue:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+LD.Inertia.fullMass: Masa al despegue.
+\end_layout
+
+\begin_layout Itemize
+LD.Inertia.fullCG: Posición en ejes X cuerpo situados en el morro del centro
+ de gravedad.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+En vacío (cuando se haya soltado toda la carga eyectable):
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+LD.Inertia.emptyMass: Masa al eyectar toda la carga.
+\end_layout
+
+\begin_layout Itemize
+LD.Inertia.emptyCG: Posición en ejes X cuerpo situados en el morro del centro
+ de gravedad al eyectar la carga.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/Inertia Block.pdf
+	width 100text%
+	BoundingBox 0bp 150bp 792bp 470bp
+	clip
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Modelo de inercia
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Modelo-de-inercia"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

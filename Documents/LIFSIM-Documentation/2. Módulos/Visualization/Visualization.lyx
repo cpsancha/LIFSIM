@@ -1,0 +1,247 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass PhDThesisLyX
+\begin_preamble
+\usepackage{tocloft}    % tocloft for table of contents style
+\usepackage[compact]{titlesec}  % titlesec for title section layout
+\usepackage{changepage}
+
+% Main matter
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\titleformat{\chapter}{\Huge\bfseries}{\chaptername\ \thechapter}{0pt}{\vskip 0.05em \raggedright}%
+\titlespacing{\chapter}{0em}{0em}{0.5em}
+\titlespacing{\section}{0em}{1em}{-0.5em}
+\titlespacing{\subsection}{0em}{0em}{-0.5em}
+%\titlespacing{<command>}{<left>}{<before-sep>}{<after-sep>}[<right>]
+\end_preamble
+\options a4paper,12pt,oneside,print,authoryear,times
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package babel
+\inputencoding auto
+\fontencoding global
+\font_roman "lmodern" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3cm
+\topmargin 3cm
+\rightmargin 2.5cm
+\bottommargin 3cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Visualización
+\end_layout
+
+\begin_layout Standard
+Este bloque permite el seguimiento de todas las variables que definen el
+ estado de la aeronave.
+ Se compone de 3 elementos principales: Scopes, Visualización 3D y panel
+ de instrumentos.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{adjustwidth}{-1.5cm}{0cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figs/Visualization.pdf
+	width 115text%
+	BoundingBox 0bp 115bp 792bp 500bp
+	clip
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{adjustwidth}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Visualización: Bloque Simulink
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Scopes
+\end_layout
+
+\begin_layout Standard
+Pueden abrirse de manera individual y muestran la evolución temporal del
+ vector de posición en ejes tierra, ángulos de Euler, altitud, latitud,
+ longitud, velocidades en ejes cuerpo y tierra, ángulos alpha y beta y capacidad
+ restante en las baterías.
+\end_layout
+
+\begin_layout Section
+Visualización 3D
+\end_layout
+
+\begin_layout Standard
+Se muestra por defecto al abrir el modelo.
+ Para volver a abrirlo en caso de cierre, hay que hacer doble click sobre
+ el bloque 'VR sink'.
+\end_layout
+
+\begin_layout Standard
+Su utilidad principal es comprobar que el comportamiento de la aeronave
+ coincide con lo esperado sin tener que consultar varios scopes de manera
+ simultánea.
+\end_layout
+
+\begin_layout Standard
+El modelo consta de una visualización de ejemplo de Matlab en el que se
+ ha añadido el modelo 3D del LIBIS.
+ Se puede cambiar entre las diferentes vistas utlizando las herramientas
+ de la barra inferior ('Next Viewpoint').
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/vr_snapshot.tif
+	width 70text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Entorno 3D
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Panel de instrumentos
+\end_layout
+
+\begin_layout Standard
+Consta de una serie de displays que emulan el panel de instrumentos de una
+ cabina convencional.
+\end_layout
+
+\end_body
+\end_document

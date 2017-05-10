@@ -1,0 +1,431 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass PhDThesisLyX
+\begin_preamble
+\usepackage{tocloft}    % tocloft for table of contents style
+\usepackage[compact]{titlesec}  % titlesec for title section layout
+\usepackage{changepage}
+
+% Main matter
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\titleformat{\chapter}{\Huge\bfseries}{\chaptername\ \thechapter}{0pt}{\vskip 0.05em \raggedright}%
+\titlespacing{\chapter}{0em}{0em}{0.5em}
+\titlespacing{\section}{0em}{1em}{-0.5em}
+\titlespacing{\subsection}{0em}{0em}{-0.5em}
+%\titlespacing{<command>}{<left>}{<before-sep>}{<after-sep>}[<right>]
+\end_preamble
+\options a4paper,12pt,oneside,print,authoryear,times
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package babel
+\inputencoding auto
+\fontencoding global
+\font_roman "lmodern" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3cm
+\topmargin 3cm
+\rightmargin 2.5cm
+\bottommargin 3cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Sistema de Control de Vuelo (FCS)
+\end_layout
+
+\begin_layout Standard
+El sistema de control de vuelo establece las deflexiones de las superficies
+ de mando y porcentaje de voltaje de los motores necesarios para cumplir
+ con las demandas del piloto.
+ El bloque consta de 5 subsistemas principales correspondientes a cada uno
+ de los modos de control definidos en el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:CmdPilot"
+
+\end_inset
+
+.
+ Dentro de las peculiaridades de cada uno de los modos de control, se puede
+ hacer una primera clasificación global de los autopilotos implementados:
+\end_layout
+
+\begin_layout Enumerate
+Quadrotor
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Control longitudinal
+\end_layout
+
+\begin_layout Enumerate
+Control lateral
+\end_layout
+
+\begin_layout Enumerate
+Control direccional
+\end_layout
+
+\begin_layout Enumerate
+Control en altitud
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Ala fija
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Control en altitud (Altitude hold)
+\end_layout
+
+\begin_layout Enumerate
+Control en velocidad con elevador (Airspeed hold with elevator)
+\end_layout
+
+\begin_layout Enumerate
+Control en ángulo de cabeceo
+\end_layout
+
+\begin_layout Enumerate
+Control en ángulo de balance
+\end_layout
+
+\begin_layout Enumerate
+Control en ángulo de guiñada
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+Los diferentes modos de control se construyen combinando los autopilotos
+ anteriores y/o modificando ciertos parámetros en los mismos.
+\end_layout
+
+\begin_layout Standard
+La solución adoptada para el diseño del FCS no pretende ser definitiva,
+ sino permitir realizar una serie de maniobras básicas que contribuyan a
+ validar el conjunto del simulador.
+ Sin el FCS no sería posible realizar un vuelo a punto fijo como quadrotor
+ o mantener un vuelo horizontal rectilíneo y uniforme.
+\end_layout
+
+\begin_layout Standard
+El tuneado de las ganacias se ha realizado de manera iterativa, comprobando
+ que las respuestas de los inner-loops fueran lo suficientemente rápidas
+ y precisas antes de tunear los bucles externos.
+\end_layout
+
+\begin_layout Standard
+A continuación se realiza una descripción breve de los controladores implementad
+os (en cascada y con ganacias proporcionales en su gran mayoría) que pueden
+ servir como base para futuros desarrollos.
+ 
+\end_layout
+
+\begin_layout Section
+Quadrotor
+\end_layout
+
+\begin_layout Standard
+El vuelo como quadrotor del LIBIS se diferencia de un quadrotor habitual
+ en que el momento generado por los motores traseros y delanteros no es
+ el mismo aunque proporcionen la misma tracción, puesto que se encuentran
+ a longitudes diferentes respecto al centro de gravedad.
+ Esto, unido a que el exceso de tracción disponible respecto al vuelo a
+ punto fijo es pequeño, provoca un fuerte acoplamiento entre los diferentes
+ canales (longitudinal, lateral, direccional, altura).
+ 
+\end_layout
+
+\begin_layout Standard
+La principal consecuencia del acoplamiento es que al demandar un posición
+ que involucre control en varios canales, la respuesta difiera considerablemente
+ respecto a la que se obtendría con el canal aislado, pudiendo no llegar
+ a satisfacer la demanda del piloto.
+\end_layout
+
+\begin_layout Standard
+Se ha conseguido una respuesta satisfactoria limitando las demandas de cada
+ canal por separado y ajustando las ganancias en conjunto, a costa de una
+ respuesta más lenta.
+\end_layout
+
+\begin_layout Subsection
+Control longitudinal
+\end_layout
+
+\begin_layout Standard
+Controlador proporcional en cascada donde se realimentan las siguientes
+ variables (de inner-loop a outer-loop): velocidad angular de cabeceo 
+\begin_inset Formula $q$
+\end_inset
+
+, ángulo de asiento 
+\begin_inset Formula $\theta$
+\end_inset
+
+, velocidad longitudinal, posición X en ejes tierra.
+ El control de realiza a través de un aumento de 
+\begin_inset Formula $\delta_{throttle}$
+\end_inset
+
+ para los motores delanteros (T5, T2) y una disminución para los traseros
+ (T3,T4).
+\end_layout
+
+\begin_layout Standard
+En el caso de control por joystick sólo se realimentan: velocidad angular
+ de cabeceo 
+\begin_inset Formula $q$
+\end_inset
+
+ y ángulo de asiento 
+\begin_inset Formula $\theta$
+\end_inset
+
+, donde el piloto demanda un ángulo de asiento.
+\end_layout
+
+\begin_layout Subsection
+Control lateral
+\end_layout
+
+\begin_layout Standard
+Controlador proporcional en cascada donde se realimentan las siguientes
+ variables (de inner-loop a outer-loop): velocidad angular de balance 
+\begin_inset Formula $p$
+\end_inset
+
+, ángulo de balance 
+\begin_inset Formula $\phi$
+\end_inset
+
+, velocidad lateral, posición Y en ejes tierra.
+ El control de realiza a través de un aumento de 
+\begin_inset Formula $\delta_{throttle}$
+\end_inset
+
+ para los motores del lado izquierdo (T5, T4) y una disminución para los
+ del lado derecho (T3,T2).
+\end_layout
+
+\begin_layout Standard
+En el caso de control por joystick sólo se realimentan: velocidad angular
+ de balance 
+\begin_inset Formula $p$
+\end_inset
+
+ y ángulo de balance 
+\begin_inset Formula $\phi$
+\end_inset
+
+, donde el piloto demanda un ángulo de balance.
+\end_layout
+
+\begin_layout Subsection
+Control direccional
+\end_layout
+
+\begin_layout Standard
+Controlador proporcional en cascada donde se realimentan las siguientes
+ variables (de inner-loop a outer-loop): velocidad angular de guiñada 
+\begin_inset Formula $r$
+\end_inset
+
+, ángulo de guiñada 
+\begin_inset Formula $\psi$
+\end_inset
+
+.
+ El control de realiza a través de un aumento de 
+\begin_inset Formula $\delta_{throttle}$
+\end_inset
+
+ para los motores del lado izquierdo (T2, T4) y una disminución para los
+ del lado derecho (T3,T5).
+\end_layout
+
+\begin_layout Subsection
+Control en altitud
+\end_layout
+
+\begin_layout Standard
+Controlador PID donde se realimenta la altitud medida y se controla aumentando
+ la tracción de los 4 motores verticales por igual.
+\end_layout
+
+\begin_layout Section
+Ala fija
+\end_layout
+
+\begin_layout Subsection
+Control en altitud (Altitude hold)
+\end_layout
+
+\begin_layout Standard
+Consiste en un controlador proporcional en cascada donde se realimentan
+ las siguientes variables (de inner-loop a outer-loop): velocidad angular
+ de cabeceo 
+\begin_inset Formula $q$
+\end_inset
+
+, ángulo de ataque 
+\begin_inset Formula $\alpha$
+\end_inset
+
+, y altitud.
+ El control se realiza a través de la deflexión del elevador 
+\begin_inset Formula $\delta_{e}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Control en velocidad con elevador (Airspeed hold with elevator)
+\end_layout
+
+\begin_layout Standard
+Consiste en un controlador proporcional donde se realimenta únicamente el
+ módulo de la velocidad en ejes cuerpo.
+ El control se realiza a través del elevador 
+\begin_inset Formula $\delta_{e}$
+\end_inset
+
+.
+ Se utiliza durante los modos de control 'Transition' y 'Climb'.
+\end_layout
+
+\begin_layout Subsection
+Control en cabeceo
+\end_layout
+
+\begin_layout Standard
+Consiste en un controlador proporcional en cascada realimentando (de inner-loop
+ a outer-loop): velocidad angular de cabeceo 
+\begin_inset Formula $q$
+\end_inset
+
+ y ángulo de asiento 
+\begin_inset Formula $\theta$
+\end_inset
+
+.
+ El control se realiza a través de la deflexión del elevador 
+\begin_inset Formula $\delta_{e}$
+\end_inset
+
+.
+ Se utiliza en el modo de control 'Cruise' cuando el joystick está activo.
+\end_layout
+
+\begin_layout Subsection
+Control en guiñada
+\end_layout
+
+\begin_layout Standard
+Controlador proporcional en cascada donde se realimentan las siguientes
+ variables (de inner-loop a outer-loop): velocidad angular de guiñada 
+\begin_inset Formula $r$
+\end_inset
+
+, ángulo de guiñada 
+\begin_inset Formula $\psi$
+\end_inset
+
+.
+ El control de realiza a través de una deflexión del rudder 
+\begin_inset Formula $\delta_{r}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Control en balance
+\end_layout
+
+\begin_layout Standard
+Controlador proporcional en cascada donde se realimentan las siguientes
+ variables (de inner-loop a outer-loop): velocidad angular de balance 
+\begin_inset Formula $p$
+\end_inset
+
+ y ángulo de balance 
+\begin_inset Formula $\phi$
+\end_inset
+
+.
+ El control se realiza a través de la deflexión de alerones 
+\begin_inset Formula $\delta_{fr}=-\delta_{fl}$
+\end_inset
+
+.
+\end_layout
+
+\end_body
+\end_document
