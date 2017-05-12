@@ -1074,6 +1074,12 @@ name "fig:Valores-de-mappedMotors"
 \end_layout
 
 \begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Fundamento-Teórico"
+
+\end_inset
+
 Fundamento Teórico
 \end_layout
 
@@ -1158,15 +1164,15 @@ V_{m}=\frac{n}{K_{v}}+I_{m}R_{m}\label{eq: Vm}
 
 \begin_layout Standard
 Donde 
-\begin_inset Formula $I_{0}\left(\unit{A}\right)$
+\begin_inset Formula $I_{0}\left[A\right]$
 \end_inset
 
 , 
-\begin_inset Formula $R_{m}\left(\unit{\Omega}\right)$
+\begin_inset Formula $R_{m}\left[\Omega\right]$
 \end_inset
 
  y 
-\begin_inset Formula $K_{v}\left(\unit{\nicefrac{V}{\Omega}}\right)$
+\begin_inset Formula $K_{v}\left[\nicefrac{V}{\Omega}\right]$
 \end_inset
 
  son constantes características del motor (intensidad en vacío, resistencia
@@ -1368,7 +1374,7 @@ status collapsed
 \align center
 \begin_inset Graphics
 	filename Figs/basicEquations.png
-	width 75text%
+	width 65text%
 	BoundingBox 0bp 15bp 588bp 183bp
 	clip
 
@@ -1400,8 +1406,7 @@ name "fig:Parámetros-existentes-APC"
 
 \begin_layout Standard
 El usuario sólo debe descargar los ficheros de datos de cuantas hélices
- desee, revisarlos para garantizar que el programa los puede procesar sin
- problemas y guardarlos en la carpeta 
+ desee, guardarlos en la carpeta 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1438,7 +1443,20 @@ XXX
 \end_inset
 
  será el nombre del modelo con el que se guardará la hélice en la librería
- y a partir del cual, posteriormente se hará referencia a ésta.
+ y a partir del cual, posteriormente se hará referencia a ésta, y realizar
+ una serie de revisiones para garantizar que el script 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/Propulsion/importPropellerData.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ los pueda procesar.
 \end_layout
 
 \begin_layout Standard
@@ -1534,7 +1552,24 @@ LD
 \end_inset
 
  cada uno de los 5 motores, las posiciones y los modelos de la librería
- que se asignan a cada uno de ellos.
+ que se asignan a cada uno de ellos, teniendo en cuenta que si se modifican
+ los nombres, es necesario cambiar todas las referencias en el modelo de
+ Simulink.
+ Finalmente se repite este mismo procedimiento con la librería de hélices,
+ identificando las deseadas para cada motor y asignándolas en la estructura
+ 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+LD
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Subsection
@@ -1542,15 +1577,30 @@ Motores sin mapear
 \end_layout
 
 \begin_layout Standard
-Se trata de un modelo en Simulink (figura 
+Como ya se ha indicado anteriormente, existirán dos formas alternativas
+ de calcular el sistema propulsivo, en este apartado explicaremos una de
+ ellas.
+\end_layout
+
+\begin_layout Standard
+La primera de forma, denominada coloquialmente 
+\begin_inset Quotes eld
+\end_inset
+
+motores no mapeados
+\begin_inset Quotes erd
+\end_inset
+
+, se trata de un modelo implementado en Simulink, mostrado en la figura
+ 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Modelo-del-sistema-no-mapeado"
 
 \end_inset
 
-) que resuelve en cada iteración el sistema de ecuaciones expuesto en el
- planteamiento teórico.
+, que resuelve en cada iteración el sistema de ecuaciones expuesto en el
+ apartado de planteamiento teórico.
  El bloque 'motor_1' recibe el volatje del ESC (V_ESC, que sería equivalente
  a 
 \begin_inset Formula $V_{m}$
@@ -1584,6 +1634,73 @@ reference "eq: Vm"
 \end_inset
 
 ).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{adjustwidth}{-1cm}{0cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figs/noMappedMotor_1.pdf
+	width 115text%
+	BoundingBox 180bp 195bp 792bp 420bp
+	clip
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{adjustwidth}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Modelo del sistema propulsivo sin necesidad de mapeado
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Modelo-del-sistema-no-mapeado"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1643,48 +1760,13 @@ Finalmente se construyen los vectores de tracción y momentos en ejes cuerpo
  de gravedad.
 \end_layout
 
-\begin_layout Standard
-\begin_inset Float figure
-placement h
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename Figs/noMappedMotor_1.pdf
-	width 100text%
-	BoundingBox 180bp 195bp 792bp 420bp
-	clip
-
-\end_inset
-
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Modelo del sistema propulsivo sin necesidad de mapeado
+\begin_layout Subsubsection
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:Modelo-del-sistema-no-mapeado"
+name "subsec:Modelo-del-motor"
 
 \end_inset
 
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
 Modelo del motor eléctrico
 \end_layout
 
@@ -1698,6 +1780,47 @@ reference "fig:Modelo-del-motor-electrico"
 
  se muestra la implementación en Simulink de la resolución analítica del
  sistema de ecuaciones del motor.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/ActiveMotor1.pdf
+	width 100text%
+	BoundingBox 30bp 200bp 760bp 480bp
+	clip
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Modelo del motor eléctrico
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Modelo-del-motor-electrico"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1729,7 +1852,7 @@ status collapsed
 \begin_inset Graphics
 	filename Figs/Motor_1.pdf
 	width 100text%
-	BoundingBox 0bp 180bp 792bp 440bp
+	BoundingBox 50bp 180bp 750bp 480bp
 	clip
 
 \end_inset
@@ -1756,41 +1879,15 @@ name "fig:Esquema-apagar-motor"
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-placement h
-wide false
-sideways false
-status collapsed
+\begin_inset ERT
+status open
 
 \begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename Figs/ActiveMotor1.pdf
-	width 100text%
-	BoundingBox 0bp 190bp 792bp 420bp
-	clip
 
-\end_inset
+~
+\backslash
 
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Modelo del motor eléctrico
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Modelo-del-motor-electrico"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
+\backslash
 
 \end_layout
 
@@ -1818,9 +1915,6 @@ T=\frac{1}{2}\rho n^{2}D^{4}C_{T}
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
 \begin_inset Formula 
 \[
 P=\frac{1}{2}\rho n^{3}D^{5}C_{P}
@@ -1832,6 +1926,17 @@ P=\frac{1}{2}\rho n^{3}D^{5}C_{P}
 \end_layout
 
 \begin_layout Standard
+Un esquema de la implementación realizada se muestra en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Modelo-de-helice"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 placement h
 wide false
@@ -1840,11 +1945,37 @@ status collapsed
 
 \begin_layout Plain Layout
 \align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{adjustwidth}{-1.5cm}{0cm}
+\end_layout
+
+\end_inset
+
+
 \begin_inset Graphics
 	filename Figs/Propeller_1.pdf
-	width 100text%
-	BoundingBox 0bp 110bp 792bp 505bp
+	width 115text%
+	BoundingBox 0bp 110bp 780bp 505bp
 	clip
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{adjustwidth}
+\end_layout
 
 \end_inset
 
@@ -1870,6 +2001,21 @@ name "fig:Modelo-de-helice"
 \end_inset
 
 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+~
+\backslash
+
+\backslash
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -1888,7 +2034,8 @@ reference "fig:Implementación-del-modelo-torque"
 
 \end_inset
 
-.
+ que produce que por debajo de 1000 RPM los motores no provoquen torque
+ al girar muy despacio.
 \end_layout
 
 \begin_layout Standard
@@ -1900,11 +2047,37 @@ status collapsed
 
 \begin_layout Plain Layout
 \align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{adjustwidth}{-1cm}{0cm}
+\end_layout
+
+\end_inset
+
+
 \begin_inset Graphics
 	filename Figs/Torque.pdf
-	width 100text%
-	BoundingBox 0bp 200bp 792bp 410bp
+	width 110text%
+	BoundingBox 0bp 200bp 780bp 410bp
 	clip
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{adjustwidth}
+\end_layout
 
 \end_inset
 
@@ -1943,6 +2116,35 @@ Motores mapeados
 \end_layout
 
 \begin_layout Standard
+La segunda opción implementada para el cálculo de la planta propulsiva es
+ la mostrada en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Modelo-del-mapeado"
+
+\end_inset
+
+ y coloquialmente denominada 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+motores mapeados
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ En este caso el procedimiento de cálculo de la potencia transmitida por
+ el motor al eje y el acoplamiento de ésta con la potencia demandada por
+ la hélice, se realiza a través de un solver numérico en MATLAB para un
+ barrido en los tres parámetros de entrada definidos anteriormente, véase,
+ voltaje proporcionado por el variador, altura y velocidad de vuelo.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 placement h
 wide false
@@ -1951,11 +2153,37 @@ status collapsed
 
 \begin_layout Plain Layout
 \align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{adjustwidth}{-1cm}{0cm}
+\end_layout
+
+\end_inset
+
+
 \begin_inset Graphics
 	filename Figs/mappedMotor_1.pdf
-	width 100text%
-	BoundingBox 245bp 220bp 792bp 390bp
+	width 115text%
+	BoundingBox 245bp 220bp 780bp 390bp
 	clip
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{adjustwidth}
+\end_layout
 
 \end_inset
 
@@ -1984,6 +2212,34 @@ name "fig:Modelo-del-mapeado"
 \end_layout
 
 \begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+~
+\backslash
+
+\backslash
+
+\end_layout
+
+\end_inset
+
+Por último, a partir de estas soluciones almacenadas, se obtienen los valores
+ de tracción, potencia, intensidad y RPM usados en cada instante de simulación
+ a partir de una interpolación lineal entre los valores calculados más cercanos
+ mediante prelookups, tal y como se muestra en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Acoplamientro-del-motor-helice-mapeado"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 placement h
 wide false
@@ -1992,11 +2248,37 @@ status collapsed
 
 \begin_layout Plain Layout
 \align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{adjustwidth}{-0.75cm}{0cm}
+\end_layout
+
+\end_inset
+
+
 \begin_inset Graphics
 	filename Figs/Motor and Propeller Coupling_1.pdf
-	width 100text%
-	BoundingBox 0bp 170bp 792bp 450bp
+	width 110text%
+	BoundingBox 0bp 170bp 780bp 450bp
 	clip
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{adjustwidth}
+\end_layout
 
 \end_inset
 
@@ -2022,6 +2304,152 @@ name "fig:Acoplamientro-del-motor-helice-mapeado"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+La función encargada de realizar el mapeado de las soluciones a partir de
+ los parámetros del barrido definidos previamente es 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/Propulsion/motorPrope-llerCoupling/propulsionDataMapping.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Ésta calcula los diferentes valores del mapeado a partir de sus límites
+ y tamaño, llama al solver numérico con cada caso haciendo uso del cálculo
+ multinucleo, reescala las soluciones y las almacena de forma estructurada,
+ junto con los flags del grado de convergencia conseguido, mostrando los
+ correspondientes mensajes de error de no alcanzarse una convergencia adecuada.
+\end_layout
+
+\begin_layout Standard
+La función a resolver por este solver es la ubicada en 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/Propulsion/-motorPropellerCoupling/motorPropellerCoupling.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+ que es la implementación matemática del fundamento teórico expuesto en
+ el apartado 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Fundamento-Teórico"
+
+\end_inset
+
+, teniendo en cuenta la necesidad de apagar el motor cuando el voltaje proporcio
+nado por el variador no sea suficiente para mover el motor como se indica
+ en la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Modelo-del-motor"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+La complejidad de este apartado radica en la necesidad de reducir al mínimo
+ el número de veces que se realiza el mapeado, ya que, pese a que se ha
+ implementado de forma que se usen todos los núcleos del ordenador para
+ el cálculo, lo cual reduce significativamente el tiempo de computación
+ frente a la programación mononúcleo habitual de MATLAB, cada vez que se
+ ejecuta éste, a poco fino que sea el barrido en cada parámetro, requiere
+ de varias horas para finalizar.
+\end_layout
+
+\begin_layout Standard
+Para ello, es necesario almacenar los valores calculados, junto con los
+ datos de los motores, las hélices y el barrido de parámetros usados para
+ generarlos, y comprobar en cada ejecución del proyecto si se están pidiendo
+ los mismos del caso anterior, o si alguno de ellos ha experimentado alguna
+ variación.
+ El script encargado de ello es 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/Propulsion/motorPropellerCoupling/loadMappedData.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+, el cual recibe los valores del nombre de fichero correspondiente a ese
+ motor y hélice, así como los valores del mapeado deseado, comprueba los
+ si los existentes en el interior del fichero de datos son los mismos y
+ de ser así los carga, o si no, devuelve campos vacios para que se calcule
+ la solución con el nuevo mapeado.
+\end_layout
+
+\begin_layout Standard
+Los valores de los límites del barrido y de el número de valores de éste
+ se definen en 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+/dataImport/Propulsion/loadPropulsionData.m
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ A su vez, en el inicio de este script existe otro flag denominado 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+improveMapping
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+, cuyo valor debería encontrarse siempre activo, y que determina, en el
+ caso de encontrarse previamente activado el flag 
+\begin_inset Quotes eld
+\end_inset
+
+
+\shape italic
+mappedMotors
+\shape default
+
+\begin_inset Quotes erd
+\end_inset
+
+, el comportamiento del programa en el caso de que al calcular el acoplamiento,
+ o al cargar los datos de un fichero de soluciones, se encuentre algun flag
+ de que la solución no ha convergido para algunos valores de los parámetros
+ al realizar mapeado, o que lo haya hecho sin la suficientre precisión.
+\end_layout
+
+\begin_layout Standard
+En el caso de que este flag se encuentre activo, se volverán a calcular
+ estos casos únicamente, a partir de otro punto inicial generado de forma
+ aleatoria, tratando de que se obtenga en este caso una convergencia correcta,
+ y se generará un fichero de soluciones con los datos calculados previamente
+ sustituyendo los valores corregidos de la solución.
+ Si por el contrario, se encuentra desactivado, se ignoran los flags de
+ convergencia y se utilizan directamente los valores calculados/cargados.
 \end_layout
 
 \begin_layout Subsection
@@ -2084,15 +2512,12 @@ name "fig:Datos-de-la-bateria"
 \begin_layout Standard
 En el momento de declarar la batería no se encontró una ventaja significativa
  en crear expresamente un script de MATLAB para ello.
-\end_layout
-
-\begin_layout Standard
-Echando la vista atrás, pudiese haber sido interesante de cara a manterner
- uniformidad con el resto de las declaraciones de parámetros que prácticamente
- la totalidad de ellos se realiza en scripts externos, sin embargo, queda
- pendiente para una futura ampliación el realizarlo, así como crear una
- biblioteca de baterías entre las que se pueda elegir para estudiar las
- actuaciones de la aeronave en función de ésta.
+ Sin embargo, echando la vista atrás, pudiese haber sido interesante de
+ cara a manterner uniformidad con el resto de las declaraciones de parámetros,
+ que prácticamente la totalidad de ellas se realiza en scripts externos,
+ quedando pendiente para una futura ampliación el realizarlo, así como crear
+ una biblioteca de baterías entre las que se pueda elegir para estudiar
+ las actuaciones de la aeronave en función de ésta.
 \end_layout
 
 \begin_layout Standard
@@ -2111,11 +2536,37 @@ status collapsed
 
 \begin_layout Plain Layout
 \align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{adjustwidth}{-1cm}{0cm}
+\end_layout
+
+\end_inset
+
+
 \begin_inset Graphics
 	filename Figs/Propulsion.pdf
-	width 100text%
+	width 115text%
 	BoundingBox 580bp 260bp 792bp 350bp
 	clip
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{adjustwidth}
+\end_layout
 
 \end_inset
 
@@ -2145,9 +2596,16 @@ name "fig:Esquema-del-cálculo-autonomia"
 
 \begin_layout Standard
 Por último a partir de la capacidad de la batería y la profundidad de descarga,
- se puede calcular la capacidad nominal, de la cual se puede obtener en
- cada instante la capacidad restante símplemente restandole la capacidad
- consumida hasta entonces.
+ se puede calcular la capacidad nominal de ésta, de la cual se puede obtener
+ en cada instante la capacidad restante símplemente restandole la capacidad
+ consumida hasta entonces, tal y como se muestra en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Esquema-del-cálculo-autonomia"
+
+\end_inset
+
+.
  
 \end_layout
 
@@ -2180,6 +2638,73 @@ reference "fig:Modelo-de-inercia"
 
 .
  
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{adjustwidth}{-1cm}{0cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figs/Inertia Block.pdf
+	width 115text%
+	BoundingBox 0bp 150bp 780bp 470bp
+	clip
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{adjustwidth}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Modelo de inercia
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Modelo-de-inercia"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2271,46 +2796,5 @@ LD.Inertia.emptyCG: Posición en ejes X cuerpo situados en el morro del centro
 \end_layout
 
 \end_deeper
-\begin_layout Standard
-\begin_inset Float figure
-placement h
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename Figs/Inertia Block.pdf
-	width 100text%
-	BoundingBox 0bp 150bp 792bp 470bp
-	clip
-
-\end_inset
-
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Modelo de inercia
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Modelo-de-inercia"
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \end_body
 \end_document

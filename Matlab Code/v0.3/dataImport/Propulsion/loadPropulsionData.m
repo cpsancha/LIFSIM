@@ -18,7 +18,7 @@
     
     
 %% Flag to switch between improving the precalculated data solving again the
-%  not converged cases or not, by default should be 1
+%  not converged cases [1] or not [0], by default should be 1
     improveMapping = 1;
     
     
